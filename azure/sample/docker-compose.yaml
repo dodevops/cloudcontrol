@@ -1,0 +1,12 @@
+version: "3"
+services:
+    cli:
+        image: "cloudcontrol-azure:latest"
+        volumes:
+            - "<path-to-terraform>:/terraform"
+            - "<path-to-tfvars>:/credentials.terraform"
+        environment:
+            - "AZ_SUBSCRIPTION=<subscription>"
+            - "K8S_CLUSTERS=<resourcegroup:cluster,resourcegroup:cluster>"
+            - "TERRAFORM_VERSION=0.12.17"
+            - "HELM_VERSION=2.16.1"
