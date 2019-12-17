@@ -1,0 +1,74 @@
+# CloudControl ☁️ 🧰
+
+The cloud engineer's toolbox.
+
+## Introduction
+
+*CloudControl* is a [Docker](https://docker.com) based configuration environment containing all the tools required and configured to manage modern cloud infrastructures.
+
+The toolbox comes in cloud flavors. Currently supported cloud flavours are
+
+{{#each docObjects.flavour}}
+* {{ this.title }}
+{{/each}}
+
+Following features and tools are supported:
+
+{{#each docObjects.feature}}
+* {{ this.title }}
+{{/each}}
+
+## Usage
+
+*CloudControl* can be used best with docker-compose. Check out the `sample` directory in a flavour for a sample compose file and to convenience scripts.
+
+Copy the compose file and configure it to your needs. Check below for configuration options per flavour and feature.
+
+Run `init.sh`. This script basically just runs `docker-compose up -d` and immediately calls `docker-compose logs -f cli` afterwards to start the stack and show the logs of the initialization process.
+
+The initialization process will download and configure the additional tools and completes with a message when its done. It will run each time when the stack is recreated.
+
+After the initialization process you can simply run `run.sh` or `docker-compose exec cli cloud-control` to jump into the running container and work with the installed features.
+
+## Flavours
+
+{{#each docObjects.flavour}}
+### {{ @key }}
+
+{{ this.description }}
+
+#### Configuration
+
+{{#each this.configuration}}
+* {{ this }}
+{{/each}}
+{{/each}}
+
+## Features
+
+{{#each docObjects.feature}}
+### {{ @key }}
+
+{{ this.description }}
+
+#### Configuration
+
+* USE_{{ @key }}: Enable this feature
+{{#each this.configuration }}
+* {{ this }}
+{{/each}}
+
+{{/each}}
+
+## Development
+
+*CloudControl* supports a decoupled development of features and flavours. If you're missing something, just fork this
+repository, create a subfolder for your new feature under "features" and add two files:
+
+* feature.yaml: A descriptor for your feature with a title, a description and configuration notes
+* feature.sh: A shell script that is run by the cloud control entrypoint script and should install everything you need
+  for your new feature
+
+If you need another flavour (aka cloud provider), add a new subdirectory under "flavour" and add a flavour.yaml describing
+your flavour the same way as a feature. For the rest of the files, please check out existing flavours for details. Please,
+include a sample configuration for your flavour to make it easier for other people to work with it.

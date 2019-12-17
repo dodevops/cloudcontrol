@@ -1,0 +1,17 @@
+overrides:
+    - files:
+          - "**/*.yaml"
+          - "**/*.yml"
+          - ".prettierrc*"
+      options:
+          parser: "yaml"
+          tabWidth: 4
+          useTabs: false
+          printWidth: 120
+    - files:
+          - "mkdoc.js"
+      options:
+          tabWidth: 4
+          semi: false
+          printWidth: 140
+          singleQuote: true

@@ -1,0 +1,10 @@
+# 🐟 [Fish Shell](https://fishshell.com/) with [Spacefish theme](https://spacefish.matchai.me/) or Bash
+# Installs and configures the default shell
+# * Environment SHELL_TYPE: Set the shell (defaults to fish, but can be bash as well)
+
+echo "Installing FISH"
+
+sudo apk add fish
+curl https://git.io/fisher --create-dirs -sLo /home/cloudcontrol/.config/fish/functions/fisher.fish
+fish -c "fisher add edc/bass evanlucas/fish-kubectl-completions FabioAntunes/fish-nvm jethrokuan/fzf matchai/spacefish"
+cp /cloudcontrol/feature-installers/fish/spacefish.fish /home/cloudcontrol/.config/fish/conf.d

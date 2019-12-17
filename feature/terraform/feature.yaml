@@ -1,0 +1,6 @@
+title: "🌏 Terraform [Terraform](https://terraform.io)"
+description: "Installs and configures [Terraform](https://terraform.io)"
+configuration:
+    - "Volume-target /terraform: Your local terraform base directory"
+    - "Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. Terraform app secrets, etc.)"
+    - "Environment TERRAFORM_VERSION: A valid terraform version to install (e.g. 0.12.17)"

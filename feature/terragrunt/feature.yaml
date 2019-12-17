@@ -1,0 +1,4 @@
+title: "🐗 [Terragrunt](https://github.com/gruntwork-io/terragrunt)"
+description: "Installs [Terragrunt](https://github.com/gruntwork-io/terragrunt)"
+configuration:
+    - "Environment TERRAGRUNT_VERSION: Valid version of terragrunt to install"
