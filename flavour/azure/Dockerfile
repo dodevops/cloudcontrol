@@ -5,19 +5,16 @@ COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 
 RUN apk add sudo && \
-    echo "cloudcontrol ALL=(ALL) NOPASSWD: apk" > /etc/sudoers.d/cloudcontrol && \
-    echo "cloudcontrol ALL=(ALL) NOPASSWD: az" > /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/sbin/apk *" > /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/local/bin/az *" >> /etc/sudoers.d/cloudcontrol && \
     adduser -D cloudcontrol && \
     mkdir /home/cloudcontrol/bin && \
     chown cloudcontrol /home/cloudcontrol/bin
 
-# Tools
-
-COPY assets /home/cloudcontrol/assets
-
 # Features
 
-COPY features /home/cloudcontrol/features-installers
+COPY feature /home/cloudcontrol/feature-installers
+COPY featureinstaller.sh /
 
 # Cloud control
 

@@ -1,4 +1,4 @@
-if [ "X$(cat /flavour)X" == "XazureX" ]
+if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]
 then
   if [ "X${AZ_K8S_CLUSTERS}X" == "XX" ]
   then

@@ -5,7 +5,8 @@ echo "# CLOUD CONTROL SETUP"
 echo "## AZURE"
 echo
 
-echo "azure" > /flavour
+# Set flavour
+echo "azure" > /home/cloudcontrol/flavour
 
 echo "Logging in..."
 if ! az login
