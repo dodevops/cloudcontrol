@@ -8,7 +8,7 @@ The cloud engineer's toolbox.
 
 The toolbox comes in cloud flavors. Currently supported cloud flavours are
 
-* [![Docker Build Status](https://img.shields.io/docker/build/dodevops/cloudcontrol-azure)](https://hub.docker.com/r/dodevops/cloudcontrol-azure) Azure (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))
+* [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/dodevops/cloudcontrol-azure)](https://hub.docker.com/r/dodevops/cloudcontrol-azure) Azure (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))
 
 Following features and tools are supported:
 
