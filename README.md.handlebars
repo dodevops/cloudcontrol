@@ -72,3 +72,9 @@ repository, create a subfolder for your new feature under "features" and add two
 If you need another flavour (aka cloud provider), add a new subdirectory under "flavour" and add a flavour.yaml describing
 your flavour the same way as a feature. For the rest of the files, please check out existing flavours for details. Please,
 include a sample configuration for your flavour to make it easier for other people to work with it.
+
+## Building
+
+Build a flavor container image with the base of the repository as the build context like this:
+
+    docker build -f flavour/azure/Dockerfile .

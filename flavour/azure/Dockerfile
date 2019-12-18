@@ -1,7 +1,7 @@
 ARG AZURE_VERSION=latest
 FROM mcr.microsoft.com/azure-cli:${AZURE_VERSION}
 
-COPY docker-entrypoint.sh /
+COPY flavour/azure/docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
 
 RUN apk add sudo && \
@@ -14,11 +14,11 @@ RUN apk add sudo && \
 # Features
 
 COPY feature /home/cloudcontrol/feature-installers
-COPY featureinstaller.sh /
+COPY asssets/feature-installer.sh /
 
 # Cloud control
 
-COPY cloud-control.sh /usr/local/bin/cloud-control
+COPY assets/cloud-control.sh /usr/local/bin/cloud-control
 RUN chmod +x /usr/local/bin/cloud-control
 
 RUN apk add bash dialog curl
