@@ -16,7 +16,7 @@ Following features and tools are supported:
 * 🚢 [Helm](https://helm.sh)
 * [kc Quick Kubernetes Context switch](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh)
 * 🐳 [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/)
-* 🌏 Terraform [Terraform](https://terraform.io)
+* 🌏 [Terraform](https://terraform.io)
 * 🐗 [Terragrunt](https://github.com/gruntwork-io/terragrunt)
 
 ## Usage
