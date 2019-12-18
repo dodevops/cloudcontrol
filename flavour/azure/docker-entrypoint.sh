@@ -29,7 +29,7 @@ then
   exit 1
 fi
 
-source featureinstaller.sh
+source feature-installer.sh
 
 echo "# FINISHED"
 echo
