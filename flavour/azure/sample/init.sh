@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-docker-compose up -d cli
+docker-compose pull
+docker-compose up -d
 docker-compose logs -f cli
