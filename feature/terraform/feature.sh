@@ -31,4 +31,5 @@ then
   echo "Can not move terraform binary"
 fi
 
+cd - || exit
 rm -rf "${TEMPDIR}"

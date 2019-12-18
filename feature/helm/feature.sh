@@ -35,4 +35,5 @@ then
   fi
 fi
 
+cd - || exit
 rm -rf "${TEMPDIR}"
