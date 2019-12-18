@@ -1,4 +1,4 @@
-title: "Azure (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))"
+title: "[![Docker Build Status](https://img.shields.io/docker/build/dodevops/cloudcontrol-azure)](https://hub.docker.com/r/dodevops/cloudcontrol-azure) Azure (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))"
 description: |
     Can be used to connect to infrastructure in the Azure cloud. Because we're using a container,
     a device login will happen, requiring the user to go to a website, enter a code and login.

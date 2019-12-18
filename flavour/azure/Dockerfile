@@ -14,7 +14,7 @@ RUN apk add sudo && \
 # Features
 
 COPY feature /home/cloudcontrol/feature-installers
-COPY asssets/feature-installer.sh /
+COPY assets/feature-installer.sh /
 
 # Cloud control
 
