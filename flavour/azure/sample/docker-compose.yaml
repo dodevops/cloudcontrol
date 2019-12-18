@@ -1,7 +1,7 @@
 version: "3"
 services:
     cli:
-        image: "cloudcontrol-azure:latest"
+        image: "dodevops/cloudcontrol:azure-latest"
         volumes:
             - "<path-to-terraform>:/terraform"
             - "<path-to-tfvars>:/credentials.terraform"
