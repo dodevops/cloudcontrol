@@ -12,9 +12,9 @@ The toolbox comes in cloud flavors. Currently supported cloud flavours are
 
 Following features and tools are supported:
 
-* 🐟 [Fish Shell](https://fishshell.com/) with [Spacefish theme](https://spacefish.matchai.me/) or Bash
+* 🐟 [Fish Shell](https://fishshell.com/) with configured [Spacefish theme](https://spacefish.matchai.me/)
 * 🚢 [Helm](https://helm.sh)
-* [kc Quick Kubernetes Context switch](https://github.com/dodevops/cloudcontrol/blob/master/tools/kc.sh)
+* [kc Quick Kubernetes Context switch](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh)
 * 🐳 [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/)
 * 🌏 Terraform [Terraform](https://terraform.io)
 * 🐗 [Terragrunt](https://github.com/gruntwork-io/terragrunt)
