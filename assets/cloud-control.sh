@@ -12,18 +12,17 @@ then
   echo "# CLOUD CONTROL"
   echo
   echo "Welcome to CLOUD CONTROL. I have installed and configured the following features:"
-  echo
 
   while IFS= read -r FEATURE
   do
-    echo "* ${FEATURE}"
     echo
+    echo "* ${FEATURE}"
     if [ -r /home/cloudcontrol/feature-installers/${FEATURE}/motd.sh ]
     then
+      echo
       source /home/cloudcontrol/feature-installers/${FEATURE}/motd.sh
     fi
-    echo
-  done < "$(cat /home/cloudcontrol/features)"
+  done < /home/cloudcontrol/features
 fi
 
 export PATH=$PATH:/home/cloudcontrol/bin

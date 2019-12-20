@@ -21,17 +21,23 @@ Following features and tools are supported:
 
 ## Usage
 
-*CloudControl* can be used best with docker-compose. Check out the `sample` directory in a flavour for a sample compose file and to convenience scripts.
+*CloudControl* can be used best with docker-compose. Check out the `sample` directory in a flavour for a sample
+compose file and to convenience scripts.
 
 Copy the compose file and configure it to your needs. Check below for configuration options per flavour and feature.
 
-Run `init.sh`. This script basically just runs `docker-compose up -d` and immediately calls `docker-compose logs -f cli` afterwards to start the stack and show the logs of the initialization process.
+Run `init.sh`. This script basically just runs `docker-compose up -d` and immediately calls
+`docker-compose logs -f cli` afterwards to start the stack and show the logs of the initialization process.
 
-The initialization process will download and configure the additional tools and completes with a message when its done. It will run each time when the stack is recreated.
+The initialization process will download and configure the additional tools and completes with a message when its done.
+It will run each time when the stack is recreated.
 
-After the initialization process you can simply run `run.sh` or `docker-compose exec cli cloud-control` to jump into the running container and work with the installed features.
+After the initialization process you can simply run `run.sh` or `docker-compose exec cli cloud-control` to jump into
+the running container and work with the installed features.
 
-If you want to display a *custom login message* when users enter the container, set then environment variable `MOTD` to that message. If you want to display the default login message as well, also set the environment variable `MOTD_DISPLAY_DEFAULT` to *yes*.
+If you want to display a *custom login message* when users enter the container, set then environment variable `MOTD`
+to that message. If you want to display the default login message as well, also
+set the environment variable `MOTD_DISPLAY_DEFAULT` to *yes*.
 
 ## Flavours
 
