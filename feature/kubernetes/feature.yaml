@@ -6,4 +6,5 @@ configuration:
         inside *CloudControl* (only for azure flavour).
         Each cluster is a pair of resource group and cluster name, separated by a colon.
         For example: myresourcegroup:myk8s,myotherresourcegroup:mysecondk8s will install myk8s from
-        the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup
+        the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup.
+        Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.

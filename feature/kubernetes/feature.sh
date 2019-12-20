@@ -14,7 +14,16 @@ then
   do
     K8S_RESOURCEGROUP=$(echo "$CLUSTER" | cut -d ":" -f 1)
     K8S_CLUSTER=$(echo "$CLUSTER" | cut -d ":" -f 2)
-    if ! az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}"
+
+    ADMIN_PARAMETER=""
+
+    if [ "X${K8S_CLUSTER:0:1}X" == "X!X" ]
+    then
+      ADMIN_PARAMETER="--admin"
+      K8S_CLUSTER="${K8S_CLUSTER:1}"
+    fi
+
+    if ! az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER}
     then
       echo "Can not fetch k8s credentials for ${CLUSTER}"
       exit 1
