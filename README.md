@@ -31,6 +31,8 @@ The initialization process will download and configure the additional tools and 
 
 After the initialization process you can simply run `run.sh` or `docker-compose exec cli cloud-control` to jump into the running container and work with the installed features.
 
+If you want to display a *custom login message* when users enter the container, set then environment variable `MOTD` to that message. If you want to display the default login message as well, also set the environment variable `MOTD_DISPLAY_DEFAULT` to *yes*.
+
 ## Flavours
 
 ### azure
@@ -116,6 +118,7 @@ repository, create a subfolder for your new feature under "features" and add two
 * feature.yaml: A descriptor for your feature with a title, a description and configuration notes
 * feature.sh: A shell script that is run by the cloud control entrypoint script and should install everything you need
   for your new feature
+* motd.sh: (optional) If you want to show some information to the users upon login, put them here.
 
 If you need another flavour (aka cloud provider), add a new subdirectory under "flavour" and add a flavour.yaml describing
 your flavour the same way as a feature. For the rest of the files, please check out existing flavours for details. Please,

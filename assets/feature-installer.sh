@@ -1,5 +1,7 @@
 echo "## Features"
 
+echo "bash" > /home/cloudcontrol/.shell
+
 for FEATUREDIR in /home/cloudcontrol/feature-installers/*
 do
   FEATURE=$(basename "${FEATUREDIR}")
