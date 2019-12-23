@@ -5,5 +5,5 @@ then
   echo
 fi
 
-curl "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64" -o /home/cloudcontrol/bin/terragrunt
+curl -L "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64" -o /home/cloudcontrol/bin/terragrunt
 chmod +x /home/cloudcontrol/bin/terragrunt
