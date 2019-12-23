@@ -18,6 +18,8 @@ Following features and tools are supported:
 * 🐳 [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/)
 * 🌏 [Terraform](https://terraform.io)
 * 🐗 [Terragrunt](https://github.com/gruntwork-io/terragrunt)
+* 🕰 Timezone configuration
+* 𝑉 [Vim](https://www.vim.org/)
 
 ## Usage
 
@@ -118,6 +120,23 @@ Installs [Terragrunt](https://github.com/gruntwork-io/terragrunt)
 
 * USE_terragrunt: Enable this feature
 * Environment TERRAGRUNT_VERSION: Valid version of terragrunt to install
+
+### timezone
+
+Configures the container&#x27;s timezone
+
+#### Configuration
+
+* USE_timezone: Enable this feature
+* Environment TZ: The timezone to use
+
+### vim
+
+Installs [Vim](https://www.vim.org/)
+
+#### Configuration
+
+* USE_vim: Enable this feature
 
 
 ## Development

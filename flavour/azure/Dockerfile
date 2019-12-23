@@ -21,7 +21,7 @@ COPY assets/feature-installer.sh /
 COPY assets/cloud-control.sh /usr/local/bin/cloud-control
 RUN chmod +x /usr/local/bin/cloud-control
 
-RUN apk add bash dialog curl
+RUN apk add bash curl
 
 USER cloudcontrol
 
