@@ -1,4 +1,8 @@
 title: "[kc Quick Kubernetes Context switch](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh)"
-description: "Installs a quick context switcher for kubernetes"
+description: |
+    Installs a quick context switcher for kubernetes.
+
+    Run kc to select the current working context for kubectl commands.
+    Run kc -n to switch the namespace in the current context.
 configuration:
     - "Environment USE_KC: Enable kc feature"

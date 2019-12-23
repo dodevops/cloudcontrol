@@ -73,7 +73,11 @@ Installs [Helm](https://helm.sh)
 
 ### kc
 
-Installs a quick context switcher for kubernetes
+Installs a quick context switcher for kubernetes.
+
+Run kc to select the current working context for kubectl commands.
+Run kc -n to switch the namespace in the current context.
+
 
 #### Configuration
 
