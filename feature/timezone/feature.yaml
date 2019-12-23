@@ -1,0 +1,4 @@
+title: "🕰 Timezone configuration"
+description: "Configures the container's timezone"
+configuration:
+    - "Environment TZ: The timezone to use"
