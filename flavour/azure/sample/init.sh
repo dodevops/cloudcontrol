@@ -2,4 +2,4 @@
 
 docker-compose pull
 docker-compose up -d
-docker-compose logs -f cli
+docker-compose logs --tail=0 -f cli
