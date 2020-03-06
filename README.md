@@ -16,6 +16,7 @@ Following features and tools are supported:
 * 🚢 [Helm](https://helm.sh)
 * [kc Quick Kubernetes Context switch](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh)
 * 🐳 [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/)
+* 📦 [Packer](https://packer.io/)
 * 🌏 [Terraform](https://terraform.io)
 * 🐗 [Terragrunt](https://github.com/gruntwork-io/terragrunt)
 * 🕰 Timezone configuration
@@ -71,7 +72,7 @@ Installs [Helm](https://helm.sh)
 #### Configuration
 
 * USE_helm: Enable this feature
-* Environment HELM_VERSION: Valid Helm version to install (e.g. 2.16.1)
+* Environment HELM_VERSION: Valid Helm version to install (e.g. 1.5.4)
 
 ### kc
 
@@ -100,6 +101,15 @@ For example: myresourcegroup:myk8s,myotherresourcegroup:mysecondk8s will install
 the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup.
 Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
 
+
+### packer
+
+Installs [Packer](https://packer.io)
+
+#### Configuration
+
+* USE_packer: Enable this feature
+* Environment PACKER_VERSION: Valid Packer version to install (e.g. 2.16.1)
 
 ### terraform
 
