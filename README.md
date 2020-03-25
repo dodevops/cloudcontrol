@@ -22,6 +22,25 @@ Following features and tools are supported:
 * 🕰 Timezone configuration
 * 𝑉 [Vim](https://www.vim.org/)
 
+## Table of contents
+
+* [Usage](#usage)
+* [FAQ](#faq)
+* [Flavours](#flavours)
+    * [azure](#azure)
+* [Features](#features)
+    * [fish](#fish)
+    * [helm](#helm)
+    * [kc](#kc)
+    * [kubernetes](#kubernetes)
+    * [packer](#packer)
+    * [terraform](#terraform)
+    * [terragrunt](#terragrunt)
+    * [timezone](#timezone)
+    * [vim](#vim)
+* [Development](#development)
+* [Building](#building)
+
 ## Usage
 
 *CloudControl* can be used best with docker-compose. Check out the `sample` directory in a flavour for a sample
@@ -41,6 +60,40 @@ the running container and work with the installed features.
 If you want to display a *custom login message* when users enter the container, set then environment variable `MOTD`
 to that message. If you want to display the default login message as well, also
 set the environment variable `MOTD_DISPLAY_DEFAULT` to *yes*.
+
+## FAQ
+
+### How to forward ports to the host
+
+If you'd like to forward traffic into a cluster using `kubectl port-forward`, you can do the following:
+
+* Add a port-configuration to your docker-compose file to forward a free port (e.g. 8888):
+
+```
+ports:
+  - "8888:8888"
+```
+
+* Inside *CloudControl*, check the IP of the container:
+
+```
+bash-5.0$ ifconfig eth0
+eth0      Link encap:Ethernet  HWaddr 02:42:AC:15:00:02
+          inet addr:172.21.0.2  Bcast:172.21.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:53813 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:20900 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:75260363 (71.7 MiB)  TX bytes:2691219 (2.5 MiB)
+```
+
+* Use the IP address used by the container as the bind address to forward traffic of the my-service service on port 8080:
+
+```
+kubectl port-forward --address 172.21.0.2 svc/my-service 8888:8080
+```
+
+* Connect to localhost:8888 on your host
 
 ## Flavours
 
@@ -109,7 +162,7 @@ Installs [Packer](https://packer.io)
 #### Configuration
 
 * USE_packer: Enable this feature
-* Environment PACKER_VERSION: Valid Packer version to install (e.g. 2.16.1)
+* Environment PACKER_VERSION: Valid Packer version to install (e.g. 1.5.4)
 
 ### terraform
 
