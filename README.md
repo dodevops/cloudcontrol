@@ -140,7 +140,6 @@ Run kc -n to switch the namespace in the current context.
 #### Configuration
 
 * USE_kc: Enable this feature
-* Environment USE_KC: Enable kc feature
 
 ### kubernetes
 
