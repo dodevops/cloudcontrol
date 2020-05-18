@@ -17,6 +17,7 @@ Following features and tools are supported:
 * [kc Quick Kubernetes Context switch](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh)
 * 🐳 [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/)
 * 📦 [Packer](https://packer.io/)
+* ⎈ [Stern - Multi pod and container log tailing for Kubernetes](https://github.com/wercker/stern)
 * 🌏 [Terraform](https://terraform.io)
 * 🐗 [Terragrunt](https://github.com/gruntwork-io/terragrunt)
 * 🕰 Timezone configuration
@@ -34,6 +35,7 @@ Following features and tools are supported:
     * [kc](#kc)
     * [kubernetes](#kubernetes)
     * [packer](#packer)
+    * [stern](#stern)
     * [terraform](#terraform)
     * [terragrunt](#terragrunt)
     * [timezone](#timezone)
@@ -65,9 +67,9 @@ set the environment variable `MOTD_DISPLAY_DEFAULT` to *yes*.
 
 ### How to forward ports to the host
 
-If you'd like to forward traffic into a cluster using `kubectl port-forward`, you can do the following:
+If you'd like to forward traffic into a cluster using `kubectl port-forward` you can do the following:
 
-* Add a port-configuration to your docker-compose file to forward a free port (e.g. 8888):
+* Add a ports key to the cli-service in your docker-compose file to forward a free port (e.g. 8888):
 
 ```
 ports:
@@ -163,6 +165,16 @@ Installs [Packer](https://packer.io)
 
 * USE_packer: Enable this feature
 * Environment PACKER_VERSION: Valid Packer version to install (e.g. 1.5.4)
+
+### stern
+
+Installs [stern](https://github.com/wercker/stern).
+
+
+#### Configuration
+
+* USE_stern: Enable this feature
+* Environment STERN_VERSION: Valid Stern version (e.g. 1.11.0)
 
 ### terraform
 
