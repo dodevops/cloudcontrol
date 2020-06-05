@@ -8,6 +8,7 @@ The cloud engineer's toolbox.
 
 The toolbox comes in cloud flavors. Currently supported cloud flavours are
 
+* [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/dodevops/cloudcontrol-aws)](https://hub.docker.com/r/dodevops/cloudcontrol-aws) AWS (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli))
 * [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/dodevops/cloudcontrol-azure)](https://hub.docker.com/r/dodevops/cloudcontrol-azure) Azure (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))
 
 Following features and tools are supported:
@@ -28,6 +29,7 @@ Following features and tools are supported:
 * [Usage](#usage)
 * [FAQ](#faq)
 * [Flavours](#flavours)
+    * [aws](#aws)
     * [azure](#azure)
 * [Features](#features)
     * [fish](#fish)
@@ -99,6 +101,16 @@ kubectl port-forward --address 172.21.0.2 svc/my-service 8888:8080
 
 ## Flavours
 
+### aws
+
+Can be used to connect to infrastructure in the AWS cloud. Also see [the AWS CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) for more configuration options
+
+
+#### Configuration
+
+* Environment AWS_ACCESS_KEY_ID: Specifies an AWS access key associated with an IAM user or role
+* Environment AWS_SECRET_ACCESS_KEY: Specifies the secret key associated with the access key. This is essentially the password for the access key
+* Environment AWS_DEFAULT_REGION: Specifies the AWS Region to send the request to
 ### azure
 
 Can be used to connect to infrastructure in the Azure cloud. Because we&#x27;re using a container,
@@ -154,6 +166,12 @@ Each cluster is a pair of resource group and cluster name, separated by a colon.
 For example: myresourcegroup:myk8s,myotherresourcegroup:mysecondk8s will install myk8s from
 the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup.
 Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
+
+* (aws flavour) Environment AWS_K8S_CLUSTERS: A comma separated list of EKS clusters to manage
+inside *CloudControl* (only for aws flavour).
+For each cluster give the cluster name. If you need to assume an ARN role, add that to the clustername
+with an additional | added.
+For example: myekscluster|arn:aws:iam::32487234892:sample/sample
 
 
 ### packer

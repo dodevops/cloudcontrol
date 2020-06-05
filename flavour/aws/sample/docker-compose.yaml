@@ -1,0 +1,16 @@
+version: "3"
+services:
+    cli:
+        image: "dodevops/cloudcontrol-aws:latest"
+        volumes:
+            - "<path-to-terraform>:/terraform"
+            - "<path-to-tfvars>:/credentials.terraform"
+        environment:
+            - "AWS_ACCESS_KEY_ID"
+            - "AWS_SECRET_ACCESS_KEY"
+            - "AWS_DEFAULT_REGION"
+            - "K8S_CLUSTERS=<resourcegroup:cluster,resourcegroup:cluster>"
+            - "USE_terraform=yes"
+            - "USE_helm=yes"
+            - "TERRAFORM_VERSION=0.12.17"
+            - "HELM_VERSION=2.16.1"
