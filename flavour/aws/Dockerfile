@@ -11,6 +11,12 @@ RUN yum install -y sudo shadow-utils && \
     mkdir /home/cloudcontrol/bin && \
     chown cloudcontrol /home/cloudcontrol/bin
 
+# AWS Sudo
+
+RUN curl -sL https://rpm.nodesource.com/setup_12.x | bash - && \
+    yum install -y nodejs && \
+    npm install -g awsudo
+
 # Features
 
 COPY feature /home/cloudcontrol/feature-installers

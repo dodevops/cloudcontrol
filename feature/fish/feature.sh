@@ -16,7 +16,8 @@ then
   cd "${TEMPDIR}" || exit
   curl -L https://github.com/junegunn/fzf/archive/master.zip -o master.zip
   unzip master.zip
-  fzf-master/install --all
+  mv fzf-master ~/bin
+  ~/bin/fzf-master/install --all
   cd - || exit
   rm -rf "${TEMPDIR}"
 fi

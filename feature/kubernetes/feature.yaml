@@ -15,3 +15,7 @@ configuration:
         with an additional | added.
         For example: myekscluster|arn:aws:iam::32487234892:sample/sample
 
+        If you additionally need to assume a role before fetching the EKS credentials, add the role, prefixed with
+        an @:
+        myekscluster|arn:aws:iam::4327849324:sample/sample@arn:aws:iam::specialrole
+
