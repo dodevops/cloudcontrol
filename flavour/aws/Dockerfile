@@ -27,7 +27,9 @@ COPY assets/feature-installer.sh /
 COPY assets/cloud-control.sh /usr/local/bin/cloud-control
 RUN chmod +x /usr/local/bin/cloud-control
 
-RUN yum install -y unzip tar
+# Required tools
+
+RUN yum install -y unzip tar net-tools
 
 USER cloudcontrol
 
