@@ -80,8 +80,9 @@ eth0      Link encap:Ethernet  HWaddr 02:42:AC:15:00:02
           RX bytes:75260363 (71.7 MiB)  TX bytes:2691219 (2.5 MiB)
 ```
 
-* Use the IP address used by the container as the bind address to forward traffic to the defined port above to a
-service on it's port (e.g. port 12000 to the service my-service listening on port 8080):
+* Use the IP address used by the container as the bind address for port-forward to forward traffic
+to the previously defined container port to a service on its port (e.g. port 12000 to the
+service my-service listening on port 8080):
 
 ```
 kubectl port-forward --address 172.21.0.2 svc/my-service 12000:8080
