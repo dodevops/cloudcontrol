@@ -71,11 +71,12 @@ set the environment variable `MOTD_DISPLAY_DEFAULT` to *yes*.
 
 If you'd like to forward traffic into a cluster using `kubectl port-forward` you can do the following:
 
-* Add a ports key to the cli-service in your docker-compose file to forward a free port (e.g. 8888):
+* Add a ports key to the cli-service in your docker-compose file to forward a free port on your host to a defined
+port in your container (e.g. 12001 on your host to port 12000 in your container):
 
 ```
 ports:
-  - "8888:8888"
+  - "12001:12000"
 ```
 
 * Inside *CloudControl*, check the IP of the container:
@@ -91,13 +92,14 @@ eth0      Link encap:Ethernet  HWaddr 02:42:AC:15:00:02
           RX bytes:75260363 (71.7 MiB)  TX bytes:2691219 (2.5 MiB)
 ```
 
-* Use the IP address used by the container as the bind address to forward traffic of the my-service service on port 8080:
+* Use the IP address used by the container as the bind address to forward traffic to the defined port above to a
+service on it's port (e.g. port 12000 to the service my-service listening on port 8080):
 
 ```
-kubectl port-forward --address 172.21.0.2 svc/my-service 8888:8080
+kubectl port-forward --address 172.21.0.2 svc/my-service 12000:8080
 ```
 
-* Connect to localhost:8888 on your host
+* Connect to localhost:12001 on your host
 
 ## Flavours
 
@@ -172,6 +174,10 @@ inside *CloudControl* (only for aws flavour).
 For each cluster give the cluster name. If you need to assume an ARN role, add that to the clustername
 with an additional | added.
 For example: myekscluster|arn:aws:iam::32487234892:sample/sample
+
+If you additionally need to assume a role before fetching the EKS credentials, add the role, prefixed with
+an @:
+myekscluster|arn:aws:iam::4327849324:sample/sample@arn:aws:iam::specialrole
 
 
 ### packer
