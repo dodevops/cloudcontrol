@@ -90,6 +90,14 @@ kubectl port-forward --address 172.21.0.2 svc/my-service 12000:8080
 
 * Connect to localhost:12001 on your host
 
+### How to set up command aliases
+
+If you'd like to set up aliases to save some typing, you can use the *run* feature. Run your container with these
+environment variables:
+
+* `USE_run=yes`: Set up the run feature
+* `RUN_COMMANDS=alias firstalias=command;alias secondalias=command`: Set up some aliases
+
 ## Flavours
 
 {{#each docObjects.flavour}}

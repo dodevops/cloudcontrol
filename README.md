@@ -18,6 +18,7 @@ Following features and tools are supported:
 * [kc Quick Kubernetes Context switch](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh)
 * 🐳 [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/)
 * 📦 [Packer](https://packer.io/)
+* 👟 Run: Run commands when entering cloud control
 * ⎈ [Stern - Multi pod and container log tailing for Kubernetes](https://github.com/wercker/stern)
 * 🌏 [Terraform](https://terraform.io)
 * 🐗 [Terragrunt](https://github.com/gruntwork-io/terragrunt)
@@ -37,6 +38,7 @@ Following features and tools are supported:
     * [kc](#kc)
     * [kubernetes](#kubernetes)
     * [packer](#packer)
+    * [run](#run)
     * [stern](#stern)
     * [terraform](#terraform)
     * [terragrunt](#terragrunt)
@@ -101,6 +103,14 @@ kubectl port-forward --address 172.21.0.2 svc/my-service 12000:8080
 ```
 
 * Connect to localhost:12001 on your host
+
+### How to set up command aliases
+
+If you'd like to set up aliases to save some typing, you can use the *run* feature. Run your container with these
+environment variables:
+
+* `USE_run=yes`: Set up the run feature
+* `RUN_COMMANDS=alias firstalias=command;alias secondalias=command`: Set up some aliases
 
 ## Flavours
 
@@ -189,6 +199,15 @@ Installs [Packer](https://packer.io)
 
 * USE_packer: Enable this feature
 * Environment PACKER_VERSION: Valid Packer version to install (e.g. 1.5.4)
+
+### run
+
+Runs commands inside the shell when entering the cloud control container
+
+#### Configuration
+
+* USE_run: Enable this feature
+* Environment RUN_COMMANDS: Valid shell commands to run
 
 ### stern
 
