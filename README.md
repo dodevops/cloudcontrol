@@ -23,6 +23,7 @@ Following features and tools are supported:
 * 🌏 [Terraform](https://terraform.io)
 * 🐗 [Terragrunt](https://github.com/gruntwork-io/terragrunt)
 * 🕰 Timezone configuration
+* 🌊 Velero: Installs the [Velero](https://velero.io) CLI
 * 𝑉 [Vim](https://www.vim.org/)
 
 ## Table of contents
@@ -43,6 +44,7 @@ Following features and tools are supported:
     * [terraform](#terraform)
     * [terragrunt](#terragrunt)
     * [timezone](#timezone)
+    * [velero](#velero)
     * [vim](#vim)
 * [Development](#development)
 * [Building](#building)
@@ -247,6 +249,15 @@ Configures the container&#x27;s timezone
 
 * USE_timezone: Enable this feature
 * Environment TZ: The timezone to use
+
+### velero
+
+Installs the velero kubernetes backup CLI
+
+#### Configuration
+
+* USE_velero: Enable this feature
+* Environment VELERO_VERSION: Valid velero version to install (e.g. v1.4.2)
 
 ### vim
 

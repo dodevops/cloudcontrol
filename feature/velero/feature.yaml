@@ -1,0 +1,4 @@
+title: "🌊 Velero: Installs the [Velero](https://velero.io) CLI"
+description: "Installs the velero kubernetes backup CLI"
+configuration:
+    - "Environment VELERO_VERSION: Valid velero version to install (e.g. v1.4.2)"
