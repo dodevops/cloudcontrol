@@ -1,28 +1,39 @@
 ARG AZURE_VERSION=latest
 FROM mcr.microsoft.com/azure-cli:${AZURE_VERSION}
 
-COPY flavour/azure/docker-entrypoint.sh /
-RUN chmod +x /docker-entrypoint.sh
-
-RUN apk add sudo && \
+RUN apk add sudo bash curl dialog && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/sbin/apk *" > /etc/sudoers.d/cloudcontrol && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/usr/local/bin/az *" >> /etc/sudoers.d/cloudcontrol && \
     adduser -D cloudcontrol && \
     mkdir /home/cloudcontrol/bin && \
     chown cloudcontrol /home/cloudcontrol/bin
 
+# Flavour
+
+COPY flavour/azure/flavour /home/cloudcontrol/flavour
+COPY flavour/azure/flavourinit.sh /home/cloudcontrol/bin/flavourinit.sh
+RUN chmod +x /home/cloudcontrol/bin/flavourinit.sh
+
 # Features
 
 COPY feature /home/cloudcontrol/feature-installers
 COPY assets/feature-installer.sh /
 
+# CCC
+
+COPY assets/ccc /home/cloudcontrol/bin/ccc
+RUN chmod +x /home/cloudcontrol/bin/ccc
+
 # Cloud control
 
-COPY assets/cloud-control.sh /usr/local/bin/cloud-control
-RUN chmod +x /usr/local/bin/cloud-control
+COPY assets/cloudcontrol.sh /usr/local/bin/cloudcontrol
+RUN chmod +x /usr/local/bin/cloudcontrol
 
-RUN apk add bash curl
+# Chown
+
+RUN chown cloudcontrol -R /home/cloudcontrol
 
 USER cloudcontrol
 
-ENTRYPOINT /docker-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/cloudcontrol"]
+CMD ["serve"]
