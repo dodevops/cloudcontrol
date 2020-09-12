@@ -1,4 +1,4 @@
-title: "🚢 [Helm](https://helm.sh)"
+title: "⛵️ Helm"
 description: "Installs [Helm](https://helm.sh)"
 configuration:
     - "Environment HELM_VERSION: Valid Helm version to install (e.g. 1.5.4)"

@@ -4,27 +4,29 @@ The cloud engineer's toolbox.
 
 ## Introduction
 
-*CloudControl* is a [Docker](https://docker.com) based configuration environment containing all the tools required and configured to manage modern cloud infrastructures.
+*CloudControl* is a [Docker](https://docker.com) based configuration environment containing all the tools
+required and configured to manage modern cloud infrastructures.
 
-The toolbox comes in cloud flavors. Currently supported cloud flavours are
+The toolbox comes in different "flavours" depending on what cloud you are working in.
+Currently supported cloud flavours are:
 
-* [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/dodevops/cloudcontrol-aws)](https://hub.docker.com/r/dodevops/cloudcontrol-aws) AWS (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli))
-* [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/dodevops/cloudcontrol-azure)](https://hub.docker.com/r/dodevops/cloudcontrol-azure) Azure (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))
+* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-aws?sort&#x3D;semver) [AWS](https://hub.docker.com/r/dodevops/cloudcontrol-aws) (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli))
+* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-azure?sort&#x3D;semver) [Azure](https://hub.docker.com/r/dodevops/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))
 
 Following features and tools are supported:
 
-* 🐟 [Fish Shell](https://fishshell.com/) with configured [Spacefish theme](https://spacefish.matchai.me/)
-* 🚢 [Helm](https://helm.sh)
-* [kc Quick Kubernetes Context switch](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh)
-* 🐳 [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/)
-* 📦 [Packer](https://packer.io/)
-* 👟 Run: Run commands when entering cloud control
-* ⎈ [Stern - Multi pod and container log tailing for Kubernetes](https://github.com/wercker/stern)
-* 🌏 [Terraform](https://terraform.io)
-* 🐗 [Terragrunt](https://github.com/gruntwork-io/terragrunt)
+* 🐟 Fish Shell
+* ⛵️ Helm
+* ⌨️ kc Quick Kubernetes Context switch
+* 🐳 Kubernetes
+* 📦 Packer
+* 👟 Run
+* 📜 Stern
+* 🌏 Terraform
+* 🐗 Terragrunt
 * 🕰 Timezone configuration
-* 🌊 Velero: Installs the [Velero](https://velero.io) CLI
-* 𝑉 [Vim](https://www.vim.org/)
+* 🌊 Velero
+* 𝑉  Vim
 
 ## Table of contents
 
@@ -52,36 +54,37 @@ Following features and tools are supported:
 ## Usage
 
 *CloudControl* can be used best with docker-compose. Check out the `sample` directory in a flavour for a sample
-compose file and to convenience scripts.
+compose file and to convenience scripts. It includes a small web server written in Go and Vuejs-client dubbed
+"CloudControlCenter", which is used as a status screen. It listens to port 8080 inside the container.
 
 Copy the compose file and configure it to your needs. Check below for configuration options per flavour and feature.
 
-Run `init.sh`. This script basically just runs `docker-compose up -d` and immediately calls
-`docker-compose logs -f cli` afterwards to start the stack and show the logs of the initialization process.
+Run `init.sh`. This script basically just runs `docker-compose up -d` and tells you the URL for CloudControlCenter.
+Open it and wait for CloudControl to finish initializing.
 
 The initialization process will download and configure the additional tools and completes with a message when its done.
 It will run each time when the stack is recreated.
 
-After the initialization process you can simply run `run.sh` or `docker-compose exec cli cloud-control` to jump into
-the running container and work with the installed features.
+After the initialization process you can simply run `docker-compose exec cli /usr/local/bin/cloudcontrol run` to jump
+into the running container and work with the installed features.
 
-If you want to display a *custom login message* when users enter the container, set then environment variable `MOTD`
-to that message. If you want to display the default login message as well, also
-set the environment variable `MOTD_DISPLAY_DEFAULT` to *yes*.
+If you need to change any of the configuration environment variables, run `docker-compose up -d` afterwards to apply
+the changes. Remember, that CloudControl needs to reininitialize for this.
 
 ## FAQ
 
-### How to forward ports to the host
+### How can I add an informational text for users of CloudControl?
+
+If you want to display a *custom login message* when users enter the container, set environment variable `MOTD`
+to that message. If you want to display the default login message as well, also
+set the environment variable `MOTD_DISPLAY_DEFAULT` to *yes*.
+
+### How can I forward ports to the host?
 
 If you'd like to forward traffic into a cluster using `kubectl port-forward` you can do the following:
 
 * Add a ports key to the cli-service in your docker-compose file to forward a free port on your host to a defined
-port in your container (e.g. 12001 on your host to port 12000 in your container):
-
-```
-ports:
-  - "12001:12000"
-```
+port in your container. The docker-compose-files in the sample directories already use port 8081 for this.
 
 * Inside *CloudControl*, check the IP of the container:
 
@@ -97,14 +100,20 @@ eth0      Link encap:Ethernet  HWaddr 02:42:AC:15:00:02
 ```
 
 * Use the IP address used by the container as the bind address for port-forward to forward traffic
-to the previously defined container port to a service on its port (e.g. port 12000 to the
+to the previously defined container port to a service on its port (e.g. port 8081 to the
 service my-service listening on port 8080):
 
 ```
-kubectl port-forward --address 172.21.0.2 svc/my-service 12000:8080
+kubectl port-forward --address 172.21.0.2 svc/my-service 8081:8080
 ```
 
-* Connect to localhost:12001 on your host
+* Check out, which host port docker bound to the private port you set up (e.g. 8081)
+
+```
+docker-compose port cli 8081
+```
+
+* Connect to localhost:<host port> on your host
 
 ### How to set up command aliases
 
@@ -141,7 +150,7 @@ This only happens once during initialization phase.
 
 ### fish
 
-Installs and configures the fish shell
+Installs and configures the [Fish Shell](https://fishshell.com/) with configured [Spacefish theme](https://spacefish.matchai.me/)
 
 #### Configuration
 
@@ -158,10 +167,7 @@ Installs [Helm](https://helm.sh)
 
 ### kc
 
-Installs a quick context switcher for kubernetes.
-
-Run kc to select the current working context for kubectl commands.
-Run kc -n to switch the namespace in the current context.
+Installs [kc](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh), a quick context switcher for kubernetes.
 
 
 #### Configuration
@@ -170,7 +176,7 @@ Run kc -n to switch the namespace in the current context.
 
 ### kubernetes
 
-Installs and configures [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) to connect to the flavour&#x27;s kubernetes clusters
+Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/) with [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) to connect to the flavour&#x27;s kubernetes clusters
 
 #### Configuration
 
@@ -213,7 +219,7 @@ Runs commands inside the shell when entering the cloud control container
 
 ### stern
 
-Installs [stern](https://github.com/wercker/stern).
+Installs [stern](https://github.com/wercker/stern), a multi pod and container log tailing for Kubernetes
 
 
 #### Configuration
@@ -252,7 +258,7 @@ Configures the container&#x27;s timezone
 
 ### velero
 
-Installs the velero kubernetes backup CLI
+Installs the [Velero](https://velero.io) kubernetes backup CLI
 
 #### Configuration
 
@@ -271,10 +277,10 @@ Installs [Vim](https://www.vim.org/)
 ## Development
 
 *CloudControl* supports a decoupled development of features and flavours. If you're missing something, just fork this
-repository, create a subfolder for your new feature under "features" and add two files:
+repository, create a subfolder for your new feature under "features" and add these files:
 
 * feature.yaml: A descriptor for your feature with a title, a description and configuration notes
-* feature.sh: A shell script that is run by the cloud control entrypoint script and should install everything you need
+* install.sh: A shell script that is run by CloudControlCenter and should install everything you need
   for your new feature
 * motd.sh: (optional) If you want to show some information to the users upon login, put them here.
 
@@ -286,4 +292,8 @@ include a sample configuration for your flavour to make it easier for other peop
 
 Build a flavor container image with the base of the repository as the build context like this:
 
-    docker build -f flavour/azure/Dockerfile .
+    build.sh <flavour> <tag>
+
+To build all flavours with the same tag, use
+
+    build.sh <tag>

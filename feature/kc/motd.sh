@@ -1,2 +1,3 @@
 echo "Kubernetes Quick Context Switcher has been installed."
-echo "Just run kc to switch to another Kubernetes context and kc -n to switch to another namespace"
+echo "* Run *kc* to select the current working context for kubectl commands."
+echo "* Run *kc -n* to switch the namespace in the current context."

@@ -4,7 +4,9 @@ services:
         image: "dodevops/cloudcontrol-aws:latest"
         volumes:
             - "<path-to-terraform>:/terraform"
-            - "<path-to-tfvars>:/credentials.terraform"
+        ports:
+            - "8080" # CloudControlCenter port
+            - "8081" # Port that can be used for port forwardings
         environment:
             - "AWS_ACCESS_KEY_ID"
             - "AWS_SECRET_ACCESS_KEY"

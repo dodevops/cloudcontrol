@@ -1,0 +1,5 @@
+node_modules
+.idea
+*.iml
+ccc/client/dist
+ccc/ccc

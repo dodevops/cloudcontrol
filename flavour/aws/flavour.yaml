@@ -1,4 +1,4 @@
-title: "[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/dodevops/cloudcontrol-aws)](https://hub.docker.com/r/dodevops/cloudcontrol-aws) AWS (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli))"
+title: "![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-aws?sort=semver) [AWS](https://hub.docker.com/r/dodevops/cloudcontrol-aws) (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli))"
 description: |
     Can be used to connect to infrastructure in the AWS cloud. Also see [the AWS CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) for more configuration options
 configuration:

@@ -4,7 +4,9 @@ services:
         image: "dodevops/cloudcontrol-azure:latest"
         volumes:
             - "<path-to-terraform>:/terraform"
-            - "<path-to-tfvars>:/credentials.terraform"
+        ports:
+            - "8080" # CloudControlCenter port
+            - "8081" # Port that can be used for port forwardings
         environment:
             - "AZ_SUBSCRIPTION=<subscription>"
             - "K8S_CLUSTERS=<resourcegroup:cluster,resourcegroup:cluster>"
