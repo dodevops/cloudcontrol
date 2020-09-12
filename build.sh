@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# CloudControl build script
+# Usage:
+#
+# bash build.sh <tag> [<flavour>]
+
 TAG=latest
 if [ -n "$1" ]
 then
