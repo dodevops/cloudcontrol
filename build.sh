@@ -4,6 +4,8 @@
 # Usage:
 #
 # bash build.sh <tag> [<flavour>]
+#
+# If no flavour is specified, all flavours will be built
 
 TAG=latest
 if [ -n "$1" ]
