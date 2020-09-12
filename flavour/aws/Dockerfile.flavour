@@ -1,0 +1,21 @@
+FROM amazon/aws-cli:latest
+
+RUN yum install -y sudo shadow-utils unzip tar net-tools curl && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/yum *" > /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/curl *" >> /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/tee *" >> /etc/sudoers.d/cloudcontrol && \
+    adduser cloudcontrol && \
+    mkdir /home/cloudcontrol/bin && \
+    chown cloudcontrol /home/cloudcontrol/bin
+
+# AWS Sudo
+
+RUN curl -sL https://rpm.nodesource.com/setup_12.x | bash - && \
+    yum install -y nodejs && \
+    npm install -g awsudo
+
+# Flavour
+
+COPY flavour/aws/flavour /home/cloudcontrol/flavour
+COPY flavour/aws/flavourinit.sh /home/cloudcontrol/bin/flavourinit.sh
+RUN chmod +x /home/cloudcontrol/bin/flavourinit.sh

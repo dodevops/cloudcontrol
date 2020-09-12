@@ -5,5 +5,6 @@ then
   echo "${RUN_COMMANDS}" >> /home/cloudcontrol/.config/fish/config.fish
 else
   echo "Setting up RUN for bash"
-  echo "${RUN_COMMANDS}" >> /home/cloudcontrol/.bashrc
+  echo "${RUN_COMMANDS}" > /home/cloudcontrol/.run
+  echo ". /home/cloudcontrol/.run" >> /home/cloudcontrol/.bashrc
 fi

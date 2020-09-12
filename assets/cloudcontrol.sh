@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
 
+TERM=xterm
+
 # CloudControl master control program
 
 if [ "X$1X" == "XserveX" ]
 then
-  echo "Starting CloudControl"
-  echo "---------------------"
-  echo
-  echo "Please wait for CloudControl to initialize. For details, open"
-  echo
-  echo "    http://localhost:${CCC_PORT}/"
-  /home/cloudcontrol/bin/ccc
+  cd /usr/local/ccc || exit 1
+  ./ccc 2>&1
 elif [ "X$1X" == "XrunX" ]
 then
   if [ "X${MOTD}X" != "XX" ]
@@ -20,24 +17,19 @@ then
     MOTD_DISPLAY_DEFAULT=yes
   fi
 
-  if [ "X${MOTD_DISPLAY_DEFAULT}X" == "XyesX" ]
+  if [ "X${MOTD_DISPLAY_DEFAULT}" == "XyesX" ]
   then
-    TEMPFILE=$(mktemp)
-    while IFS= read -r FEATURE
-    do
-      echo >> "$TEMPFILE"
-      echo "* ${FEATURE}" >> "$TEMPFILE"
-      if [ -r "/home/cloudcontrol/feature-installers/${FEATURE}/motd.sh" ]
-      then
-        echo >> "$TEMPFILE"
-        "/home/cloudcontrol/feature-installers/${FEATURE}/motd.sh" >> "$TEMPFILE"
-      fi
-    done < /home/cloudcontrol/features
-
-    echo "$TEMPFILE" | dialog --backtitle "CloudControl" --title "Welcome to CloudControl" --progressbox "Welcome to CloudControl. I have installed and configured the following features:" 20 60
+    curl -H "Accept: text/plain" -s http://localhost:8080/api/features
   fi
 
+  echo
+
   export PATH=$PATH:/home/cloudcontrol/bin
+
+  if [ -n "${WORKDIR}" ]
+  then
+    cd "${WORKDIR}" || cd
+  fi
 
   # Start shell
 

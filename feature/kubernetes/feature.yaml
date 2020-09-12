@@ -1,5 +1,5 @@
-title: "🐳 [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/)"
-description: "Installs and configures [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) to connect to the flavour's kubernetes clusters"
+title: "🐳 Kubernetes"
+description: "Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/) with [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) to connect to the flavour's kubernetes clusters"
 configuration:
     - |
         (azure flavour) Environment AZ_K8S_CLUSTERS: A comma separated list of AKS clusters to manage

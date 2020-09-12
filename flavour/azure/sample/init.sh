@@ -2,4 +2,5 @@
 
 docker-compose pull
 docker-compose up -d
-docker-compose logs --tail=0 -f cli
+
+echo "CloudControl is initializing. Check out http://$(docker-compose port cli 8080) for details"

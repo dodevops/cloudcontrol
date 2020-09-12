@@ -1,24 +1,23 @@
-if [ "X${HELM_VERSION}X" == "XX" ]
-then
-  echo -n "* Helm version to use: "
-  read -r HELM_VERSION
-  echo
-fi
-
 TEMPDIR=$(mktemp -d)
 cd "${TEMPDIR}" || exit
 
-if ! curl "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" --output helm.tar.gz
+echo "Downloading helm..."
+
+if ! curl -s "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" --output helm.tar.gz
 then
   echo "Can not download helm"
   exit 1
 fi
 
-if ! tar xzf helm.tar.gz
+echo "Unpacking helm..."
+
+if ! tar xzf helm.tar.gz &>/dev/null
 then
   echo "Can not unpack helm"
   exit 1
 fi
+
+echo "Installing helm..."
 
 if ! mv linux-amd64/helm /home/cloudcontrol/bin
 then
@@ -28,6 +27,7 @@ fi
 
 if [ -r /tiller ]
 then
+  echo "Installing tiller..."
   if ! mv linux-amd64/tiller /home/cloudcontrol/bin
   then
     echo "Can not move tiller binary"
@@ -35,5 +35,5 @@ then
   fi
 fi
 
-cd - || exit
+cd - &>/dev/null || exit
 rm -rf "${TEMPDIR}"

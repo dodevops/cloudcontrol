@@ -1,15 +1,15 @@
-# Installs stern
-
-echo "Installing STERN"
-
 TEMPDIR=$(mktemp -d)
 cd "${TEMPDIR}" || exit
 
-if ! curl -L "https://github.com/wercker/stern/releases/download/${STERN_VERSION}/stern_linux_amd64" --output stern
+echo "Downloading stern..."
+
+if ! curl -s -L "https://github.com/wercker/stern/releases/download/${STERN_VERSION}/stern_linux_amd64" --output stern
 then
   echo "Can not download Stern"
   exit 1
 fi
+
+echo "Installing stern"
 
 if ! chmod +x stern
 then
