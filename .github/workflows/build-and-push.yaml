@@ -23,13 +23,21 @@ jobs:
                 with:
                     IMAGE_TAG: ${{ github.ref }}
                 if: github.ref != 'refs/heads/master'
+            -   name: Printenv
+                run: |
+                    echo "IMAGE_TAG=${IMAGE_TAG}"
+                    printenv
     build:
         name: Building containers
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
                 uses: actions/checkout@v1
-            -   run: build.sh $IMAGE_TAG
+            -   name: Printenv
+                run: |
+                    echo "IMAGE_TAG=${IMAGE_TAG}"
+                    printenv
+            -   run: bash build.sh ${IMAGE_TAG}
     push:
         name: Pushing containers
         runs-on: ubuntu-latest
@@ -40,11 +48,11 @@ jobs:
                     acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
                     acr-token: ${{ secrets.DOCKER_TOKEN }}
                     acr-account: registry.hub.docker.com
-                    acr-imagename: dodevops/cloudcontrol-aws:$IMAGE_TAG
+                    acr-imagename: dodevops/cloudcontrol-aws:${IMAGE_TAG}
             -   name: Push Azure Image
                 uses: julioarruda/pushimagetoregistry@v1
                 with:
                     acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
                     acr-token: ${{ secrets.DOCKER_TOKEN }}
                     acr-account: registry.hub.docker.com
-                    acr-imagename: dodevops/cloudcontrol-aws:$IMAGE_TAG
+                    acr-imagename: dodevops/cloudcontrol-aws:${IMAGE_TAG}
