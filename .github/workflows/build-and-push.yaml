@@ -12,11 +12,13 @@ jobs:
     init:
         steps:
             -   name: Set tag to latest
-                env:
+                uses: allenevans/set-env@v1.0.0
+                with:
                     TAG: latest
                 if: github.ref == "master"
             -   name: Set tag to release
-                env:
+                uses: allenevans/set-env@v1.0.0
+                with:
                     TAG: ${{ github.ref }}
                 if: github.ref != "master"
     build:
