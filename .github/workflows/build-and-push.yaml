@@ -31,12 +31,12 @@ jobs:
                 with:
                     acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
                     acr-token: ${{ secrets.DOCKER_TOKEN }}
-                    acr-account: registry.hub.docker.com
+                    acr-account: docker.io
                     acr-imagename: dodevops/cloudcontrol-aws:${{ env.IMAGE_TAG }}
             -   name: Push Azure Image
                 uses: julioarruda/pushimagetoregistry@v1
                 with:
                     acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
                     acr-token: ${{ secrets.DOCKER_TOKEN }}
-                    acr-account: registry.hub.docker.com
+                    acr-account: docker.io
                     acr-imagename: dodevops/cloudcontrol-aws:${{ env.IMAGE_TAG }}
