@@ -3,7 +3,7 @@
 TAG=latest
 if [ -n "$1" ]
 then
-  TAG=$2
+  TAG=$1
 fi
 
 FLAVOURS=""
