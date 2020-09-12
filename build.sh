@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
+TAG=latest
+if [ -n "$1" ]
+then
+  TAG=$2
+fi
+
 FLAVOURS=""
-if [ -z "$1" ]
+if [ -n "$1" ] && [ -z "$2" ] || [ -z "$1" ]
 then
   FLAVOURS=$(find flavour -type d -depth 1 -exec basename {} \; | paste -s -d " ")
 else
-  FLAVOURS=$1
-fi
-
-TAG=latest
-if [ -n "$2" ]
-then
-  TAG=$2
+  FLAVOURS=$2
 fi
 
 for FLAVOUR in ${FLAVOURS}

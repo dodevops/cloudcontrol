@@ -292,7 +292,7 @@ include a sample configuration for your flavour to make it easier for other peop
 
 Build a flavor container image with the base of the repository as the build context like this:
 
-    build.sh <flavour> <tag>
+    build.sh <tag> <flavour>
 
 To build all flavours with the same tag, use
 

@@ -23,25 +23,9 @@ jobs:
                 with:
                     IMAGE_TAG: ${{ github.ref }}
                 if: github.ref != 'refs/heads/master'
-            -   name: Printenv
-                run: |
-                    echo "IMAGE_TAG=${IMAGE_TAG}"
-                    printenv
-    build:
-        name: Building containers
-        runs-on: ubuntu-latest
-        steps:
             -   name: Checkout
                 uses: actions/checkout@v1
-            -   name: Printenv
-                run: |
-                    echo "IMAGE_TAG=${IMAGE_TAG}"
-                    printenv
             -   run: bash build.sh ${IMAGE_TAG}
-    push:
-        name: Pushing containers
-        runs-on: ubuntu-latest
-        steps:
             -   name: Push AWS Image
                 uses: julioarruda/pushimagetoregistry@v1
                 with:
