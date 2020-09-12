@@ -9,8 +9,8 @@ on:
             - created
 
 jobs:
-    init:
-        name: Initialization
+    build:
+        name: Building and pushing containers
         runs-on: ubuntu-latest
         steps:
             -   name: Set tag to latest
@@ -25,6 +25,8 @@ jobs:
                 if: github.ref != 'refs/heads/master'
             -   name: Checkout
                 uses: actions/checkout@v1
+            -   name: Setup tmate session
+                uses: mxschmitt/action-tmate@v3
             -   run: bash build.sh ${IMAGE_TAG}
             -   name: Push AWS Image
                 uses: julioarruda/pushimagetoregistry@v1
