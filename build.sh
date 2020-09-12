@@ -9,7 +9,7 @@ fi
 FLAVOURS=""
 if [ -n "$1" ] && [ -z "$2" ] || [ -z "$1" ]
 then
-  FLAVOURS=$(find flavour -type d -depth 1 -exec basename {} \; | paste -s -d " ")
+  FLAVOURS=$(find flavour -maxdepth 1 -type d -exec basename {} \; | grep -v flavour | paste -s -d " ")
 else
   FLAVOURS=$2
 fi
