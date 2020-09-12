@@ -17,12 +17,12 @@ jobs:
                 uses: allenevans/set-env@v1.0.0
                 with:
                     TAG: latest
-                if: github.ref == "master"
+                if: github.ref == 'master'
             -   name: Set tag to release
                 uses: allenevans/set-env@v1.0.0
                 with:
                     TAG: ${{ github.ref }}
-                if: github.ref != "master"
+                if: github.ref != 'master'
     build:
         name: Building containers
         runs-on: ubuntu-latest
