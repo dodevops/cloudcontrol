@@ -8,29 +8,34 @@ on:
         types:
             - created
 
-steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Set tag to latest
-      env:
-          TAG: latest
-      if: github.ref == "master"
-    - name: Set tag to release
-      env:
-          TAG: ${{ github.ref }}
-      if: github.ref != "master"
-    - run: build.sh $TAG
-    - name: Push AWS Image
-      uses: julioarruda/pushimagetoregistry@v1
-      with:
-          acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
-          acr-token: ${{ secrets.DOCKER_TOKEN }}
-          acr-account: registry.hub.docker.com
-          acr-imagename: dodevops/cloudcontrol-aws
-    - name: Push Azure Image
-      uses: julioarruda/pushimagetoregistry@v1
-      with:
-          acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
-          acr-token: ${{ secrets.DOCKER_TOKEN }}
-          acr-account: registry.hub.docker.com
-          acr-imagename: dodevops/cloudcontrol-aws
+jobs:
+    init:
+        steps:
+            -   name: Set tag to latest
+                env:
+                    TAG: latest
+                if: github.ref == "master"
+            -   name: Set tag to release
+                env:
+                    TAG: ${{ github.ref }}
+                if: github.ref != "master"
+    build:
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v1
+            -   run: build.sh $TAG
+    push:
+        -   name: Push AWS Image
+            uses: julioarruda/pushimagetoregistry@v1
+            with:
+                acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
+                acr-token: ${{ secrets.DOCKER_TOKEN }}
+                acr-account: registry.hub.docker.com
+                acr-imagename: dodevops/cloudcontrol-aws:$TAG
+        -   name: Push Azure Image
+            uses: julioarruda/pushimagetoregistry@v1
+            with:
+                acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
+                acr-token: ${{ secrets.DOCKER_TOKEN }}
+                acr-account: registry.hub.docker.com
+                acr-imagename: dodevops/cloudcontrol-aws:$TAG
