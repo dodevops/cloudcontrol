@@ -16,20 +16,20 @@ jobs:
             -   name: Set tag to latest
                 uses: allenevans/set-env@v1.0.0
                 with:
-                    TAG: latest
-                if: github.ref == 'master'
+                    IMAGE_TAG: latest
+                if: github.ref == 'refs/heads/master'
             -   name: Set tag to release
                 uses: allenevans/set-env@v1.0.0
                 with:
-                    TAG: ${{ github.ref }}
-                if: github.ref != 'master'
+                    IMAGE_TAG: ${{ github.ref }}
+                if: github.ref != 'refs/heads/master'
     build:
         name: Building containers
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
                 uses: actions/checkout@v1
-            -   run: build.sh $TAG
+            -   run: build.sh $IMAGE_TAG
     push:
         name: Pushing containers
         runs-on: ubuntu-latest
@@ -40,11 +40,11 @@ jobs:
                     acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
                     acr-token: ${{ secrets.DOCKER_TOKEN }}
                     acr-account: registry.hub.docker.com
-                    acr-imagename: dodevops/cloudcontrol-aws:$TAG
+                    acr-imagename: dodevops/cloudcontrol-aws:$IMAGE_TAG
             -   name: Push Azure Image
                 uses: julioarruda/pushimagetoregistry@v1
                 with:
                     acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
                     acr-token: ${{ secrets.DOCKER_TOKEN }}
                     acr-account: registry.hub.docker.com
-                    acr-imagename: dodevops/cloudcontrol-aws:$TAG
+                    acr-imagename: dodevops/cloudcontrol-aws:$IMAGE_TAG
