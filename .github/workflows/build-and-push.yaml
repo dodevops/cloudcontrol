@@ -18,10 +18,18 @@ jobs:
                 with:
                     IMAGE_TAG: latest
                 if: github.ref == 'refs/heads/master'
+            -   name: Extract release
+                id: extract-release
+                uses: frabert/replace-string-action@v1.1
+                with:
+                    pattern: "^refs/tags/(.+)$"
+                    string: ${{ github.ref }}
+                    replace-with: "$1"
+                if: github.ref != 'refs/heads/master'
             -   name: Set tag to release
                 uses: allenevans/set-env@v1.0.0
                 with:
-                    IMAGE_TAG: ${{ github.ref }}
+                    IMAGE_TAG: ${{ steps.extract-release.outputs.replaced }}
                 if: github.ref != 'refs/heads/master'
             -   name: Checkout
                 uses: actions/checkout@v1
