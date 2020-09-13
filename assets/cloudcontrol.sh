@@ -17,7 +17,7 @@ then
     MOTD_DISPLAY_DEFAULT=yes
   fi
 
-  if [ "X${MOTD_DISPLAY_DEFAULT}" == "XyesX" ]
+  if [ "X${MOTD_DISPLAY_DEFAULT}X" == "XyesX" ]
   then
     curl -H "Accept: text/plain" -s http://localhost:8080/api/features
   fi
