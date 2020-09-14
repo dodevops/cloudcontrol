@@ -23,20 +23,8 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          <p>If you want to change a configuration in your docker-compose.yaml, run the following afterwards to
-            apply the changes:</p>
-          <v-card dark outlined rounded="0" style="font-family: monospace">
-            <v-card-text>
-              <v-row align=center dense>
-                <v-col cols=11>docker-compose up -d</v-col>
-                <v-col cols="1" style="text-align: right">
-                  <v-btn v-on:click="copyCommand('docker-compose up -d')">
-                    <v-icon>mdi-content-copy</v-icon>
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+          If you want to change a configuration in your docker-compose.yaml, <b>rerun the init script</b> to
+            apply the changes.
         </v-col>
       </v-row>
       <v-row>

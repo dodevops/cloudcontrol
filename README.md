@@ -68,7 +68,7 @@ It will run each time when the stack is recreated.
 After the initialization process you can simply run `docker-compose exec cli /usr/local/bin/cloudcontrol run` to jump
 into the running container and work with the installed features.
 
-If you need to change any of the configuration environment variables, run `docker-compose up -d` afterwards to apply
+If you need to change any of the configuration environment variables, rerun the init script afterwards to apply
 the changes. Remember, that CloudControl needs to reininitialize for this.
 
 ## FAQ
