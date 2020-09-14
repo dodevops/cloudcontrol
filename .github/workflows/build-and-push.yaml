@@ -47,4 +47,4 @@ jobs:
                     acr-tokenname: ${{ secrets.DOCKER_USERNAME }}
                     acr-token: ${{ secrets.DOCKER_TOKEN }}
                     acr-account: docker.io
-                    acr-imagename: dodevops/cloudcontrol-aws:${{ env.IMAGE_TAG }}
+                    acr-imagename: dodevops/cloudcontrol-azure:${{ env.IMAGE_TAG }}

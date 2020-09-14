@@ -39,13 +39,17 @@ export function makeMockServer({ environment = 'development' } = {}) {
       });
       this.get('/features', () => {
         return {
-          feature1: {
-            Title: 'test',
-            Description: '*Test*',
+          kubernetes: {
+            Title: 'Kubernetes',
+            Description: 'Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/) with [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) to connect to the flavour&#x27;s kubernetes clusters',
           },
-          feature2: {
-            Title: 'test2',
-            Description: 'Test2',
+          terraform: {
+            Title: 'Terraform',
+            Description: 'Installs and configures [Terraform](https://terraform.io)',
+          },
+          kc: {
+            Title: 'kc',
+            Description: 'Installs [kc](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh), a quick context switcher for kubernetes.',
           },
         };
       });
