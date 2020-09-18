@@ -8,11 +8,11 @@ then
   sudo curl -s -L https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_8/shells:fish:release:3.repo -o /etc/yum.repos.d/shells:fish:release:3.repo
   sudo yum install -y fish git &>/dev/null
 
-  echp "Downloading fzf"
+  echo "Downloading fzf"
   TEMPDIR=$(mktemp -d)
   cd "${TEMPDIR}" || exit
   curl -s -L https://github.com/junegunn/fzf/archive/master.zip -o master.zip
-  unzip master.zip &>/dv/null
+  unzip master.zip &>/dev/null
   mv fzf-master ~/bin
   echo "Installing fzf"
   ~/bin/fzf-master/install --all &>/dev/null
