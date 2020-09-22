@@ -17,6 +17,7 @@ Following features and tools are supported:
 
 * 🐟 Fish Shell
 * ⛵️ Helm
+* 🛠 JQ
 * ⌨️ kc Quick Kubernetes Context switch
 * 🐳 Kubernetes
 * 📦 Packer
@@ -38,6 +39,7 @@ Following features and tools are supported:
 * [Features](#features)
     * [fish](#fish)
     * [helm](#helm)
+    * [jq](#jq)
     * [kc](#kc)
     * [kubernetes](#kubernetes)
     * [packer](#packer)
@@ -164,6 +166,14 @@ Installs [Helm](https://helm.sh)
 
 * USE_helm: Enable this feature
 * Environment HELM_VERSION: Valid Helm version to install (e.g. 1.5.4)
+
+### jq
+
+Installs the [JSON parser and processor jq](https://stedolan.github.io/jq/)
+
+#### Configuration
+
+* USE_jq: Enable this feature
 
 ### kc
 
