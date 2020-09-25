@@ -69,6 +69,22 @@ func cccInitialization() {
 
 	consoleWriter := new(ConsoleWriter)
 
+	log.Println("Setting bash as default shell")
+
+	file, err := os.Create("/home/cloudcontrol/.shell")
+
+	if err != nil {
+		fatal(err)
+	}
+
+	if _, err := file.WriteString("bash"); err != nil {
+		fatal(err)
+	}
+
+	if err := file.Close(); err != nil {
+		fatal(err)
+	}
+
 	log.Println("Starting flavour initialization")
 
 	cmd := exec.Command("bash", "/home/cloudcontrol/bin/flavourinit.sh")
@@ -107,7 +123,7 @@ func cccInitialization() {
 		}
 	}
 
-	file, err := os.Create("/home/cloudcontrol/initialization.done")
+	file, err = os.Create("/home/cloudcontrol/initialization.done")
 
 	if err != nil {
 		fatal(err)
