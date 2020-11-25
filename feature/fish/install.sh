@@ -25,6 +25,7 @@ curl https://git.io/fisher --create-dirs -sLo /home/cloudcontrol/.config/fish/fu
 
 echo "Installing spacefish and dependent packages"
 fish -c "fisher add edc/bass evanlucas/fish-kubectl-completions FabioAntunes/fish-nvm jethrokuan/fzf matchai/spacefish jethrokuan/fzf" &>/dev/null
+mkdir -p /home/cloudcontrol/.config/fish/conf.d &>/dev/null
 cp /home/cloudcontrol/feature-installers/fish/spacefish.fish /home/cloudcontrol/.config/fish/conf.d
 
 echo "fish" > /home/cloudcontrol/.shell

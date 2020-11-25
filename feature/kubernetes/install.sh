@@ -17,9 +17,9 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
 
     echo
 
-    if ! az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER} &>/dev/null
+    if ! OUTPUT=$(az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER})
     then
-      echo "Can not fetch k8s credentials for ${CLUSTER}"
+      echo -e "Can not fetch k8s credentials for ${CLUSTER}:\n ${OUTPUT}"
       exit 1
     fi
   done
@@ -57,9 +57,9 @@ then
       K8S_CLUSTER="$CLUSTER"
       echo "Cluster ${K8S_CLUSTER}"
     fi
-    if ! "${SUDO_OPTION[@]}" aws eks update-kubeconfig --name "${K8S_CLUSTER}" --alias "${K8S_CLUSTER}" "${ARN_OPTION[@]}" &>/dev/null
+    if ! OUTPUT=$("${SUDO_OPTION[@]}" aws eks update-kubeconfig --name "${K8S_CLUSTER}" --alias "${K8S_CLUSTER}" "${ARN_OPTION[@]}")
     then
-      echo "Can not fetch k8s credentials for ${CLUSTER}"
+      echo -e "Can not fetch k8s credentials for ${CLUSTER}:\n ${OUTPUT}"
       exit 1
     fi
   done
