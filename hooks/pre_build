@@ -4,6 +4,6 @@ set -x
 
 FLAVOUR=${DOCKER_REPO//cloudcontrol-/}
 
-cat ../build/Dockerfile.prefix > ../Dockerfile
+cat build/Dockerfile.prefix > ../Dockerfile
 cat "flavour/${FLAVOUR}/Dockerfile.flavour" >> Dockerfile
-cat ../build/Dockerfile.suffix >> Dockerfile
+cat build/Dockerfile.suffix >> Dockerfile
