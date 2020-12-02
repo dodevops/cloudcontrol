@@ -2,6 +2,17 @@ echo "## Features"
 
 echo "bash" > /home/cloudcontrol/.shell
 
+function execHandle {
+  TITLE=$1
+  shift
+  if ! OUTPUT=$("$@")
+  then
+    echo "Error ${TITLE}: $OUTPUT"
+    exit 1
+  fi
+
+}}
+
 for FEATUREDIR in /home/cloudcontrol/feature-installers/*
 do
   FEATURE=$(basename "${FEATUREDIR}")
