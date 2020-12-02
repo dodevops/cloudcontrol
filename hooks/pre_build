@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -x
+
+FLAVOUR=${DOCKER_REPO//cloudcontrol-/}
+
+cat ../build/Dockerfile.prefix > ../Dockerfile
+cat "flavour/${FLAVOUR}/Dockerfile.flavour" >> Dockerfile
