@@ -10,8 +10,7 @@ function execHandle {
     echo "Error ${TITLE}: $OUTPUT"
     exit 1
   fi
-
-}}
+}
 
 for FEATUREDIR in /home/cloudcontrol/feature-installers/*
 do
