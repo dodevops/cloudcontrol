@@ -1,3 +1,5 @@
+. /feature-installer-utils.sh
+
 if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]
 then
   echo "Installing packages..."

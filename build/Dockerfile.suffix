@@ -1,7 +1,7 @@
 # Features
 
 COPY feature /home/cloudcontrol/feature-installers
-COPY assets/feature-installer.sh /
+COPY assets/feature-installer-utils.sh /
 
 # CCC
 
