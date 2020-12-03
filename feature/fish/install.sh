@@ -26,7 +26,7 @@ echo "Installing fisher"
 execHandle 'Installing fisher' curl https://git.io/fisher --create-dirs -sLo /home/cloudcontrol/.config/fish/functions/fisher.fish
 
 echo "Installing spacefish and dependent packages"
-execHandle 'Installing fish packages' fish -c "fisher add edc/bass evanlucas/fish-kubectl-completions FabioAntunes/fish-nvm jethrokuan/fzf matchai/spacefish jethrokuan/fzf"
+execHandle 'Installing fish packages' fish -c "fisher install edc/bass evanlucas/fish-kubectl-completions FabioAntunes/fish-nvm jethrokuan/fzf matchai/spacefish jethrokuan/fzf"
 mkdir -p /home/cloudcontrol/.config/fish/conf.d &>/dev/null
 execHandle 'Installing spacefish configuration' cp /home/cloudcontrol/feature-installers/fish/spacefish.fish /home/cloudcontrol/.config/fish/conf.d
 
