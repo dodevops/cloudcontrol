@@ -15,6 +15,7 @@ Currently supported cloud flavours are:
 
 Following features and tools are supported:
 
+* ⚙️ Direnv
 * 🐟 Fish Shell
 * ⛵️ Helm
 * 🛠 JQ
@@ -37,6 +38,7 @@ Following features and tools are supported:
     * [aws](#aws)
     * [azure](#azure)
 * [Features](#features)
+    * [direnv](#direnv)
     * [fish](#fish)
     * [helm](#helm)
     * [jq](#jq)
@@ -149,6 +151,14 @@ This only happens once during initialization phase.
 * Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container
 
 ## Features
+
+### direnv
+
+Installs [Direnv](https://direnv.net/)
+
+#### Configuration
+
+* USE_direnv: Enable this feature
 
 ### fish
 
