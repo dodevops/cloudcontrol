@@ -15,3 +15,6 @@ else
   # shellcheck disable=SC2016
   echo 'eval "$(direnv hook bash)"' >> /home/cloudcontrol/.bashrc
 fi
+
+cd - &>/dev/null || exit
+rm -rf "${TEMPDIR}"
