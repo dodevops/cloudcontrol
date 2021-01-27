@@ -21,6 +21,7 @@ Following features and tools are supported:
 * ⛵️ Helm
 * 🛠 JQ
 * ⌨️ kc Quick Kubernetes Context switch
+* 🐚 Kubectlnodeshell
 * 🐳 Kubernetes
 * 📦 Packer
 * 👟 Run
@@ -45,6 +46,7 @@ Following features and tools are supported:
     * [helm](#helm)
     * [jq](#jq)
     * [kc](#kc)
+    * [kubectlnodeshell](#kubectlnodeshell)
     * [kubernetes](#kubernetes)
     * [packer](#packer)
     * [run](#run)
@@ -203,6 +205,14 @@ Installs [kc](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc
 #### Configuration
 
 * USE_kc: Enable this feature
+
+### kubectlnodeshell
+
+Installs [kubectl node-shell](https://github.com/kvaps/kubectl-node-shell)
+
+#### Configuration
+
+* USE_kubectlnodeshell: Enable this feature
 
 ### kubernetes
 
