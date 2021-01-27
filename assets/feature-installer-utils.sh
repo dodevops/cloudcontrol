@@ -2,6 +2,7 @@
 function execHandle {
   TITLE=$1
   shift
+  echo "$TITLE..."
   if ! OUTPUT=$("$@")
   then
     echo "Error ${TITLE}: $OUTPUT"

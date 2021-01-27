@@ -13,6 +13,9 @@
           Open Authentication
         </v-btn>
       </v-alert>
+      <v-alert :hidden="currentError === ''" type="error">
+        {{ currentError }}
+      </v-alert>
       <v-card>
         <v-card-title>Installing {{ stepTitle }}</v-card-title>
         <v-card-text>
@@ -66,6 +69,8 @@ export default class Progress extends Vue {
   public stepTitle: string = 'Flavour';
   public stepDescription: string = 'Installing and configuring flavour';
 
+  public currentError: string = '';
+
   public mounted() {
     axios.default.get('/api/steps')
         .then(
@@ -97,7 +102,17 @@ export default class Progress extends Vue {
                 consoleCard.scrollTop = consoleCard.scrollHeight;
               }
             },
-        );
+        )
+    .catch(error => {
+      this.currentError = `Could not reach the ccc backend or the backend has reached an error state. Please
+        use docker logs to show the log messages from the CloudControl container for details. The container might
+        already been stopped, so you should use docker ps -a to look for it. `
+      if (error.response) {
+        this.currentError = this.currentError + `([${error.response.status}] ${error.response.data})`
+      } else if (error.message) {
+        this.currentError = this.currentError + `(${error.message})`
+      }
+    })
   }
 
   public reformatOutput(output: string) {

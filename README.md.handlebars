@@ -151,6 +151,24 @@ If you need another flavour (aka cloud provider), add a new subdirectory under "
 your flavour the same way as a feature. For the rest of the files, please check out existing flavours for details. Please,
 include a sample configuration for your flavour to make it easier for other people to work with it.
 
+### Installer utilities
+
+In your install script, you can source the utils library
+
+    . /feature-installer-utils.sh
+
+#### execHandle
+
+Installation scripts usually echo out some kind of progress, execute something and have to check for errors. The command
+`execHandle` does all this in a one liner:
+
+    execHandle "Progress message" command
+
+This will print out "Progress message...", run the command and if it exits with a non-zero status code, it will print
+the output of the command and exit with status code 1.
+
+Using this makes installer script way shorter and easier to maintain.
+
 ## Building
 
 Build a flavor container image with the base of the repository as the build context like this:
