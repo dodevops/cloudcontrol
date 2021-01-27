@@ -15,6 +15,7 @@ Currently supported cloud flavours are:
 
 Following features and tools are supported:
 
+* 📷 AzCopy
 * ⚙️ Direnv
 * 🐟 Fish Shell
 * ⛵️ Helm
@@ -38,6 +39,7 @@ Following features and tools are supported:
     * [aws](#aws)
     * [azure](#azure)
 * [Features](#features)
+    * [azcopy](#azcopy)
     * [direnv](#direnv)
     * [fish](#fish)
     * [helm](#helm)
@@ -151,6 +153,14 @@ This only happens once during initialization phase.
 * Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container
 
 ## Features
+
+### azcopy
+
+Installs [AzCopy](https://github.com/Azure/azure-storage-azcopy)
+
+#### Configuration
+
+* USE_azcopy: Enable this feature
 
 ### direnv
 
