@@ -7,5 +7,5 @@ execHandle "Downloading packer" curl -f -s -L "https://releases.hashicorp.com/pa
 execHandle "Unpacking packer" unzip packer.zip &>/dev/null
 execHandle "Installing packer" mv packer /home/cloudcontrol/bin
 
-cd - || exit
+cd - &>/dev/null || exit
 rm -rf "${TEMPDIR}"

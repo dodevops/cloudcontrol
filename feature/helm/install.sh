@@ -4,7 +4,7 @@ TEMPDIR=$(mktemp -d)
 cd "${TEMPDIR}" || exit
 
 execHandle "Downloading helm" curl -f -s "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" --output helm.tar.gz
-execHandle "Unpacking helm" tar xzf helm.tar.gz &>/dev/null
+execHandle "Unpacking helm" tar xzf helm.tar.gz
 execHandle "Installing helm" mv linux-amd64/helm /home/cloudcontrol/bin
 
 if [ -r /tiller ]

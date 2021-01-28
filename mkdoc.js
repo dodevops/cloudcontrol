@@ -6,6 +6,7 @@ const handlebars = require('handlebars')
 const YAML = require('yaml')
 const fs = require('fs').promises
 const bluebird = require('bluebird')
+const sortRegexp = new RegExp("_(.+)")
 
 // Build feature objects
 
@@ -20,7 +21,12 @@ bluebird
                         partNames,
                         (docObject, partName) => {
                             return fs.readFile(`${part}/${partName}/${part}.yaml`, { encoding: 'utf8' }).then(featureDescriptor => {
-                                docObject[partName] = YAML.parse(featureDescriptor)
+                                let docPartName = partName
+                                if (sortRegexp.test(partName)) {
+                                  const matches = partName.match(sortRegexp)
+                                  docPartName = matches[1]
+                                }
+                                docObject[docPartName] = YAML.parse(featureDescriptor)
                                 return docObject
                             })
                         },

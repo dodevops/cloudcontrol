@@ -15,11 +15,11 @@ Currently supported cloud flavours are:
 
 Following features and tools are supported:
 
-* 📷 AzCopy
-* ⚙️ Direnv
 * 🐟 Fish Shell
+* 📷 AzCopy
+* ⚙️  Direnv
 * ⛵️ Helm
-* 🛠 JQ
+* 🛠  JQ
 * ⌨️ kc Quick Kubernetes Context switch
 * 🐚 Kubectlnodeshell
 * 🐳 Kubernetes
@@ -40,9 +40,9 @@ Following features and tools are supported:
     * [aws](#aws)
     * [azure](#azure)
 * [Features](#features)
+    * [fish](#fish)
     * [azcopy](#azcopy)
     * [direnv](#direnv)
-    * [fish](#fish)
     * [helm](#helm)
     * [jq](#jq)
     * [kc](#kc)
@@ -156,6 +156,15 @@ This only happens once during initialization phase.
 
 ## Features
 
+### fish
+
+Installs and configures the [Fish Shell](https://fishshell.com/) with configured [Spacefish theme](https://spacefish.matchai.me/)
+
+#### Configuration
+
+* USE_fish: Enable this feature
+* DEBUG_fish: Debug this feature
+
 ### azcopy
 
 Installs [AzCopy](https://github.com/Azure/azure-storage-azcopy)
@@ -163,6 +172,7 @@ Installs [AzCopy](https://github.com/Azure/azure-storage-azcopy)
 #### Configuration
 
 * USE_azcopy: Enable this feature
+* DEBUG_azcopy: Debug this feature
 
 ### direnv
 
@@ -171,14 +181,7 @@ Installs [Direnv](https://direnv.net/)
 #### Configuration
 
 * USE_direnv: Enable this feature
-
-### fish
-
-Installs and configures the [Fish Shell](https://fishshell.com/) with configured [Spacefish theme](https://spacefish.matchai.me/)
-
-#### Configuration
-
-* USE_fish: Enable this feature
+* DEBUG_direnv: Debug this feature
 
 ### helm
 
@@ -187,6 +190,7 @@ Installs [Helm](https://helm.sh)
 #### Configuration
 
 * USE_helm: Enable this feature
+* DEBUG_helm: Debug this feature
 * Environment HELM_VERSION: Valid Helm version to install (e.g. 1.5.4)
 
 ### jq
@@ -196,6 +200,7 @@ Installs the [JSON parser and processor jq](https://stedolan.github.io/jq/)
 #### Configuration
 
 * USE_jq: Enable this feature
+* DEBUG_jq: Debug this feature
 
 ### kc
 
@@ -205,6 +210,7 @@ Installs [kc](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc
 #### Configuration
 
 * USE_kc: Enable this feature
+* DEBUG_kc: Debug this feature
 
 ### kubectlnodeshell
 
@@ -213,6 +219,7 @@ Installs [kubectl node-shell](https://github.com/kvaps/kubectl-node-shell)
 #### Configuration
 
 * USE_kubectlnodeshell: Enable this feature
+* DEBUG_kubectlnodeshell: Debug this feature
 
 ### kubernetes
 
@@ -221,6 +228,7 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
 #### Configuration
 
 * USE_kubernetes: Enable this feature
+* DEBUG_kubernetes: Debug this feature
 * (azure flavour) Environment AZ_K8S_CLUSTERS: A comma separated list of AKS clusters to manage
 inside *CloudControl* (only for azure flavour).
 Each cluster is a pair of resource group and cluster name, separated by a colon.
@@ -246,6 +254,7 @@ Installs [Packer](https://packer.io)
 #### Configuration
 
 * USE_packer: Enable this feature
+* DEBUG_packer: Debug this feature
 * Environment PACKER_VERSION: Valid Packer version to install (e.g. 1.5.4)
 
 ### run
@@ -255,6 +264,7 @@ Runs commands inside the shell when entering the cloud control container
 #### Configuration
 
 * USE_run: Enable this feature
+* DEBUG_run: Debug this feature
 * Environment RUN_COMMANDS: Valid shell commands to run
 
 ### stern
@@ -265,6 +275,7 @@ Installs [stern](https://github.com/wercker/stern), a multi pod and container lo
 #### Configuration
 
 * USE_stern: Enable this feature
+* DEBUG_stern: Debug this feature
 * Environment STERN_VERSION: Valid Stern version (e.g. 1.11.0)
 
 ### terraform
@@ -274,6 +285,7 @@ Installs and configures [Terraform](https://terraform.io)
 #### Configuration
 
 * USE_terraform: Enable this feature
+* DEBUG_terraform: Debug this feature
 * Volume-target /terraform: Your local terraform base directory
 * Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. Terraform app secrets, etc.)
 * Environment TERRAFORM_VERSION: A valid terraform version to install (e.g. 0.12.17)
@@ -285,6 +297,7 @@ Installs [Terragrunt](https://github.com/gruntwork-io/terragrunt)
 #### Configuration
 
 * USE_terragrunt: Enable this feature
+* DEBUG_terragrunt: Debug this feature
 * Environment TERRAGRUNT_VERSION: Valid version of terragrunt to install
 
 ### timezone
@@ -294,6 +307,7 @@ Configures the container&#x27;s timezone
 #### Configuration
 
 * USE_timezone: Enable this feature
+* DEBUG_timezone: Debug this feature
 * Environment TZ: The timezone to use
 
 ### velero
@@ -303,6 +317,7 @@ Installs the [Velero](https://velero.io) kubernetes backup CLI
 #### Configuration
 
 * USE_velero: Enable this feature
+* DEBUG_velero: Debug this feature
 * Environment VELERO_VERSION: Valid velero version to install (e.g. v1.4.2)
 
 ### vim
@@ -312,6 +327,7 @@ Installs [Vim](https://www.vim.org/)
 #### Configuration
 
 * USE_vim: Enable this feature
+* DEBUG_vim: Debug this feature
 
 
 ## Development

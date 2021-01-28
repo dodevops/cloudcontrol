@@ -2,10 +2,10 @@
 
 if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]
 then
-  execHandle "Installing dialog package" sudo apk add dialog &>/dev/null
+  execHandle "Installing dialog package" sudo apk add dialog
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
 then
-  execHandle "Installing dialog package" sudo yum install -y dialog &>/dev/null
+  execHandle "Installing dialog package" sudo yum install -y dialog
 fi
 
 execHandle "Installing kc" cp /home/cloudcontrol/feature-installers/kc/kc.sh /home/cloudcontrol/bin/kc

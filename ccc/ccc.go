@@ -4,20 +4,22 @@ package main
 import (
 	"fmt"
 	markdown "github.com/MichaelMure/go-term-markdown"
-	"github.com/francoispqt/lists/slices"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/yaml.v2"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"nullprogram.com/x/optparse"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
+	"sort"
 )
 
 // All installation steps that need to be carried out
-var steps = []string{"flavour"}
+var steps []string
 
 // A map of all features
 var features map[string]FeatureYaml
@@ -36,6 +38,12 @@ var stepTitle = "Flavour"
 
 // Description of the current step
 var stepDescription = "Installing flavour"
+
+// A regexp extracting the feature name from the path
+var featureIdentifier = regexp.MustCompile("/home/cloudcontrol/feature-installers/([^/]+)/feature.yaml")
+
+// A regexp cutting of characters used for sorting special features (like shells) higher up
+var sortingRegexp = regexp.MustCompile("_(.+)")
 
 // Simple handler to handle fatal errors
 func fatal(err error) {
@@ -57,6 +65,7 @@ func (ConsoleWriter) Write(p []byte) (n int, err error) {
 // Feature yaml interface
 
 type FeatureYaml struct {
+	Path          string
 	Title         string
 	Description   string
 	Configuration []string
@@ -100,18 +109,24 @@ func cccInitialization() {
 
 	log.Println("Flavour initialization finished")
 
-	for _, step := range slices.StringSlice(steps).Filter(func(k int, v string) bool {
-		return v != "flavour"
-	}) {
+	for _, step := range steps[1:] {
 		currentStep++
-
-		log.Printf("Installing feature %s\n", step)
 
 		stepOutput = ""
 		stepTitle = features[step].Title
+		log.Printf("Installing feature %s\n", stepTitle)
+
 		stepDescription = features[step].Description
 
-		cmd := exec.Command("bash", fmt.Sprintf("/home/cloudcontrol/feature-installers/%s/install.sh", step))
+		var args []string
+
+		if value, exists := os.LookupEnv(fmt.Sprintf("DEBUG_%s", step)); exists && value == "yes" {
+			args = append(args, "-x")
+		}
+
+		args = append(args, fmt.Sprintf("%s/install.sh", features[step].Path))
+
+		cmd := exec.Command("bash", args...)
 		cmd.Stderr = consoleWriter
 		cmd.Stdout = consoleWriter
 		if err := cmd.Start(); err != nil {
@@ -132,6 +147,8 @@ func cccInitialization() {
 	_ = file.Close()
 
 	log.Println("Finished initialization")
+	log.Println("Please run the following to enter CloudControl")
+	log.Println("docker-compose exec cli /usr/local/bin/cloudcontrol run")
 
 	status = "INITIALIZED"
 }
@@ -162,38 +179,54 @@ func main() {
 		status = "INITIALIZED"
 	}
 
-	featureRe := regexp.MustCompile("USE_([^=]+)")
-
-	for _, env := range os.Environ() {
-		if featureRe.MatchString(env) {
-			matches := featureRe.FindStringSubmatch(env)
-			steps = append(steps, matches[1])
-		}
-	}
-
-	// Build feature slice
+	// Check with features are enabled
 
 	features = make(map[string]FeatureYaml)
 
-	for _, step := range slices.StringSlice(steps).Filter(func(k int, v string) bool {
-		return v != "flavour"
-	}) {
-		var feature FeatureYaml
-		featureFile, err := ioutil.ReadFile(fmt.Sprintf("/home/cloudcontrol/feature-installers/%s/feature.yaml", step))
+	featureFiles, err := filepath.Glob("/home/cloudcontrol/feature-installers/*/feature.yaml")
 
-		if err != nil {
-			fatal(err)
-		}
-
-		if err := yaml.Unmarshal(featureFile, &feature); err != nil {
-			fatal(err)
-		}
-		features[step] = feature
+	if err != nil {
+		fatal(err)
 	}
+
+	for _, feature := range featureFiles {
+		if featureIdentifier.MatchString(feature) {
+			matches := featureIdentifier.FindStringSubmatch(feature)
+			featureName := matches[1]
+			featureDir := matches[1]
+
+			if sortingRegexp.MatchString(featureName) {
+				featureName = sortingRegexp.FindStringSubmatch(featureName)[1]
+			}
+
+			if value, exists := os.LookupEnv(fmt.Sprintf("USE_%s", featureName)); exists && value == "yes" {
+				var featureYaml FeatureYaml
+				featureFile, err := ioutil.ReadFile(feature)
+
+				if err != nil {
+					fatal(err)
+				}
+
+				if err := yaml.Unmarshal(featureFile, &featureYaml); err != nil {
+					fatal(err)
+				}
+				featureYaml.Path = filepath.Dir(feature)
+				features[featureDir] = featureYaml
+				steps = append(steps, featureDir)
+			}
+		}
+	}
+
+	sort.Strings(steps)
+	steps = append([]string{"flavour"}, steps...)
 
 	if status == "INIT" {
 		go cccInitialization()
 	}
+
+	// Create gin file.
+	f, _ := os.Create("/tmp/gin.log")
+	gin.DefaultWriter = io.MultiWriter(f)
 
 	router := gin.Default()
 

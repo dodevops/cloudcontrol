@@ -20,7 +20,7 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
     execHandle "Fetching k8s credentials for ${CLUSTER}" az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER}
   done
 
-  execHandle "Installing kubectl" sudo az aks install-cli &>/dev/null
+  execHandle "Installing kubectl" sudo az aks install-cli
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
 then
   for CLUSTER in $(echo "${AWS_K8S_CLUSTERS}" | tr "," "\n")
@@ -49,7 +49,9 @@ then
     execHandle "Fetching k8s credentials for ${CLUSTER}" "${SUDO_OPTION[@]}" aws eks update-kubeconfig --name "${K8S_CLUSTER}" --alias "${K8S_CLUSTER}" "${ARN_OPTION[@]}"
   done
 
-  execHandle "Configuring package repository for kubectl" cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo &>/dev/null
+  TEMPFILE=$(mktemp)
+
+  cat <<EOF > "${TEMPFILE}"
 [kubernetes]
 name=Kubernetes
 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
@@ -59,5 +61,7 @@ repo_gpgcheck=1
 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOF
 
-  execHandle "Installing kubectl..." sudo yum install -y kubectl &>/dev/null
+  execHandle "Configuring package repository for kubectl" sudo mv "${TEMPFILE}" /etc/yum.repos.d/kubernetes.repo
+
+  execHandle "Installing kubectl..." sudo yum install -y kubectl
 fi

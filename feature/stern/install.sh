@@ -7,7 +7,7 @@ execHandle "Downloading stern" curl -f -s -L "https://github.com/wercker/stern/r
 execHandle "Preparing stern" chmod +x stern
 execHandle "Installing stern" mv stern /home/cloudcontrol/bin
 
-cd - || exit
+cd - &>/dev/null || exit
 rm -rf "${TEMPDIR}"
 
 

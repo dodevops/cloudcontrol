@@ -2,5 +2,5 @@
 
 if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]
 then
-  execHandle "Installing tzdata package" sudo apk add tzdata &>/dev/null
+  execHandle "Installing tzdata package" sudo apk add tzdata
 fi

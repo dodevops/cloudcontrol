@@ -15,7 +15,7 @@ then
   execHandle 'Unzipping fzf' unzip master.zip
   execHandle 'Moving fzf' mv fzf-master ~/bin
   execHandle 'Installing fzf' ~/bin/fzf-master/install --all
-  cd - || exit
+  cd - &>/dev/null || exit
   rm -rf "${TEMPDIR}"
 fi
 
@@ -23,6 +23,6 @@ execHandle 'Installing fisher' curl -f https://git.io/fisher --create-dirs -sLo 
 
 execHandle 'Installing fish packages' fish -c "fisher install edc/bass evanlucas/fish-kubectl-completions FabioAntunes/fish-nvm jethrokuan/fzf matchai/spacefish jethrokuan/fzf"
 mkdir -p /home/cloudcontrol/.config/fish/conf.d &>/dev/null
-execHandle 'Installing spacefish configuration' cp /home/cloudcontrol/feature-installers/fish/spacefish.fish /home/cloudcontrol/.config/fish/conf.d
+execHandle 'Installing spacefish configuration' cp /home/cloudcontrol/feature-installers/_fish/spacefish.fish /home/cloudcontrol/.config/fish/conf.d
 
 echo "fish" > /home/cloudcontrol/.shell
