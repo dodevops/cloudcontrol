@@ -4,9 +4,11 @@ configuration:
     - |
         (azure flavour) Environment AZ_K8S_CLUSTERS: A comma separated list of AKS clusters to manage
         inside *CloudControl* (only for azure flavour).
-        Each cluster is a pair of resource group and cluster name, separated by a colon.
-        For example: myresourcegroup:myk8s,myotherresourcegroup:mysecondk8s will install myk8s from
-        the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup.
+        Each cluster is a pair of resource group and cluster name, separated by a colon. Optionally, you can specify
+        the target subscription.
+        For example: myresourcegroup:myk8s,myotherresourcegroup@othersubscription:mysecondk8s will install myk8s from
+        the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup in the
+        subscription othersubscription.
         Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
     - |
         (aws flavour) Environment AWS_K8S_CLUSTERS: A comma separated list of EKS clusters to manage

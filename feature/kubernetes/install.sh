@@ -4,6 +4,13 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
   for CLUSTER in $(echo "${AZ_K8S_CLUSTERS}" | tr "," "\n"); do
     K8S_RESOURCEGROUP=$(echo "$CLUSTER" | cut -d ":" -f 1)
     K8S_CLUSTER=$(echo "$CLUSTER" | cut -d ":" -f 2)
+    K8S_SUBSCRIPTION=()
+
+    if [[ "${K8S_RESOURCEGROUP}" == *"@"* ]]; then
+      K8S_SUBSCRIPTION=(--subscription)
+      K8S_SUBSCRIPTION+=("$(echo "${K8S_RESOURCEGROUP}" | cut -d "@" -f 2)")
+      K8S_RESOURCEGROUP=$(echo "${K8S_RESOURCEGROUP}" | cut -d "@" -f 1)
+    fi
 
     echo -n "Cluster ${K8S_CLUSTER} in resource group ${K8S_RESOURCEGROUP}"
 
@@ -17,7 +24,7 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
 
     echo
 
-    execHandle "Fetching k8s credentials for ${CLUSTER}" az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER}
+    execHandle "Fetching k8s credentials for ${CLUSTER}" az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER} "${K8S_SUBSCRIPTION[@]}"
   done
 
   execHandle "Installing kubectl" sudo az aks install-cli
