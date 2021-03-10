@@ -280,6 +280,29 @@ func main() {
 		}
 	})
 
+	type Mfa struct {
+		Code string `form:"code" json:"code" xml:"code" binding:"required"`
+	}
+
+	api.POST("/mfa", func(c *gin.Context) {
+		var json Mfa
+		if err := c.ShouldBindJSON(&json); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		file, err := os.Create("/tmp/mfa")
+		if err != nil {
+			fatal(err)
+		}
+		if _, err := file.WriteString(json.Code); err != nil {
+			fatal(err)
+		}
+		if err := file.Close(); err != nil {
+			fatal(err)
+		}
+
+	})
+
 	if err := router.Run(fmt.Sprintf(":%s", port)); err != nil {
 		fatal(err)
 	}
