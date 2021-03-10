@@ -19,3 +19,6 @@ RUN curl -sL https://rpm.nodesource.com/setup_12.x | bash - && \
 COPY flavour/aws/flavour /home/cloudcontrol/flavour
 COPY flavour/aws/flavourinit.sh /home/cloudcontrol/bin/flavourinit.sh
 RUN chmod +x /home/cloudcontrol/bin/flavourinit.sh
+
+COPY flavour/aws/createSession.sh /home/cloudcontrol/bin/createSession.sh
+RUN chmod +x /home/cloudcontrol/bin/createSession.sh
