@@ -2,7 +2,8 @@
   <v-card>
     <v-card-title>
       ☁️ 🧰 Starting CloudControl
-      <v-spacer/><v-progress-circular indeterminate />
+      <v-spacer/>
+      <v-progress-circular indeterminate/>
     </v-card-title>
     <v-card-text>
       <p>CloudControl is starting up. Please wait.</p>
@@ -12,6 +13,13 @@
         <v-btn v-on:click=doOAuth>
           Open Authentication
         </v-btn>
+      </v-alert>
+      <v-alert :hidden="!requiresMFA" type="info">
+        CloudControlCenter has detected an MFA code request. Enter the current code of your authenticator:
+        <v-form v-on:submit=sendMfa>
+          <v-text-field autofocus v-model="mfaCode"></v-text-field>
+          <v-btn type="submit">Send code</v-btn>
+        </v-form>
       </v-alert>
       <v-alert :hidden="currentError === ''" type="error">
         {{ currentError }}
@@ -71,6 +79,9 @@ export default class Progress extends Vue {
 
   public currentError: string = '';
 
+  public requiresMFA: boolean = false;
+  public mfaCode: string = '';
+
   public mounted() {
     axios.default.get('/api/steps')
         .then(
@@ -103,16 +114,16 @@ export default class Progress extends Vue {
               }
             },
         )
-    .catch(error => {
-      this.currentError = `Could not reach the ccc backend or the backend has reached an error state. Please
+        .catch((error) => {
+          this.currentError = `Could not reach the ccc backend or the backend has reached an error state. Please
         use docker logs to show the log messages from the CloudControl container for details. The container might
-        already been stopped, so you should use docker ps -a to look for it. `
-      if (error.response) {
-        this.currentError = this.currentError + `([${error.response.status}] ${error.response.data})`
-      } else if (error.message) {
-        this.currentError = this.currentError + `(${error.message})`
-      }
-    })
+        already been stopped, so you should use docker ps -a to look for it. `;
+          if (error.response) {
+            this.currentError = this.currentError + `([${error.response.status}] ${error.response.data})`;
+          } else if (error.message) {
+            this.currentError = this.currentError + `(${error.message})`;
+          }
+        });
   }
 
   public reformatOutput(output: string) {
@@ -130,8 +141,16 @@ export default class Progress extends Vue {
       const matches = azureOauthRegexp.exec(output);
       if (matches) {
         this.oAuthUrl = 'https://microsoft.com/devicelogin';
-        this.oAuthCode = matches[1];
+        this.oAuthCode = matches[ 1 ];
       }
+    }
+
+    // MFA feature
+    const mfaRegexp = new RegExp(
+        '/tmp/mfa',
+    );
+    if (mfaRegexp.test(output)) {
+      this.requiresMFA = true;
     }
 
     return output;
@@ -140,6 +159,26 @@ export default class Progress extends Vue {
   public beforeDestroy() {
     clearInterval(this.getStepInterval);
     this.getStepInterval = -1;
+  }
+
+  public sendMfa(event: Event) {
+    event.preventDefault();
+    axios.default.post('/api/mfa', {
+      code: this.mfaCode,
+    })
+        .then(() => {
+          this.requiresMFA = false;
+          this.currentError = '';
+        })
+        .catch((error) => {
+          this.currentError = 'Can not set MFA code:';
+          if (error.response) {
+            this.currentError = `${this.currentError} ([${error.response.status}] ${error.response.data})`;
+          } else if (error.message) {
+            this.currentError = `${this.currentError} (${error.message})`;
+          }
+        });
+
   }
 }
 </script>

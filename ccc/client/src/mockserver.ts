@@ -1,4 +1,4 @@
-import { Server, Model } from 'miragejs';
+import { Server, Model, Response } from 'miragejs';
 import { LoremIpsum } from 'lorem-ipsum';
 
 export function makeMockServer({ environment = 'development' } = {}) {
@@ -6,9 +6,12 @@ export function makeMockServer({ environment = 'development' } = {}) {
     environment,
     routes() {
       let status = 'INIT';
+      let waitForMfa = false;
       const steps = [
         'flavour',
         'kubernetes',
+        'terraform',
+        'kc',
       ];
       let currentStep = 1;
       this.namespace = 'api';
@@ -23,8 +26,15 @@ export function makeMockServer({ environment = 'development' } = {}) {
         };
       });
       this.get('/steps/current', () => {
+        let output = new LoremIpsum().generateSentences(Math.floor(Math.random() * 20 + 20));
         if (status === 'INIT') {
-          currentStep++;
+          if (currentStep === 1 && !waitForMfa) {
+            output = '/tmp/mfa';
+            waitForMfa = true;
+          }
+          if (!waitForMfa) {
+            currentStep++;
+          }
           if (currentStep >= steps.length) {
             status = 'INITIALIZED';
           }
@@ -32,7 +42,7 @@ export function makeMockServer({ environment = 'development' } = {}) {
 
         return {
           currentStep,
-          output: new LoremIpsum().generateSentences(Math.floor(Math.random() * 20 + 20)),
+          output,
           title: 'Feature',
           description: 'Some [Test](https://google.com)',
         };
@@ -52,6 +62,16 @@ export function makeMockServer({ environment = 'development' } = {}) {
             Description: 'Installs [kc](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh), a quick context switcher for kubernetes.',
           },
         };
+      });
+      this.post('/mfa', (schema, request) => {
+        const code = JSON.parse(request.requestBody);
+        if (code.code !== '1234') {
+          return new Response(400, {}, 'Invalid code');
+        } else {
+          waitForMfa = false;
+          currentStep++;
+          return new Response(200, {}, {});
+        }
       });
     },
   });
