@@ -31,6 +31,7 @@ Following features and tools are supported:
 * 🕰 Timezone configuration
 * 🌊 Velero
 * 𝑉  Vim
+* 🛠  YQ
 
 ## Table of contents
 
@@ -56,6 +57,7 @@ Following features and tools are supported:
     * [timezone](#timezone)
     * [velero](#velero)
     * [vim](#vim)
+    * [yq](#yq)
 * [Development](#development)
 * [Building](#building)
 
@@ -135,7 +137,11 @@ environment variables:
 
 ### aws
 
-Can be used to connect to infrastructure in the AWS cloud. Also see [the AWS CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) for more configuration options
+Can be used to connect to infrastructure in the AWS cloud. Also see [the AWS CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) for more configuration options.
+If you have activated MFA, set AWS_MFA_ARN to the ARN of your MFA device so CloudControl will ask you
+for your code.
+To start a new session in the CloudControl context, run &#x60;source createSession.bash &lt;token&gt;&#x60; or
+&#x60;source createSession.fish &lt;token&gt;&#x60; (depending on your selected shell) afterwards
 
 
 #### Configuration
@@ -143,6 +149,7 @@ Can be used to connect to infrastructure in the AWS cloud. Also see [the AWS CLI
 * Environment AWS_ACCESS_KEY_ID: Specifies an AWS access key associated with an IAM user or role
 * Environment AWS_SECRET_ACCESS_KEY: Specifies the secret key associated with the access key. This is essentially the password for the access key
 * Environment AWS_DEFAULT_REGION: Specifies the AWS Region to send the request to
+* Environment AWS_MFA_ARN: ARN of the MFA device to use to log in
 ### azure
 
 Can be used to connect to infrastructure in the Azure cloud. Because we&#x27;re using a container,
@@ -231,9 +238,11 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
 * DEBUG_kubernetes: Debug this feature
 * (azure flavour) Environment AZ_K8S_CLUSTERS: A comma separated list of AKS clusters to manage
 inside *CloudControl* (only for azure flavour).
-Each cluster is a pair of resource group and cluster name, separated by a colon.
-For example: myresourcegroup:myk8s,myotherresourcegroup:mysecondk8s will install myk8s from
-the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup.
+Each cluster is a pair of resource group and cluster name, separated by a colon. Optionally, you can specify
+the target subscription.
+For example: myresourcegroup:myk8s,myotherresourcegroup@othersubscription:mysecondk8s will install myk8s from
+the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup in the
+subscription othersubscription.
 Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
 
 * (aws flavour) Environment AWS_K8S_CLUSTERS: A comma separated list of EKS clusters to manage
@@ -245,6 +254,11 @@ For example: myekscluster|arn:aws:iam::32487234892:sample/sample
 If you additionally need to assume a role before fetching the EKS credentials, add the role, prefixed with
 an @:
 myekscluster|arn:aws:iam::4327849324:sample/sample@arn:aws:iam::specialrole
+
+* (aws flavour) Environment AWS_SKIP_GPG: If set, skips the gpg checks for the yum repo of kubectl,
+as [this](https://github.com/kubernetes/kubernetes/issues/37922)
+[sometimes](https://github.com/kubernetes/kubernetes/issues/60134)
+seems to fail.
 
 
 ### packer
@@ -328,6 +342,16 @@ Installs [Vim](https://www.vim.org/)
 
 * USE_vim: Enable this feature
 * DEBUG_vim: Debug this feature
+
+### yq
+
+Installs the [YAML parser and processor yq](https://github.com/mikefarah/yq)
+
+#### Configuration
+
+* USE_yq: Enable this feature
+* DEBUG_yq: Debug this feature
+* Environment YQ_VERSION: Valid YQ version to install (e.g. 4.5.0)
 
 
 ## Development
