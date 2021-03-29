@@ -7,6 +7,8 @@
 #
 # If no flavour is specified, all flavours will be built
 
+mv Dockerfile Dockerfile.sav
+
 TAG=latest
 if [ -n "$1" ]
 then
@@ -29,4 +31,4 @@ do
   docker build . -t "dodevops/cloudcontrol-${FLAVOUR}:${TAG}"
 done
 
-rm Dockerfile
+mv Dockerfile.sav Dockerfile
