@@ -61,14 +61,20 @@ then
   done
 
   TEMPFILE=$(mktemp)
+  GPGCHECK=1
+
+  if [ -n "${AWS_SKIP_GPG}" ];
+  then
+    GPGCHECK=0
+  fi
 
   cat <<EOF > "${TEMPFILE}"
 [kubernetes]
 name=Kubernetes
 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
 enabled=1
-gpgcheck=1
-repo_gpgcheck=1
+gpgcheck=${GPGCHECK}
+repo_gpgcheck=${GPGCHECK}
 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOF
 

@@ -20,4 +20,9 @@ configuration:
         If you additionally need to assume a role before fetching the EKS credentials, add the role, prefixed with
         an @:
         myekscluster|arn:aws:iam::4327849324:sample/sample@arn:aws:iam::specialrole
+    - |
+        (aws flavour) Environment AWS_SKIP_GPG: If set, skips the gpg checks for the yum repo of kubectl,
+        as [this](https://github.com/kubernetes/kubernetes/issues/37922)
+        [sometimes](https://github.com/kubernetes/kubernetes/issues/60134)
+        seems to fail.
 
