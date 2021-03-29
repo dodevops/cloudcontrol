@@ -151,6 +151,8 @@ export default class Progress extends Vue {
     );
     if (mfaRegexp.test(output)) {
       this.requiresMFA = true;
+    } else {
+      this.requiresMFA = false;
     }
 
     return output;
