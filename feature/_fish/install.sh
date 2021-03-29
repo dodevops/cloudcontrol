@@ -26,3 +26,11 @@ mkdir -p /home/cloudcontrol/.config/fish/conf.d &>/dev/null
 execHandle 'Installing spacefish configuration' cp /home/cloudcontrol/feature-installers/_fish/spacefish.fish /home/cloudcontrol/.config/fish/conf.d
 
 echo "fish" > /home/cloudcontrol/.shell
+
+if [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
+then
+  cat <<EOF >>~/.config/fish/conf.d/aws.fish
+set -x ORIGINAL_AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
+set -x ORIGINAL_AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
+EOF
+fi

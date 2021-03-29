@@ -20,5 +20,8 @@ COPY flavour/aws/flavour /home/cloudcontrol/flavour
 COPY flavour/aws/flavourinit.sh /home/cloudcontrol/bin/flavourinit.sh
 RUN chmod +x /home/cloudcontrol/bin/flavourinit.sh
 
-COPY flavour/aws/createSession.sh /home/cloudcontrol/bin/createSession.sh
-RUN chmod +x /home/cloudcontrol/bin/createSession.sh
+COPY flavour/aws/createSession.bash /home/cloudcontrol/bin/createSession.bash
+COPY flavour/aws/createSession.fish /home/cloudcontrol/bin/createSession.fish
+
+RUN chmod +x /home/cloudcontrol/bin/createSession.*
+

@@ -3,6 +3,8 @@ description: |
     Can be used to connect to infrastructure in the AWS cloud. Also see [the AWS CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) for more configuration options.
     If you have activated MFA, set AWS_MFA_ARN to the ARN of your MFA device so CloudControl will ask you
     for your code.
+    To start a new session in the CloudControl context, run `source createSession.bash <token>` or
+    `source createSession.fish <token>` (depending on your selected shell) afterwards
 configuration:
     - "Environment AWS_ACCESS_KEY_ID: Specifies an AWS access key associated with an IAM user or role"
     - "Environment AWS_SECRET_ACCESS_KEY: Specifies the secret key associated with the access key. This is essentially the password for the access key"

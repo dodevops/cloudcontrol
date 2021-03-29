@@ -10,9 +10,10 @@ then
   do
     sleep 1
   done
-  CODE=$(cat /tmp/mfa)
-  /home/cloudcontrol/bin/createSession.sh "${CODE}"
-  echo "A temporary session has been created. Run createSession.sh <MFA-code> again to update the session token."
+  cat <<EOF >>~/.bashrc
+ORIGINAL_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+ORIGINAL_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+EOF
 else
   echo "AWS initialized"
 fi

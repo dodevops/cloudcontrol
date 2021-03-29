@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# Configure the path under which you hold your CloudControl configurations
+CCPATH=~/Documents/cloud
+
+# Find the CloudControl configurations
+CLOUDCONTROLS=$(find ${CCPATH} -type d -depth 1 -exec basename {} \; | sed -e 's/^\(.*\)$/\1 \1/g' | sort | paste -s -d " " -)
+
+TEMPFILE=$(mktemp)
+
+# Build a dialog with all configurations
+dialog --keep-tite --no-tags --extra-button --extra-label "More" --menu "Please select the cloud control context" 0 0 5 ${CLOUDCONTROLS} 2>"${TEMPFILE}"
+RC=$?
+
+if [ ${RC} -ne 1 ]
+then
+    CONTEXT=$(cat "${TEMPFILE}" | sed -e "s/HELP //")
+    cd ${CCPATH}/"${CONTEXT}" || exit
+
+    if [ ${RC} -eq 3 ]
+    then
+        # Show advanced menu
+        dialog --keep-tite --cancel-label "Back" --no-tags --menu "Please select the action" 0 0 4 reinit Reinit ccc "Open CCC" stop "Stop" down "Down" 2>"${TEMPFILE}"
+        RCEXTRA=$?
+        SELECTEDMENU=$(cat "${TEMPFILE}")
+
+        if [ ${RCEXTRA} -eq 1 ]
+        then
+            $0
+        elif [ "${SELECTEDMENU}" == "reinit" ]
+        then
+            echo "Reinitializing ${CONTEXT} CLOUDCONTROL"
+            echo "Please use Ctrl-C after the initialization has finished and then rerun cc"
+            docker-compose down
+            bash init.sh
+        elif [ "${SELECTEDMENU}" == "ccc" ]
+        then
+            CCC_PORT=$(docker-compose port cli 8080 | cut -d ":" -f 2)
+            echo "Starting CloudControlCenter on port ${CCC_PORT} for ${CONTEXT}"
+            open "http://localhost:${CCC_PORT}"
+        elif [ "${SELECTEDMENU}" == "stop" ]
+        then
+            docker-compose stop
+        elif [ "${SELECTEDMENU}" == "down" ]
+        then
+            docker-compose down
+        fi
+    else
+        # Enter CloudControl context
+        echo "Entering ${CONTEXT} CLOUDCONTROL"
+        docker-compose up -d
+        docker-compose exec cli /usr/local/bin/cloudcontrol run
+    fi
+fi
+
+rm "${TEMPFILE}"
+
