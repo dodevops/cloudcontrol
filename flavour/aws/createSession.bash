@@ -3,6 +3,7 @@
 if [ "$#" -ne 1 ]
 then
   echo "Usage: source createSession.sh <token code>"
+	exit 1
 fi
 
 CODE=$1
