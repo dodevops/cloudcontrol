@@ -2,7 +2,7 @@
 
 if test (count $argv) -ne 1
   echo "Usage: source createSession.sh <token code>"
-	exit 1
+  exit 1
 end
 
 set CODE $argv[1]
