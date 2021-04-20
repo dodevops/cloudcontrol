@@ -140,8 +140,7 @@ environment variables:
 Can be used to connect to infrastructure in the AWS cloud. Also see [the AWS CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) for more configuration options.
 If you have activated MFA, set AWS_MFA_ARN to the ARN of your MFA device so CloudControl will ask you
 for your code.
-To start a new session in the CloudControl context, run &#x60;source createSession.bash &lt;token&gt;&#x60; or
-&#x60;source createSession.fish &lt;token&gt;&#x60; (depending on your selected shell) afterwards
+To start a new session in the CloudControl context, run &#x60;createSession &lt;token&gt;&#x60; afterwards
 
 
 #### Configuration

@@ -13,6 +13,7 @@ then
   cat <<EOF >>~/.bashrc
 ORIGINAL_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
 ORIGINAL_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+alias createSession="source ~/bin/createSession.bash"
 EOF
 else
   echo "AWS initialized"

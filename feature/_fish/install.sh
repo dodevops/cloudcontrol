@@ -32,5 +32,8 @@ then
   cat <<EOF >>~/.config/fish/conf.d/aws.fish
 set -x ORIGINAL_AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
 set -x ORIGINAL_AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
+function createSession -S
+  source ~/bin/createSession.fish \$argv
+end
 EOF
 fi
