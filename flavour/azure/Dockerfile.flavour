@@ -3,6 +3,7 @@ FROM mcr.microsoft.com/azure-cli:latest
 RUN apk add sudo bash curl && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/sbin/apk *" > /etc/sudoers.d/cloudcontrol && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/usr/local/bin/az *" >> /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/bin/chmod *" >> /etc/sudoers.d/cloudcontrol && \
     adduser -D cloudcontrol && \
     mkdir /home/cloudcontrol/bin && \
     chown cloudcontrol /home/cloudcontrol/bin

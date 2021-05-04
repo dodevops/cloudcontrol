@@ -20,3 +20,11 @@ then
   echo "Can not set subscription"
   exit 1
 fi
+
+echo "Preparing bashrc"
+cat <<EOF >>~/.bashrc
+if [ -n "\${SSH_AUTH_SOCK}" ] && [ -e "\${SSH_AUTH_SOCK}" ]
+then
+  sudo /bin/chmod 0777 \${SSH_AUTH_SOCK}
+fi
+EOF

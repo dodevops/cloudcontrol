@@ -27,6 +27,12 @@ execHandle 'Installing spacefish configuration' cp /home/cloudcontrol/feature-in
 
 echo "fish" > /home/cloudcontrol/.shell
 
+cat <<EOF >> ~/.config/fish/conf.d/cloudcontrol.fish
+if test -n $SSH_AUTH_SOCK && test -e $SSH_AUTH_SOCK
+  sudo /bin/chmod 0777 $SSH_AUTH_SOCK
+end
+EOF
+
 if [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
 then
   cat <<EOF >>~/.config/fish/conf.d/aws.fish

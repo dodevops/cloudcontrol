@@ -107,6 +107,26 @@ environment variables:
 * `USE_run=yes`: Set up the run feature
 * `RUN_COMMANDS=alias firstalias=command;alias secondalias=command`: Set up some aliases
 
+### How can I share my SSH-keys with the CloudControl container
+
+First, mount your .ssh directory into the container at /home/cloudcontrol/.ssh.
+
+Also, to not enter your passphrase every time you use the key, you should mount the ssh agent socket into the
+container and set the environment variable SSH_AUTH_SOCK to that path. CloudControl will automatically fix the
+permissions of that file so the CloudControl user can use it.
+
+Here are snippets for your docker-compose file for convenience:
+
+    (...)
+    volumes:
+        - "<Path to .ssh directory>:/home/cloudcontrol/.ssh"
+        # for Linux:
+        - "${SSH_AUTH_SOCK}:/ssh-agent"
+        # for macOS:
+        - "/run/host-services/ssh-auth.sock:/ssh-agent"
+    environment:
+        - "SSH_AUTH_SOCK=/ssh-agent"
+
 ## Flavours
 
 {{#each docObjects.flavour}}
