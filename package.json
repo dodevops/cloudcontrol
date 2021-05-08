@@ -18,7 +18,7 @@
   "homepage": "https://github.com/dodevops/cloudcontrol#readme",
   "dependencies": {
     "prettier": "^1.19.1",
-    "handlebars": "^4.5.3",
+    "handlebars": "^4.7.7",
     "yaml": "^1.7.2",
     "bluebird": "^3.7.2"
   }
