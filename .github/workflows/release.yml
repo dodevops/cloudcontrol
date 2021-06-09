@@ -1,0 +1,55 @@
+name: release
+
+on:
+    push:
+        branches:
+            - '**'
+        tags:
+            - 'v*.*.*'
+    pull_request:
+        branches:
+            - 'master'
+
+jobs:
+    build:
+        strategy:
+            matrix:
+                flavour:
+                    - aws
+                    - azure
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+            -   name: Docker meta
+                id: meta
+                uses: docker/metadata-action@v3
+                with:
+                    # list of Docker images to use as base name for tags
+                    images: |
+                        dodevops/cloudcontrol-${{ matrix.flavour }}
+                    # generate Docker tags based on the following events/attributes
+                    tags: |
+                        type=ref,event=branch
+                        type=ref,event=pr
+                        type=semver,pattern={{version}}
+                        type=semver,pattern={{major}}.{{minor}}
+                        type=semver,pattern={{major}}
+                        type=sha
+            -   name: Login to DockerHub
+                uses: docker/login-action@v1
+                with:
+                    username: ${{ secrets.DOCKERHUB_USERNAME }}
+                    password: ${{ secrets.DOCKERHUB_TOKEN }}
+            -   name: Build
+                run: |
+                    cat build/Dockerfile.prefix > Dockerfile
+                    cat "flavour/${{ matrix.flavour }}/Dockerfile.flavour" >> Dockerfile
+                    cat build/Dockerfile.suffix >> Dockerfile
+            -   name: Build and push
+                id: docker_build
+                uses: docker/build-push-action@v2
+                with:
+                    push: ${{ github.event_name != 'pull_request' }}
+                    tags: ${{ steps.meta.outputs.tags }}
+                    labels: ${{ steps.meta.outputs.labels }}
