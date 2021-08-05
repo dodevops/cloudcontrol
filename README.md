@@ -23,6 +23,7 @@ Following features and tools are supported:
 * ⌨️ kc Quick Kubernetes Context switch
 * 🐚 Kubectlnodeshell
 * 🐳 Kubernetes
+* 📦 Packages
 * 📦 Packer
 * 👟 Run
 * 📜 Stern
@@ -49,6 +50,7 @@ Following features and tools are supported:
     * [kc](#kc)
     * [kubectlnodeshell](#kubectlnodeshell)
     * [kubernetes](#kubernetes)
+    * [packages](#packages)
     * [packer](#packer)
     * [run](#run)
     * [stern](#stern)
@@ -196,7 +198,7 @@ If you set hostname in that snippet to "alice", the state lock will look like th
   Version:   0.12.17
   Created:   2021-05-05 07:38:01.188897776 +0000 UTC
   Info:
-            
+
 ## Flavours
 
 ### aws
@@ -322,6 +324,17 @@ myekscluster|arn:aws:iam::4327849324:sample/sample@arn:aws:iam::specialrole
 as [this](https://github.com/kubernetes/kubernetes/issues/37922)
 [sometimes](https://github.com/kubernetes/kubernetes/issues/60134)
 seems to fail.
+
+
+### packages
+
+Installs additional packages into the container
+
+#### Configuration
+
+* USE_packages: Enable this feature
+* DEBUG_packages: Debug this feature
+* Environment PACKAGES: A whitespace separated list of packages to install. The packages will be installed with the flavour&#x27;s default package manager.
 
 
 ### packer
