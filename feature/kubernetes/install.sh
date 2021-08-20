@@ -30,11 +30,7 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
   execHandle "Installing kubectl" sudo az aks install-cli
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
 then
-  if [ -e /tmp/mfa ]
-  then
-    source /home/cloudcontrol/.bashrc
-    source /home/cloudcontrol/bin/createSession.bash "$(cat /tmp/mfa)"
-  fi
+  waitForMfaCode
   for CLUSTER in $(echo "${AWS_K8S_CLUSTERS}" | tr "," "\n")
   do
     ARN_OPTION=()

@@ -3,7 +3,7 @@
 if [ "$#" -ne 1 ]
 then
   echo "Usage: source createSession.sh <token code>"
-  exit 1
+  return 1
 fi
 
 CODE=$1
@@ -13,7 +13,7 @@ AWS_SECRET_ACCESS_KEY=${ORIGINAL_AWS_SECRET_ACCESS_KEY}
 
 if ! TOKENS=$(aws sts get-session-token --serial-number "${AWS_MFA_ARN}" --token-code "${CODE}")
 then
-  exit 1
+  return 1
 fi
 
 export AWS_SESSION_TOKEN=$(echo "$TOKENS"| jq -r .Credentials.SessionToken)

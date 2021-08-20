@@ -145,11 +145,14 @@ export default class Progress extends Vue {
       }
     }
 
-    // MFA feature
+    // MFA feature. Check for a regexp request, but also check if the MFA was already entered.
     const mfaRegexp = new RegExp(
         '/tmp/mfa',
     );
-    if (mfaRegexp.test(output)) {
+    const mfaDoneRegExp = new RegExp(
+        '\[VALID_CODE\]'
+    )
+    if (mfaRegexp.test(output) && !mfaDoneRegExp.test(output)) {
       this.requiresMFA = true;
     } else {
       this.requiresMFA = false;
