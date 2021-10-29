@@ -37,6 +37,7 @@ Following features and tools are supported:
 ## Table of contents
 
 * [Usage](#usage)
+* [Using Kubernetes](#using-kubernetes)
 * [FAQ](#faq)
 * [Flavours](#flavours)
     * [aws](#aws)
@@ -83,7 +84,7 @@ into the running container and work with the installed features.
 If you need to change any of the configuration environment variables, rerun the init script afterwards to apply
 the changes. Remember, that CloudControl needs to reininitialize for this.
 
-## Using with Kubernetes
+## Using Kubernetes
 
 *CloudControl* is targeted to run on a local machine. It requires the following features to work:
 
