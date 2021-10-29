@@ -55,6 +55,38 @@ into the running container and work with the installed features.
 If you need to change any of the configuration environment variables, rerun the init script afterwards to apply
 the changes. Remember, that CloudControl needs to reininitialize for this.
 
+## Using with Kubernetes
+
+*CloudControl* is targeted to run on a local machine. It requires the following features to work:
+
+* host path volumes
+* host based networking
+
+Some Kubernetes distributions such as [Rancher desktop](https://rancherdesktop.io/) support this and can be used to
+run *CloudControl*.
+
+The `sample` directories of each flavour provide an example Kubernetes configuration based on a deployment and a
+service. They were preliminary tested on Rancher desktop.
+
+Modify them to your local requirements and then run
+
+    kubectl apply -f k8s.yaml
+
+to apply them.
+
+This will create a new namespace for your project and a deployment and a service in that. Check
+`kubectl get -n <project> pod` to watch the progress until a cli pod has been created.
+
+Use `kubectl get -n <project> svc cli` to see the bound ports for the cli service and use your browser to connect
+to the *CloudControlCenter* instance.
+
+After the initialization is done, use `kubectl -n <project> exec -it deployment/cli -- /usr/local/bin/cloudcontrol run`
+to enter *CloudControl*.
+
+*Warning*: This implementation is currently a preview feature and hasn't been tested thoroughly. It highly depends on
+the proper support for host based volumes and networking of the Kubernetes distribution. Please refer to the
+documentation and support of your Kubernetes distribution if something isn't working.
+
 ## FAQ
 
 ### How can I add an informational text for users of CloudControl?
