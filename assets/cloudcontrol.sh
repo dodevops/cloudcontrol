@@ -28,7 +28,7 @@ then
 
   if [ -n "${WORKDIR}" ]
   then
-    cd "${WORKDIR}" || cd
+    cd "${WORKDIR}" || cd || exit
   fi
 
   # Start shell

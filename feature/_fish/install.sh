@@ -1,6 +1,6 @@
 . /feature-installer-utils.sh
 
-if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]
+if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ]
 then
   echo "Installing packages"
   execHandle 'Installing fish' sudo apk add fish perl fzf

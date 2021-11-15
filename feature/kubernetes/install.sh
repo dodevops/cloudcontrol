@@ -78,4 +78,13 @@ EOF
   execHandle "Configuring package repository for kubectl" sudo mv "${TEMPFILE}" /etc/yum.repos.d/kubernetes.repo
 
   execHandle "Installing kubectl..." sudo yum install -y kubectl
+elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ]
+then
+  TEMPDIR=$(mktemp -d)
+  cd "${TEMPDIR}" || exit
+  execHandle "Downloading kubectl" curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION:-$(curl -L -s https://dl.k8s.io/release/stable.txt)}/bin/linux/amd64/kubectl"
+  execHandle "Making kubectl executable" chmod +x kubectl
+  execHandle "Moving kubectl to bin" mv kubectl /home/cloudcontrol/bin
+  cd - &>/dev/null || exit
+  rm -rf "${TEMPDIR}"
 fi

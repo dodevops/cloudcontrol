@@ -1,3 +1,4 @@
+declare USE_fish
 if [ -n "${USE_fish}" ]
 then
   echo "Setting up RUN for fish"

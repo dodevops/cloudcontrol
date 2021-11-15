@@ -3,20 +3,28 @@ name: release
 on:
     push:
         branches:
-            - '**'
+            - 'main'
         tags:
             - 'v*.*.*'
     pull_request:
         branches:
-            - 'master'
+            - 'main'
 
 jobs:
+    check:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
+            -   run: |
+                    apt-get update >/dev/null && apt-get install -y shellcheck >/dev/null
+                    bash check.sh
     build:
         strategy:
             matrix:
                 flavour:
                     - aws
                     - azure
+                    - simple
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout

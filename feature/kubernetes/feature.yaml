@@ -25,4 +25,6 @@ configuration:
         as [this](https://github.com/kubernetes/kubernetes/issues/37922)
         [sometimes](https://github.com/kubernetes/kubernetes/issues/60134)
         seems to fail.
+    - |
+        (simple flavour) Environment KUBECTL_VERSION: The version of kubectl to install
 

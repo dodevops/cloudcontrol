@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: <project>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cli
+    namespace: <project>
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            podType: cli
+    template:
+        metadata:
+            labels:
+                podType: cli
+        spec:
+            containers:
+                -   env:
+                        -   name: AZ_SUBSCRIPTION
+                            value: <subscription>
+                        -   name: K8S_CLUSTERS
+                            value: <resourcegroup:cluster,resourcegroup:cluster>
+                        -   name: USE_terraform
+                            value: yes
+                        -   name: TERRAFORM_VERSION
+                            value: 0.12.17
+                        -   name: USE_helm
+                            value: yes
+                        -   name: HELM_VERSION
+                            value: 2.16.1
+                    image: dodevops/cloudcontrol-simple:latest
+                    name: cli
+                    ports:
+                        -   containerPort: 8080
+                            name: ccc
+                        -   containerPort: 8081
+                            name: port-forward
+                    volumeMounts:
+                        -   mountPath: /terraform
+                            subPath: subpath/to/terraform
+                            name: host
+            hostname: myname
+            restartPolicy: Always
+            volumes:
+                -   name: host
+                    hostPath:
+                        path: basepath/on/host
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: cli
+    namespace: <project>
+spec:
+    type: LoadBalancer
+    ports:
+        -   port: 8080
+            targetPort: ccc
+            name: ccc
+        -   port: 8081
+            targetPort: port-forward
+            name: port-forward
+    selector:
+        podType: cli

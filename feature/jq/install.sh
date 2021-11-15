@@ -1,6 +1,6 @@
 . /feature-installer-utils.sh
 
-if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]
+if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ]
 then
   execHandle "Installing jq" sudo apk add jq
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]

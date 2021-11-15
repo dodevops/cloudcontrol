@@ -26,6 +26,7 @@ function waitForMfaCode {
     do
       sleep 1
     done
+    # shellcheck source=/dev/null
     source ~/bin/createSession.bash "$(cat /tmp/mfa)"
     CORRECT_CODE=$?
     if [ $CORRECT_CODE != 0 ]
