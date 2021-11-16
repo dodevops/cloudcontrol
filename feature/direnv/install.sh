@@ -8,6 +8,7 @@ export PATH=$PATH:/home/cloudcontrol/bin
 execHandle "Downloading installer" curl -sfL https://direnv.net/install.sh -o install.sh
 execHandle "Installing direnv" bash install.sh
 
+declare USE_fish
 if [ -n "${USE_fish}" ]
 then
   echo "Setting up direnv for fish"

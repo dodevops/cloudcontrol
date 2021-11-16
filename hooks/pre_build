@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -x
-
-FLAVOUR=${DOCKER_REPO//index.docker.io\/dodevops\/cloudcontrol-/}
-
-cat build/Dockerfile.prefix > Dockerfile
-cat "flavour/${FLAVOUR}/Dockerfile.flavour" >> Dockerfile
-cat build/Dockerfile.suffix >> Dockerfile

@@ -1,0 +1,3 @@
+title: "![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-simple?sort=semver) [Simple](https://hub.docker.com/r/dodevops/cloudcontrol-simple) (based on [alpine](https://hub.docker.com/_/alpine))"
+description: |
+    Can be used to connect to infrastructure outside of a specific cloud provider.

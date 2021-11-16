@@ -2,7 +2,8 @@
 
 IFS=' ' read -r -a packages_array <<< "${PACKAGES}"
 
-if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
+if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ]
+then
   execHandle "Installing packages" sudo apk add "${packages_array[@]}"
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
 then
