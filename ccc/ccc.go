@@ -5,7 +5,6 @@ import (
 	"fmt"
 	markdown "github.com/MichaelMure/go-term-markdown"
 	"github.com/gin-gonic/gin"
-	"gopkg.in/yaml.v2"
 	"io"
 	"io/ioutil"
 	"log"
@@ -16,6 +15,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
+	"strings"
 )
 
 // All installation steps that need to be carried out
@@ -47,11 +47,11 @@ var sortingRegexp = regexp.MustCompile("_(.+)")
 
 // Simple handler to handle fatal errors
 func fatal(err error) {
-	fmt.Fprintf(os.Stderr, "%s: %s\n", os.Args[0], err)
+	_, _ = fmt.Fprintf(os.Stderr, "%s: %s\n", os.Args[0], err)
 	os.Exit(1)
 }
 
-// Console writer to capture console output
+// ConsoleWriter used to capture console output
 type ConsoleWriter struct{}
 
 // Write the console output of the current step to the stepOutput variable
@@ -187,6 +187,22 @@ func main() {
 
 	if err != nil {
 		fatal(err)
+	}
+
+	// Support specifying features using the FEATURES env variable
+
+	if value, exists := os.LookupEnv("FEATURES"); exists {
+		for _, configuredFeature := range strings.Split(value, " ") {
+			var configuredVersion = ""
+			if strings.Contains(configuredFeature, ":") {
+				configuredVersion = strings.Split(configuredFeature, ":")[1]
+				configuredFeature = strings.Split(configuredFeature, ":")[0]
+			}
+			_ = os.Setenv(fmt.Sprintf("USE_%s", configuredFeature), "yes")
+			if configuredVersion != "" {
+				_ = os.Setenv(fmt.Sprintf("%s_VERSION", strings.ToUpper(configuredFeature)), configuredVersion)
+			}
+		}
 	}
 
 	for _, feature := range featureFiles {

@@ -8,9 +8,6 @@ services:
             - "8080" # CloudControlCenter port
             - "8081" # Port that can be used for port forwardings
         environment:
+            - "FEATURES=terraform:0.12.17 helm:2.16.1"
             - "AZ_SUBSCRIPTION=<subscription>"
             - "K8S_CLUSTERS=<resourcegroup:cluster,resourcegroup:cluster>"
-            - "USE_terraform=yes"
-            - "USE_helm=yes"
-            - "TERRAFORM_VERSION=0.12.17"
-            - "HELM_VERSION=2.16.1"
