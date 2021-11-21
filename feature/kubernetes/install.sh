@@ -54,7 +54,7 @@ then
       K8S_CLUSTER="$CLUSTER"
       echo "Cluster ${K8S_CLUSTER}"
     fi
-    execHandle "Fetching k8s credentials for ${CLUSTER}" "${SUDO_OPTION[@]}" aws eks update-kubeconfig --name "${K8S_CLUSTER}" --alias "${K8S_CLUSTER}" "${ARN_OPTION[@]}"
+    execHandle "Fetching k8s credentials for ${CLUSTER}" ${SUDO_OPTION[@]} "aws eks update-kubeconfig --name ${K8S_CLUSTER} --alias ${K8S_CLUSTER} ${ARN_OPTION[@]}"
   done
 
   TEMPFILE=$(mktemp)
