@@ -2,6 +2,8 @@
 
 . /feature-installer-utils.sh
 
+execHandle "Installing ca-certificates" sudo yum install -y ca-certificates
+
 if [ -n "${AWS_MFA_ARN}" ]
 then
   execHandle "Installing jq" sudo yum install -y jq
