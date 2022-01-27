@@ -26,8 +26,9 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
 
     execHandle "Fetching k8s credentials for ${CLUSTER}" az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER} "${K8S_SUBSCRIPTION[@]}"
   done
+  IFS=' ' read -r -a install_options <<< "${AZ_K8S_INSTALL_OPTIONS:=""}"
 
-  execHandle "Installing kubectl" sudo az aks install-cli
+  execHandle "Installing kubectl" sudo az aks install-cli "${install_options[@]}"
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
 then
   waitForMfaCode

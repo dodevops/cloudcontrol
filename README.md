@@ -12,6 +12,7 @@ Currently supported cloud flavours are:
 
 * ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-aws?sort&#x3D;semver) [AWS](https://hub.docker.com/r/dodevops/cloudcontrol-aws) (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli))
 * ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-azure?sort&#x3D;semver) [Azure](https://hub.docker.com/r/dodevops/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))
+* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-simple?sort&#x3D;semver) [Simple](https://hub.docker.com/r/dodevops/cloudcontrol-simple) (based on [alpine](https://hub.docker.com/_/alpine))
 
 Following features and tools are supported:
 
@@ -42,6 +43,7 @@ Following features and tools are supported:
 * [Flavours](#flavours)
     * [aws](#aws)
     * [azure](#azure)
+    * [simple](#simple)
 * [Features](#features)
     * [fish](#fish)
     * [azcopy](#azcopy)
@@ -258,6 +260,13 @@ This only happens once during initialization phase.
 #### Configuration
 
 * Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container
+### simple
+
+Can be used to connect to infrastructure outside of a specific cloud provider.
+
+
+#### Configuration
+
 
 ## Features
 
@@ -343,6 +352,9 @@ the myresourcegroup resource group and mysecondk8s from the resource group myoth
 subscription othersubscription.
 Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
 
+* (azure flavour) Environment AZ_K8S_INSTALL_OPTIONS: Additional options for the az aks install-cli programm.
+(Defaults to empty)
+
 * (aws flavour) Environment AWS_K8S_CLUSTERS: A comma separated list of EKS clusters to manage
 inside *CloudControl* (only for aws flavour).
 For each cluster give the cluster name. If you need to assume an ARN role, add that to the clustername
@@ -357,6 +369,8 @@ myekscluster|arn:aws:iam::4327849324:sample/sample@arn:aws:iam::specialrole
 as [this](https://github.com/kubernetes/kubernetes/issues/37922)
 [sometimes](https://github.com/kubernetes/kubernetes/issues/60134)
 seems to fail.
+
+* (simple flavour) Environment KUBECTL_VERSION: The version of kubectl to install
 
 
 ### packages

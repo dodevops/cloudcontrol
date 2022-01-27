@@ -11,6 +11,9 @@ configuration:
         subscription othersubscription.
         Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
     - |
+        (azure flavour) Environment AZ_K8S_INSTALL_OPTIONS: Additional options for the az aks install-cli programm.
+        (Defaults to empty)
+    - |
         (aws flavour) Environment AWS_K8S_CLUSTERS: A comma separated list of EKS clusters to manage
         inside *CloudControl* (only for aws flavour).
         For each cluster give the cluster name. If you need to assume an ARN role, add that to the clustername
@@ -27,4 +30,4 @@ configuration:
         seems to fail.
     - |
         (simple flavour) Environment KUBECTL_VERSION: The version of kubectl to install
-
+        
