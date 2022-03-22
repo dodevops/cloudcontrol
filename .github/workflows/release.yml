@@ -55,6 +55,9 @@ jobs:
                     cat build/Dockerfile.prefix > Dockerfile
                     cat "flavour/${{ matrix.flavour }}/Dockerfile.flavour" >> Dockerfile
                     cat build/Dockerfile.suffix >> Dockerfile
+            -   name: Clean up Docker
+                run: |
+                    docker system prune -f --filter "until=5h"
             -   name: Build and push
                 id: docker_build
                 uses: docker/build-push-action@v2
