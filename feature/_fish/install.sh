@@ -3,7 +3,7 @@
 if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ]
 then
   echo "Installing packages"
-  execHandle 'Installing fish' sudo apk add fish perl fzf
+  execHandle 'Installing fish' sudo apk add fish perl fzf git
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
 then
   execHandle 'Downloading fish repo' sudo curl -f -s -L https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_8/shells:fish:release:3.repo -o /etc/yum.repos.d/shells:fish:release:3.repo
