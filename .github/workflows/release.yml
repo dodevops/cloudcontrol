@@ -22,9 +22,12 @@ jobs:
         strategy:
             matrix:
                 flavour:
-                    - aws
-                    - azure
-                    - simple
+                    - name: aws
+                      platforms: "linux/amd64,linux/arm64"
+                    - name: azure
+                      platforms: "linux/amd64"
+                    - name: simple
+                      platforms: "linux/amd64,linux/arm64"
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
@@ -35,7 +38,7 @@ jobs:
                 with:
                     # list of Docker images to use as base name for tags
                     images: |
-                        dodevops/cloudcontrol-${{ matrix.flavour }}
+                        dodevops/cloudcontrol-${{ matrix.flavour.name }}
                     # generate Docker tags based on the following events/attributes
                     tags: |
                         type=ref,event=branch
@@ -55,7 +58,7 @@ jobs:
             -   name: Build
                 run: |
                     cat build/Dockerfile.prefix > Dockerfile
-                    cat "flavour/${{ matrix.flavour }}/Dockerfile.flavour" >> Dockerfile
+                    cat "flavour/${{ matrix.flavour.name }}/Dockerfile.flavour" >> Dockerfile
                     cat build/Dockerfile.suffix >> Dockerfile
             -   name: Clean up Docker
                 run: |
@@ -70,4 +73,4 @@ jobs:
                     labels: ${{ steps.meta.outputs.labels }}
                     pull: true
                     no-cache: true
-                    platforms: "linux/amd64,linux/arm64"
+                    platforms:  ${{ matrix.flavour.platforms }}
