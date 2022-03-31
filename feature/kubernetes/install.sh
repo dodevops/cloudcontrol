@@ -116,6 +116,6 @@ then
     do
       NAMESPACE=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 1)
       CLUSTER=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 2)
-      execHandle "Authenticating against cluster ${CLUSTER} in namespace ${NAMESPACE}" kubectl vsphere login --server "${TANZU_HOST}" --vsphere-username "${TANZU_USERNAME}" "$SKIP_INSECURE" --tanzu-kubernetes-cluster-namespace=${NAMESPACE} --tanzu-kubernetes-cluster-name=${CLUSTER}
+      execHandle "Authenticating against cluster ${CLUSTER} in namespace ${NAMESPACE}" kubectl vsphere login --server "${TANZU_HOST}" --vsphere-username "${TANZU_USERNAME}" "$SKIP_INSECURE" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}"
     done
 fi
