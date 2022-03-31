@@ -88,7 +88,21 @@ into the running container and work with the installed features.
 If you need to change any of the configuration environment variables, rerun the init script afterwards to apply
 the changes. Remember, that CloudControl needs to reininitialize for this.
 
-## Using Kubernetes
+## Configuring features
+
+There are two ways to configure a feature and the version it should use. The first way is to use the given
+`USE_<feature name>=yes` environment variable and specifying the version with `<FEATURE NAME>_VERSION=<version>`.
+
+If there are multiple features configured, this can get a bit messy. Another approach is to use the `FEATURES`
+environment variable and list the features and optionally the version like so:
+
+    FEATURES=kubernetes helm:3.5.1 terraform
+
+This would install the version 3.5.1 of Helm and use the feature's default versions for Kubernetes and Terraform.
+
+**Note**: Please see the feature documentation below if a feature supports specifying a version string.
+
+## Using Kubernetes (Preview)
 
 *CloudControl* is targeted to run on a local machine. It requires the following features to work:
 
@@ -514,6 +528,11 @@ include a sample configuration for your flavour to make it easier for other peop
 In your install script, you can source the utils library
 
     . /feature-installer-utils.sh
+
+#### Specifying features
+
+The environment variable `<FEATURE NAME>_VERSION` is the default variable to specify a feature version, if you support
+it.
 
 #### execHandle
 
