@@ -5,6 +5,7 @@ import (
 	"fmt"
 	markdown "github.com/MichaelMure/go-term-markdown"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/yaml.v2"
 	"io"
 	"io/ioutil"
 	"log"
