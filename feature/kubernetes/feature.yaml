@@ -30,4 +30,13 @@ configuration:
         seems to fail.
     - |
         (simple flavour) Environment KUBECTL_VERSION: The version of kubectl to install
+    - |
+        (tanzu flavour)
+        * Environment TANZU_HOST: The tanzu host to download the kubectl vsphere plugin from and authenticate against
+        * Environment TANZU_USERNAME: The username to authenticate with
+        * Environment KUBECTL_VSPHERE_PASSWORD: The password to authenticate with
+        * Environment TANZU_CLUSTERS: A comma separated list of namespace:cluster name pairs
+        * Environment TANZU_ADD_CONTROL_CLUSTER: Whether to also authenticate against the control cluster [false]
+        * Environment TANZU_SKIP_TLS_VERIFY: Skip TLS verification [false]
+        * Environment TANZU_VSPHERE_PLUGIN_PATH: The path where to find the kubectl vsphere plugin [/wcp/plugin/linux-amd64/vsphere-plugin.zip] 
         

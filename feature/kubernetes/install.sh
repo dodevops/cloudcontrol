@@ -88,4 +88,34 @@ then
   execHandle "Moving kubectl to bin" mv kubectl /home/cloudcontrol/bin
   cd - &>/dev/null || exit
   rm -rf "${TEMPDIR}"
+elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XtanzuX" ]
+then
+  TEMPDIR=$(mktemp -d)
+    cd "${TEMPDIR}" || exit
+    execHandle "Downloading kubectl and kubectl vsphere plugin" curl -k -L -o kubectl.zip "https://${TANZU_HOST}${TANZU_VSPHERE_PLUGIN_PATH:-/wcp/plugin/linux-amd64/vsphere-plugin.zip}"
+    execHandle "Extracting zip" unzip kubectl.zip
+    execHandle "Moving kubectl to bin" mv bin/kubectl /home/cloudcontrol/bin
+    execHandle "Moving kubectl-vsphere to bin" mv bin/kubectl-vsphere /home/cloudcontrol/bin
+    cd - &>/dev/null || exit
+    rm -rf "${TEMPDIR}"
+
+    PATH=$PATH:/home/cloudcontrol/bin
+
+    SKIP_INSECURE=""
+    if [ "X${TANZU_SKIP_TLS_VERIFY:-false}X" == "XtrueX" ]
+    then
+      SKIP_INSECURE="--insecure-skip-tls-verify"
+    fi
+
+    if [ "X${TANZU_ADD_CONTROL_CLUSTER:-false}X" == "XtrueX" ]
+    then
+      execHandle "Authenticating against control cluster" kubectl vsphere login --server "${TANZU_HOST}" --vsphere-username "${TANZU_USERNAME}" "$SKIP_INSECURE"
+    fi
+
+    for NAMESPACEDCLUSTER in $(echo "${TANZU_CLUSTERS}" | tr "," "\n")
+    do
+      NAMESPACE=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 1)
+      CLUSTER=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 2)
+      execHandle "Authenticating against cluster ${CLUSTER} in namespace ${NAMESPACE}" kubectl vsphere login --server "${TANZU_HOST}" --vsphere-username "${TANZU_USERNAME}" "$SKIP_INSECURE" --tanzu-kubernetes-cluster-namespace=${NAMESPACE} --tanzu-kubernetes-cluster-name=${CLUSTER}
+    done
 fi

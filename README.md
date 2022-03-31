@@ -13,6 +13,7 @@ Currently supported cloud flavours are:
 * ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-aws?sort&#x3D;semver) [AWS](https://hub.docker.com/r/dodevops/cloudcontrol-aws) (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli))
 * ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-azure?sort&#x3D;semver) [Azure](https://hub.docker.com/r/dodevops/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))
 * ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-simple?sort&#x3D;semver) [Simple](https://hub.docker.com/r/dodevops/cloudcontrol-simple) (based on [alpine](https://hub.docker.com/_/alpine))
+* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-tanzu?sort&#x3D;semver) [Tanzu](https://hub.docker.com/r/dodevops/cloudcontrol-tanzu) (based on [alpine](https://hub.docker.com/_/alpine))
 
 Following features and tools are supported:
 
@@ -44,6 +45,7 @@ Following features and tools are supported:
     * [aws](#aws)
     * [azure](#azure)
     * [simple](#simple)
+    * [tanzu](#tanzu)
 * [Features](#features)
     * [fish](#fish)
     * [azcopy](#azcopy)
@@ -267,6 +269,13 @@ Can be used to connect to infrastructure outside of a specific cloud provider.
 
 #### Configuration
 
+### tanzu
+
+Includes workflows and tools to connect to a Tanzu cluster.
+
+
+#### Configuration
+
 
 ## Features
 
@@ -371,6 +380,15 @@ as [this](https://github.com/kubernetes/kubernetes/issues/37922)
 seems to fail.
 
 * (simple flavour) Environment KUBECTL_VERSION: The version of kubectl to install
+
+* (tanzu flavour)
+* Environment TANZU_HOST: The tanzu host to download the kubectl vsphere plugin from and authenticate against
+* Environment TANZU_USERNAME: The username to authenticate with
+* Environment KUBECTL_VSPHERE_PASSWORD: The password to authenticate with
+* Environment TANZU_CLUSTERS: A comma separated list of namespace:cluster name pairs
+* Environment TANZU_ADD_CONTROL_CLUSTER: Whether to also authenticate against the control cluster [false]
+* Environment TANZU_SKIP_TLS_VERIFY: Skip TLS verification [false]
+* Environment TANZU_VSPHERE_PLUGIN_PATH: The path where to find the kubectl vsphere plugin [/wcp/plugin/linux-amd64/vsphere-plugin.zip] 
 
 
 ### packages
