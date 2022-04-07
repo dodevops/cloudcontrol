@@ -102,12 +102,12 @@ then
     PATH=$PATH:/home/cloudcontrol/bin
 
     SKIP_INSECURE=""
-    if [ "X${TANZU_SKIP_TLS_VERIFY:-false}X" == "XtrueX" ]
+    if [ "X${TANZU_SKIP_TLS_VERIFY:-no}X" == "XyesX" ]
     then
       SKIP_INSECURE="--insecure-skip-tls-verify"
     fi
 
-    if [ "X${TANZU_ADD_CONTROL_CLUSTER:-false}X" == "XtrueX" ]
+    if [ "X${TANZU_ADD_CONTROL_CLUSTER:-no}X" == "XyesX" ]
     then
       execHandle "Authenticating against control cluster" kubectl vsphere login --server "${TANZU_HOST}" --vsphere-username "${TANZU_USERNAME}" "$SKIP_INSECURE"
     fi
