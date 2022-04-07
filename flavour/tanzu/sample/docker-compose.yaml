@@ -15,6 +15,6 @@ services:
             - "USE_kubernetes=yes"
             - "TANZU_HOST=tanzu.example.com"
             - "TANZU_USERNAME=myuser"
-            - "TANZU_PASSWORD=mysecret"
+            - "KUBECTL_VSPHERE_PASSWORD=mysecret"
             - "TANZU_CLUSTERS=tanzu-namespace:my-cluster,tanzu-namespace2:my-second-cluster"
             - "TANZU_SKIP_TLS_VERIFY=yes"
