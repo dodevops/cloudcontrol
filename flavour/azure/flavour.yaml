@@ -5,3 +5,4 @@ description: |
     This only happens once during initialization phase.
 configuration:
     - "Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container"
+    - "Environment AZ_TENANTID: The Azure tenant id to log into (optional)"

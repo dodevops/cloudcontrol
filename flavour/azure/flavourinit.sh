@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 echo "Logging in..."
 
-if ! az login
+tenantArg=()
+
+if [ "X${AZ_TENANTID}X" != "XX" ]
 then
-  echo "Can not login into Azure"
-  exit 1
+  tenantArg+=("--tenant" "${AZ_TENANTID}")
 fi
+
+if ! az login "${tenantArg[@]}"
+  then
+    echo "Can not login into Azure"
+    exit 1
+  fi
 
 if [ "X${AZ_SUBSCRIPTION}X" == "XX" ]
 then
