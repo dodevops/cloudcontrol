@@ -101,21 +101,22 @@ then
 
     PATH=$PATH:/home/cloudcontrol/bin
 
-    SKIP_INSECURE=""
+    loginArgs=("--server" "${TANZU_HOST}" "--vsphere-username" "${TANZU_USERNAME}")
+
     if [ "X${TANZU_SKIP_TLS_VERIFY:-no}X" == "XyesX" ]
     then
-      SKIP_INSECURE="--insecure-skip-tls-verify"
+      loginArgs+=("--insecure-skip-tls-verify")
     fi
 
     if [ "X${TANZU_ADD_CONTROL_CLUSTER:-no}X" == "XyesX" ]
     then
-      execHandle "Authenticating against control cluster" kubectl vsphere login --server "${TANZU_HOST}" --vsphere-username "${TANZU_USERNAME}" "$SKIP_INSECURE"
+      execHandle "Authenticating against control cluster" kubectl vsphere login "${loginArgs[@]}"
     fi
 
     for NAMESPACEDCLUSTER in $(echo "${TANZU_CLUSTERS}" | tr "," "\n")
     do
       NAMESPACE=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 1)
       CLUSTER=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 2)
-      execHandle "Authenticating against cluster ${CLUSTER} in namespace ${NAMESPACE}" kubectl vsphere login --server "${TANZU_HOST}" --vsphere-username "${TANZU_USERNAME}" "$SKIP_INSECURE" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}"
+      execHandle "Authenticating against cluster ${CLUSTER} in namespace ${NAMESPACE}" kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}"
     done
 fi
