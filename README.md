@@ -276,6 +276,7 @@ This only happens once during initialization phase.
 #### Configuration
 
 * Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container
+* Environment AZ_TENANTID: The Azure tenant id to log into (optional)
 ### simple
 
 Can be used to connect to infrastructure outside of a specific cloud provider.
