@@ -288,11 +288,6 @@ Can be used to connect to infrastructure outside of a specific cloud provider.
 
 Includes workflows and tools to connect to a Tanzu cluster.
 
-#### Note about logins when using the "kubernetes" feature
-
-The kubernetes login tokens usually expire after a few hours already. You can run the &#x60;relogin&#x60; script (located in ~/bin, thus available
-without path) to re-execute the same login commands as the initialization process does.
-
 
 #### Configuration
 
