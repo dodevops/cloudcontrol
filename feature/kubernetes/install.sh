@@ -111,6 +111,7 @@ then
     if [ "X${TANZU_ADD_CONTROL_CLUSTER:-no}X" == "XyesX" ]
     then
       execHandle "Authenticating against control cluster" kubectl vsphere login "${loginArgs[@]}"
+      echo kubectl vsphere login "${loginArgs[@]}" > ~/bin/relogin
     fi
 
     for NAMESPACEDCLUSTER in $(echo "${TANZU_CLUSTERS}" | tr "," "\n")
@@ -118,5 +119,7 @@ then
       NAMESPACE=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 1)
       CLUSTER=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 2)
       execHandle "Authenticating against cluster ${CLUSTER} in namespace ${NAMESPACE}" kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}"
+      echo kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}" >> ~/bin/relogin
     done
+    test -e ~/bin/relogin && chmod +x ~/bin/relogin
 fi
