@@ -250,6 +250,17 @@ If you set hostname in that snippet to "alice", the state lock will look like th
   Created:   2021-05-05 07:38:01.188897776 +0000 UTC
   Info:
 
+### I get an error "repomd.xml signature could not be verified for kubernetes" when using Kubernetes in the AWS flavour
+
+CloudControl uses the
+[official guide to install kubectl on an RPM-based system](https://kubernetes.io/de/docs/tasks/tools/install-kubectl/).
+However, Google seems to
+[regularly have problems with its key-signing in the used repository](https://github.com/kubernetes/kubernetes/issues/60134),
+so we added a workaround to this problem. If you add the environment variable `AWS_SKIP_GPG=1` to your
+docker-compose.yaml, it will ignore an invalid GPG key during the installation.
+
+*Please note though*, that this affects the security of the system and should not be used constantly.
+
 ## Flavours
 
 ### aws
