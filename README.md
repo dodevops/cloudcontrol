@@ -94,7 +94,7 @@ There are two ways to configure a feature and the version it should use. The fir
 `USE_<feature name>=yes` environment variable and specifying the version with `<FEATURE NAME>_VERSION=<version>`.
 
 If there are multiple features configured, this can get a bit messy. Another approach is to use the `FEATURES`
-environment variable and list the features and optionally the version like so:
+environment variable and list the features and optionally the version like this:
 
     FEATURES=kubernetes helm:3.5.1 terraform:1.1.9
 
