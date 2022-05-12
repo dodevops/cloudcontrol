@@ -78,7 +78,13 @@ EOF
 
   execHandle "Configuring package repository for kubectl" sudo mv "${TEMPFILE}" /etc/yum.repos.d/kubernetes.repo
 
-  execHandle "Installing kubectl..." sudo yum install -y kubectl
+  KUBECTL_PACKAGE="kubectl"
+  if [[ "X${KUBECTL_VERSION}X" -ne "XX" ]]
+  then
+    KUBECTL_PACKAGE="${KUBECTL_PACKAGE}-${KUBECTL_VERSION}"
+  fi
+
+  execHandle "Installing kubectl..." sudo yum install -y "$KUBECTL_PACKAGE"
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ]
 then
   TEMPDIR=$(mktemp -d)

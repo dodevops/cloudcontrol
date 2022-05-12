@@ -411,7 +411,7 @@ as [this](https://github.com/kubernetes/kubernetes/issues/37922)
 [sometimes](https://github.com/kubernetes/kubernetes/issues/60134)
 seems to fail.
 
-* (simple flavour) Environment KUBECTL_VERSION: The version of kubectl to install
+* (simple and aws flavour) Environment KUBECTL_VERSION: The version of kubectl to install
 
 * (tanzu flavour)
 * Environment TANZU_HOST: The tanzu host to download the kubectl vsphere plugin from and authenticate against
