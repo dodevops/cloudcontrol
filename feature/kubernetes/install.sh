@@ -29,6 +29,18 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
   IFS=' ' read -r -a install_options <<< "${AZ_K8S_INSTALL_OPTIONS:=""}"
 
   execHandle "Installing kubectl" sudo az aks install-cli "${install_options[@]}"
+
+  if [ "X${AZ_KUBELOGIN_VERSION:=""}X" != "XX" ]; then
+      TEMPDIR=$(mktemp -d)
+      cd "${TEMPDIR}" || exit
+      execHandle "Downloading kubelogin" curl -LO "https://github.com/Azure/kubelogin/releases/download/${AZ_KUBELOGIN_VERSION}/kubelogin-linux-amd64.zip"
+      execHandle "Unpacking kubelogin" unzip kubelogin-linux-amd64.zip
+      execHandle "Moving kubelogin to bin" mv bin/linux_amd64/kubelogin /home/cloudcontrol/bin
+      cd - &>/dev/null || exit
+      rm -rf "${TEMPDIR}"
+
+      execHandle "Converting credentials to kubelogin" /home/cloudcontrol/bin/kubelogin convert-kubeconfig
+  fi
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
 then
   waitForMfaCode
