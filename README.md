@@ -392,6 +392,7 @@ For example: myresourcegroup:myk8s,myotherresourcegroup@othersubscription:myseco
 the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup in the
 subscription othersubscription.
 Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
+This generates the script &#x60;k8s-relogin&#x60; which allows you to recreate the Kubernetes credentials.
 
 * (azure flavour) Environment AZ_K8S_INSTALL_OPTIONS: Additional options for the az aks install-cli programm.
 (Defaults to empty)
@@ -423,7 +424,9 @@ seems to fail.
 * Environment TANZU_CLUSTERS: A comma separated list of namespace:cluster name pairs
 * Environment TANZU_ADD_CONTROL_CLUSTER: Whether to also authenticate against the control cluster [false]
 * Environment TANZU_SKIP_TLS_VERIFY: Skip TLS verification [false]
-* Environment TANZU_VSPHERE_PLUGIN_PATH: The path where to find the kubectl vsphere plugin [/wcp/plugin/linux-amd64/vsphere-plugin.zip] 
+* Environment TANZU_VSPHERE_PLUGIN_PATH: The path where to find the kubectl vsphere plugin [/wcp/plugin/linux-amd64/vsphere-plugin.zip]
+
+This generates the script &#x60;k8s-relogin&#x60; which allows you to recreate the Kubernetes credentials.
 
 
 ### packages

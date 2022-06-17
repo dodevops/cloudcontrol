@@ -1,6 +1,8 @@
 . /feature-installer-utils.sh
 
 if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
+  echo "#!/bin/sh" > ~/bin/k8s-relogin
+
   for CLUSTER in $(echo "${AZ_K8S_CLUSTERS}" | tr "," "\n"); do
     K8S_RESOURCEGROUP=$(echo "$CLUSTER" | cut -d ":" -f 1)
     K8S_CLUSTER=$(echo "$CLUSTER" | cut -d ":" -f 2)
@@ -19,13 +21,17 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
     if [ "X${K8S_CLUSTER:0:1}X" == "X!X" ]; then
       ADMIN_PARAMETER="--admin"
       K8S_CLUSTER="${K8S_CLUSTER:1}"
-      echo -n "as admin"
+      echo " as admin"
+    else
+      echo ""
     fi
 
-    echo
+    echo az aks get-credentials --overwrite-existing --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER} "${K8S_SUBSCRIPTION[@]}" >> ~/bin/k8s-relogin
 
     execHandle "Fetching k8s credentials for ${CLUSTER}" az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER} "${K8S_SUBSCRIPTION[@]}"
   done
+  chmod +x ~/bin/k8s-relogin
+
   IFS=' ' read -r -a install_options <<< "${AZ_K8S_INSTALL_OPTIONS:=""}"
 
   execHandle "Installing kubectl" sudo az aks install-cli "${install_options[@]}"
@@ -117,7 +123,7 @@ then
     cd - &>/dev/null || exit
     rm -rf "${TEMPDIR}"
 
-    echo "#!/bin/sh" > ~/bin/relogin
+    echo "#!/bin/sh" > ~/bin/k8s-relogin
 
     PATH=$PATH:/home/cloudcontrol/bin
 
@@ -131,7 +137,7 @@ then
     if [ "X${TANZU_ADD_CONTROL_CLUSTER:-no}X" == "XyesX" ]
     then
       execHandle "Authenticating against control cluster" kubectl vsphere login "${loginArgs[@]}"
-      echo kubectl vsphere login "${loginArgs[@]}" >> ~/bin/relogin
+      echo kubectl vsphere login "${loginArgs[@]}" >> ~/bin/k8s-relogin
     fi
 
     for NAMESPACEDCLUSTER in $(echo "${TANZU_CLUSTERS}" | tr "," "\n")
@@ -139,7 +145,7 @@ then
       NAMESPACE=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 1)
       CLUSTER=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 2)
       execHandle "Authenticating against cluster ${CLUSTER} in namespace ${NAMESPACE}" kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}"
-      echo kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}" >> ~/bin/relogin
+      echo kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}" >> ~/bin/k8s-relogin
     done
-    chmod +x ~/bin/relogin
+    chmod +x ~/bin/k8s-relogin
 fi
