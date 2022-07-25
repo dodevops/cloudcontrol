@@ -97,7 +97,7 @@ EOF
   execHandle "Configuring package repository for kubectl" sudo mv "${TEMPFILE}" /etc/yum.repos.d/kubernetes.repo
 
   KUBECTL_PACKAGE="kubectl"
-  if [[ "X${KUBECTL_VERSION}X" -ne "XX" ]]
+  if [[ "X${KUBECTL_VERSION}X" != "XX" ]]
   then
     KUBECTL_PACKAGE="${KUBECTL_PACKAGE}-${KUBECTL_VERSION}"
   fi
