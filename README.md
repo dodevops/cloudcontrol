@@ -262,6 +262,11 @@ docker-compose.yaml, it will ignore an invalid GPG key during the installation.
 
 *Please note though*, that this affects the security of the system and should not be used constantly.
 
+### When i try to start cloud control it keeps exiting with "./ccc: exit status 1" and i want to debug that more
+
+First try the "DEBUG_<feature>" option, if you are really stuck, you can convince the container to keep running by setting
+"CONTINUE_ON_ERROR=yes" as an environment variable in the docker-compose file. Then you can debug with the running container.
+
 ## Flavours
 
 ### aws
@@ -469,7 +474,7 @@ Installs [stern](https://github.com/wercker/stern), a multi pod and container lo
 
 * USE_stern: Enable this feature
 * DEBUG_stern: Debug this feature
-* Environment STERN_VERSION: Valid Stern version (e.g. 1.11.0)
+* Environment STERN_VERSION: Valid Stern version (e.g. 1.21.0)
 
 ### terraform
 
@@ -511,7 +516,7 @@ Installs the [Velero](https://velero.io) kubernetes backup CLI
 
 * USE_velero: Enable this feature
 * DEBUG_velero: Debug this feature
-* Environment VELERO_VERSION: Valid velero version to install (e.g. v1.4.2)
+* Environment VELERO_VERSION: Valid velero version to install (e.g. 1.4.2)
 
 ### vim
 
