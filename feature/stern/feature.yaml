@@ -2,4 +2,4 @@ title: "📜 Stern"
 description: |
     Installs [stern](https://github.com/wercker/stern), a multi pod and container log tailing for Kubernetes
 configuration:
-    - "Environment STERN_VERSION: Valid Stern version (e.g. 1.11.0)"
+    - "Environment STERN_VERSION: Valid Stern version (e.g. 1.21.0)"

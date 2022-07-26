@@ -39,9 +39,9 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
   if [ "X${AZ_KUBELOGIN_VERSION:=""}X" != "XX" ]; then
       TEMPDIR=$(mktemp -d)
       cd "${TEMPDIR}" || exit
-      execHandle "Downloading kubelogin" curl -LO "https://github.com/Azure/kubelogin/releases/download/${AZ_KUBELOGIN_VERSION}/kubelogin-linux-amd64.zip"
-      execHandle "Unpacking kubelogin" unzip kubelogin-linux-amd64.zip
-      execHandle "Moving kubelogin to bin" mv bin/linux_amd64/kubelogin /home/cloudcontrol/bin
+      execHandle "Downloading kubelogin" curl -LO "https://github.com/Azure/kubelogin/releases/download/${AZ_KUBELOGIN_VERSION}/kubelogin-linux-$(getPlatform).zip"
+      execHandle "Unpacking kubelogin" unzip kubelogin-linux-$(getPlatform).zip
+      execHandle "Moving kubelogin to bin" mv bin/linux_$(getPlatform)/kubelogin /home/cloudcontrol/bin
       cd - &>/dev/null || exit
       rm -rf "${TEMPDIR}"
 
@@ -87,7 +87,7 @@ then
   cat <<EOF > "${TEMPFILE}"
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-$(uname -m)
 enabled=1
 gpgcheck=${GPGCHECK}
 repo_gpgcheck=${GPGCHECK}
@@ -107,7 +107,7 @@ elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ]
 then
   TEMPDIR=$(mktemp -d)
   cd "${TEMPDIR}" || exit
-  execHandle "Downloading kubectl" curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION:-$(curl -L -s https://dl.k8s.io/release/stable.txt)}/bin/linux/amd64/kubectl"
+  execHandle "Downloading kubectl" curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION:-$(curl -L -s https://dl.k8s.io/release/stable.txt)}/bin/linux/$(getPlatform)/kubectl"
   execHandle "Making kubectl executable" chmod +x kubectl
   execHandle "Moving kubectl to bin" mv kubectl /home/cloudcontrol/bin
   cd - &>/dev/null || exit
