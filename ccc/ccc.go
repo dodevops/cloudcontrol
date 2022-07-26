@@ -50,7 +50,7 @@ var sortingRegexp = regexp.MustCompile("_(.+)")
 func fatal(err error) {
 	_, _ = fmt.Fprintf(os.Stderr, "%s: %s\n", os.Args[0], err)
 	if _, exists := os.LookupEnv("CONTINUE_ON_ERROR"); ! exists {
-    	os.Exit(1)
+        os.Exit(1)
 	}
 }
 
