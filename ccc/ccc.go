@@ -49,8 +49,8 @@ var sortingRegexp = regexp.MustCompile("_(.+)")
 // Simple handler to handle fatal errors
 func fatal(err error) {
 	_, _ = fmt.Fprintf(os.Stderr, "%s: %s\n", os.Args[0], err)
-	if value, exists := os.LookupEnv("DEBUG_ccc"); exists {
-	    return true
+	if value, exists := os.LookupEnv("CONTINUE_ON_ERROR"); exists {
+	    return
 	}
 	os.Exit(1)
 }
