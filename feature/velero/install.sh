@@ -1,5 +1,7 @@
 . /feature-installer-utils.sh
 
+VELERO_VERSION=$(checkAndCleanVersion "${VELERO_VERSION}")
+
 TEMPDIR=$(mktemp -d)
 cd "${TEMPDIR}" || exit
 

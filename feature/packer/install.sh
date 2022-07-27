@@ -1,5 +1,7 @@
 . /feature-installer-utils.sh
 
+PACKER_VERSION=$(checkAndCleanVersion "${PACKER_VERSION}")
+
 TEMPDIR=$(mktemp -d)
 cd "${TEMPDIR}" || exit
 

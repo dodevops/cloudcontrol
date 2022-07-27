@@ -1,5 +1,7 @@
 . /feature-installer-utils.sh
 
+YQ_VERSION=$(checkAndCleanVersion "${YQ_VERSION}")
+
 TEMPDIR=$(mktemp -d)
 cd "${TEMPDIR}" || exit
 execHandle 'Downloading yq binary' curl -f -s -L "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION:-4.5.0}/yq_linux_$(getPlatform)" -o yq

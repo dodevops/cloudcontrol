@@ -1,5 +1,7 @@
 . /feature-installer-utils.sh
 
+HELM_VERSION=$(checkAndCleanVersion "${HELM_VERSION}")
+
 TEMPDIR=$(mktemp -d)
 cd "${TEMPDIR}" || exit
 

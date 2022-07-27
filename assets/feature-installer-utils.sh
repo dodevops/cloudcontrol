@@ -49,3 +49,14 @@ function getPlatform {
     exit 1
   fi
 }
+
+function checkAndCleanVersion {
+  VERSION=$1
+  if [ "${VERSION:0:1}" == "v" ]
+  then
+    echo "[DEPRECATION WARNING] Please only use versions without the \"v\" prefix for all versions, got \"${VERSION}\"!" >&2
+    echo "${VERSION}" | sed  's/^v//'
+  else
+    echo "${VERSION}"
+  fi
+}

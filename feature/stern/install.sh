@@ -1,5 +1,7 @@
 . /feature-installer-utils.sh
 
+STERN_VERSION=$(checkAndCleanVersion "${STERN_VERSION}")
+
 TEMPDIR=$(mktemp -d)
 cd "${TEMPDIR}" || exit
 

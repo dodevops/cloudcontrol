@@ -69,7 +69,9 @@ environment variable and list the features and optionally the version like this:
 This would install the version 3.5.1 of Helm and version 1.1.9 of terraform. (Kubernetes uses the flavour's provided
 version of kubectl, e.g. using az aks install-cli)
 
-**Note**: Please see the feature documentation below if a feature supports specifying a version string.
+**Note**: Please see the feature documentation below if a feature supports specifying a version string. All version
+strings need to be provided in semver format (f.e. 1.2.3), the feature installers will take care about required "v"
+prefixes for github or similar.
 
 ## Using Kubernetes (Preview)
 

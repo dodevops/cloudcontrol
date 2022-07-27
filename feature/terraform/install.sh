@@ -1,5 +1,7 @@
 . /feature-installer-utils.sh
 
+TERRAFORM_VERSION=$(checkAndCleanVersion "${TERRAFORM_VERSION}")
+
 TEMPDIR=$(mktemp -d)
 cd "${TEMPDIR}" || exit
 
