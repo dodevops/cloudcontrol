@@ -37,11 +37,12 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
   execHandle "Installing kubectl" sudo az aks install-cli "${install_options[@]}"
 
   if [ "X${AZ_KUBELOGIN_VERSION:=""}X" != "XX" ]; then
+      AZ_KUBELOGIN_VERSION=$(checkAndCleanVersion "${AZ_KUBELOGIN_VERSION}")
       TEMPDIR=$(mktemp -d)
       cd "${TEMPDIR}" || exit
-      execHandle "Downloading kubelogin" curl -LO "https://github.com/Azure/kubelogin/releases/download/${AZ_KUBELOGIN_VERSION}/kubelogin-linux-amd64.zip"
-      execHandle "Unpacking kubelogin" unzip kubelogin-linux-amd64.zip
-      execHandle "Moving kubelogin to bin" mv bin/linux_amd64/kubelogin /home/cloudcontrol/bin
+      execHandle "Downloading kubelogin" curl -LO "https://github.com/Azure/kubelogin/releases/download/${AZ_KUBELOGIN_VERSION}/kubelogin-linux-$(getPlatform).zip"
+      execHandle "Unpacking kubelogin" unzip "kubelogin-linux-$(getPlatform).zip"
+      execHandle "Moving kubelogin to bin" mv "bin/linux_$(getPlatform)/kubelogin" /home/cloudcontrol/bin
       cd - &>/dev/null || exit
       rm -rf "${TEMPDIR}"
 
@@ -87,7 +88,7 @@ then
   cat <<EOF > "${TEMPFILE}"
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-$(uname -m)
 enabled=1
 gpgcheck=${GPGCHECK}
 repo_gpgcheck=${GPGCHECK}
@@ -99,15 +100,17 @@ EOF
   KUBECTL_PACKAGE="kubectl"
   if [[ "X${KUBECTL_VERSION}X" != "XX" ]]
   then
+    KUBECTL_VERSION=$(checkAndCleanVersion "${KUBECTL_VERSION}")
     KUBECTL_PACKAGE="${KUBECTL_PACKAGE}-${KUBECTL_VERSION}"
   fi
 
   execHandle "Installing kubectl..." sudo yum install -y "$KUBECTL_PACKAGE"
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ]
 then
+  KUBECTL_VERSION=$(checkAndCleanVersion "${KUBECTL_VERSION}")
   TEMPDIR=$(mktemp -d)
   cd "${TEMPDIR}" || exit
-  execHandle "Downloading kubectl" curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION:-$(curl -L -s https://dl.k8s.io/release/stable.txt)}/bin/linux/amd64/kubectl"
+  execHandle "Downloading kubectl" curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION:-$(curl -L -s https://dl.k8s.io/release/stable.txt)}/bin/linux/$(getPlatform)/kubectl"
   execHandle "Making kubectl executable" chmod +x kubectl
   execHandle "Moving kubectl to bin" mv kubectl /home/cloudcontrol/bin
   cd - &>/dev/null || exit
@@ -115,37 +118,37 @@ then
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XtanzuX" ]
 then
   TEMPDIR=$(mktemp -d)
-    cd "${TEMPDIR}" || exit
-    execHandle "Downloading kubectl and kubectl vsphere plugin" curl -k -L -o kubectl.zip "https://${TANZU_HOST}${TANZU_VSPHERE_PLUGIN_PATH:-/wcp/plugin/linux-amd64/vsphere-plugin.zip}"
-    execHandle "Extracting zip" unzip kubectl.zip
-    execHandle "Moving kubectl to bin" mv bin/kubectl /home/cloudcontrol/bin
-    execHandle "Moving kubectl-vsphere to bin" mv bin/kubectl-vsphere /home/cloudcontrol/bin
-    cd - &>/dev/null || exit
-    rm -rf "${TEMPDIR}"
+  cd "${TEMPDIR}" || exit
+  execHandle "Downloading kubectl and kubectl vsphere plugin" curl -k -L -o kubectl.zip "https://${TANZU_HOST}${TANZU_VSPHERE_PLUGIN_PATH:-/wcp/plugin/linux-amd64/vsphere-plugin.zip}"
+  execHandle "Extracting zip" unzip kubectl.zip
+  execHandle "Moving kubectl to bin" mv bin/kubectl /home/cloudcontrol/bin
+  execHandle "Moving kubectl-vsphere to bin" mv bin/kubectl-vsphere /home/cloudcontrol/bin
+  cd - &>/dev/null || exit
+  rm -rf "${TEMPDIR}"
 
-    echo "#!/bin/sh" > ~/bin/k8s-relogin
+  echo "#!/bin/sh" > ~/bin/k8s-relogin
 
-    PATH=$PATH:/home/cloudcontrol/bin
+  PATH=$PATH:/home/cloudcontrol/bin
 
-    loginArgs=("--server" "${TANZU_HOST}" "--vsphere-username" "${TANZU_USERNAME}")
+  loginArgs=("--server" "${TANZU_HOST}" "--vsphere-username" "${TANZU_USERNAME}")
 
-    if [ "X${TANZU_SKIP_TLS_VERIFY:-no}X" == "XyesX" ]
-    then
-      loginArgs+=("--insecure-skip-tls-verify")
-    fi
+  if [ "X${TANZU_SKIP_TLS_VERIFY:-no}X" == "XyesX" ]
+  then
+    loginArgs+=("--insecure-skip-tls-verify")
+  fi
 
-    if [ "X${TANZU_ADD_CONTROL_CLUSTER:-no}X" == "XyesX" ]
-    then
-      execHandle "Authenticating against control cluster" kubectl vsphere login "${loginArgs[@]}"
-      echo kubectl vsphere login "${loginArgs[@]}" >> ~/bin/k8s-relogin
-    fi
+  if [ "X${TANZU_ADD_CONTROL_CLUSTER:-no}X" == "XyesX" ]
+  then
+    execHandle "Authenticating against control cluster" kubectl vsphere login "${loginArgs[@]}"
+    echo kubectl vsphere login "${loginArgs[@]}" >> ~/bin/k8s-relogin
+  fi
 
-    for NAMESPACEDCLUSTER in $(echo "${TANZU_CLUSTERS}" | tr "," "\n")
-    do
-      NAMESPACE=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 1)
-      CLUSTER=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 2)
-      execHandle "Authenticating against cluster ${CLUSTER} in namespace ${NAMESPACE}" kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}"
-      echo kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}" >> ~/bin/k8s-relogin
-    done
-    chmod +x ~/bin/k8s-relogin
+  for NAMESPACEDCLUSTER in $(echo "${TANZU_CLUSTERS}" | tr "," "\n")
+  do
+    NAMESPACE=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 1)
+    CLUSTER=$(echo "$NAMESPACEDCLUSTER" | cut -d ":" -f 2)
+    execHandle "Authenticating against cluster ${CLUSTER} in namespace ${NAMESPACE}" kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}"
+    echo kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}" >> ~/bin/k8s-relogin
+  done
+  chmod +x ~/bin/k8s-relogin
 fi

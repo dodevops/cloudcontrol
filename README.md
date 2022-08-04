@@ -101,7 +101,9 @@ environment variable and list the features and optionally the version like this:
 This would install the version 3.5.1 of Helm and version 1.1.9 of terraform. (Kubernetes uses the flavour's provided
 version of kubectl, e.g. using az aks install-cli)
 
-**Note**: Please see the feature documentation below if a feature supports specifying a version string.
+**Note**: Please see the feature documentation below if a feature supports specifying a version string. All version
+strings need to be provided in semver format (f.e. 1.2.3), the feature installers will take care about required "v"
+prefixes for github or similar.
 
 ## Using Kubernetes (Preview)
 
@@ -261,6 +263,12 @@ so we added a workaround to this problem. If you add the environment variable `A
 docker-compose.yaml, it will ignore an invalid GPG key during the installation.
 
 *Please note though*, that this affects the security of the system and should not be used constantly.
+
+### When i try to start cloud control, it keeps exiting with "./ccc: exit status 1" and i want to debug that more
+
+Use the `docker logs` command with the failed container to see the complete log output. You can enhance the log by using the
+"DEBUG_<feature>" options. If you are really stuck, you can convince the container to keep running by setting "CONTINUE_ON_ERROR=yes" as an
+environment variable in the docker-compose file. Then you can debug with the running container.
 
 ## Flavours
 
@@ -469,7 +477,7 @@ Installs [stern](https://github.com/wercker/stern), a multi pod and container lo
 
 * USE_stern: Enable this feature
 * DEBUG_stern: Debug this feature
-* Environment STERN_VERSION: Valid Stern version (e.g. 1.11.0)
+* Environment STERN_VERSION: Valid Stern version (e.g. 1.21.0)
 
 ### terraform
 
@@ -511,7 +519,7 @@ Installs the [Velero](https://velero.io) kubernetes backup CLI
 
 * USE_velero: Enable this feature
 * DEBUG_velero: Debug this feature
-* Environment VELERO_VERSION: Valid velero version to install (e.g. v1.4.2)
+* Environment VELERO_VERSION: Valid velero version to install (e.g. 1.4.2)
 
 ### vim
 

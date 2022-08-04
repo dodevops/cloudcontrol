@@ -1,4 +1,4 @@
 title: "🌊 Velero"
 description: "Installs the [Velero](https://velero.io) kubernetes backup CLI"
 configuration:
-    - "Environment VELERO_VERSION: Valid velero version to install (e.g. v1.4.2)"
+    - "Environment VELERO_VERSION: Valid velero version to install (e.g. 1.4.2)"

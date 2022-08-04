@@ -1,9 +1,11 @@
 . /feature-installer-utils.sh
 
+TERRAFORM_VERSION=$(checkAndCleanVersion "${TERRAFORM_VERSION}")
+
 TEMPDIR=$(mktemp -d)
 cd "${TEMPDIR}" || exit
 
-execHandle "Downloading terraform" curl -f -s -L "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" --output terraform.zip
+execHandle "Downloading terraform" curl -f -s -L "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_$(getPlatform).zip" --output terraform.zip
 execHandle "Unpacking terraform"  unzip terraform.zip
 execHandle "Installing terraform" mv terraform /home/cloudcontrol/bin/terraform
 

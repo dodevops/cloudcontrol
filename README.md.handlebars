@@ -69,7 +69,9 @@ environment variable and list the features and optionally the version like this:
 This would install the version 3.5.1 of Helm and version 1.1.9 of terraform. (Kubernetes uses the flavour's provided
 version of kubectl, e.g. using az aks install-cli)
 
-**Note**: Please see the feature documentation below if a feature supports specifying a version string.
+**Note**: Please see the feature documentation below if a feature supports specifying a version string. All version
+strings need to be provided in semver format (f.e. 1.2.3), the feature installers will take care about prefixes for
+download URLs, if required.
 
 ## Using Kubernetes (Preview)
 
@@ -229,6 +231,12 @@ so we added a workaround to this problem. If you add the environment variable `A
 docker-compose.yaml, it will ignore an invalid GPG key during the installation.
 
 *Please note though*, that this affects the security of the system and should not be used constantly.
+
+### When I try to start CloudControl, it keeps exiting with "./ccc: exit status 1". What can I do?
+
+Use the `docker logs` command with the failed container to see the complete log output. You can enhance the log by using the
+"DEBUG_<feature>" options. If you are really stuck, you can convince the container to keep running by setting "CONTINUE_ON_ERROR=yes" as an
+environment variable in the docker-compose file. Then you can debug with the running container.
 
 ## Flavours
 

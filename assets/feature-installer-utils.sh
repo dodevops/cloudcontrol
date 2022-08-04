@@ -37,3 +37,26 @@ function waitForMfaCode {
   done
   echo "[VALID_CODE] Valid code entered. Thank you."
 }
+
+function getPlatform {
+  if [ "$(uname -m)" == 'aarch64' ]
+  then
+    echo 'arm64'
+  elif [ "$(uname -m)" == 'x86_64' ]
+  then
+    echo 'amd64'
+  else
+    exit 1
+  fi
+}
+
+function checkAndCleanVersion {
+  VERSION=$1
+  if [ "${VERSION:0:1}" == "v" ]
+  then
+    echo "[DEPRECATION WARNING] Versions with a \"v\" prefix are deprecated and will be removed in CloudControl 4.0. Please only use versions without the \"v\" prefix. (Got \"${VERSION}\")" >&2
+    echo "${VERSION/#v/}"
+  else
+    echo "${VERSION}"
+  fi
+}
