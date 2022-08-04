@@ -55,7 +55,7 @@ function checkAndCleanVersion {
   if [ "${VERSION:0:1}" == "v" ]
   then
     echo "[DEPRECATION WARNING] Versions with a \"v\" prefix are deprecated and will be removed in CloudControl 4.0. Please only use versions without the \"v\" prefix. (Got \"${VERSION}\")" >&2
-    echo "${VERSION}" | sed  's/^v//'
+    echo "${VERSION/#v/}"
   else
     echo "${VERSION}"
   fi
