@@ -40,7 +40,7 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
       AZ_KUBELOGIN_VERSION=$(checkAndCleanVersion "${AZ_KUBELOGIN_VERSION}")
       TEMPDIR=$(mktemp -d)
       cd "${TEMPDIR}" || exit
-      execHandle "Downloading kubelogin" curl -LO "https://github.com/Azure/kubelogin/releases/download/${AZ_KUBELOGIN_VERSION}/kubelogin-linux-$(getPlatform).zip"
+      execHandle "Downloading kubelogin" curl -LO "https://github.com/Azure/kubelogin/releases/download/v${AZ_KUBELOGIN_VERSION}/kubelogin-linux-$(getPlatform).zip"
       execHandle "Unpacking kubelogin" unzip "kubelogin-linux-$(getPlatform).zip"
       execHandle "Moving kubelogin to bin" mv "bin/linux_$(getPlatform)/kubelogin" /home/cloudcontrol/bin
       cd - &>/dev/null || exit
