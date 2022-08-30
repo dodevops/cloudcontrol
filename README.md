@@ -102,8 +102,8 @@ This would install the version 3.5.1 of Helm and version 1.1.9 of terraform. (Ku
 version of kubectl, e.g. using az aks install-cli)
 
 **Note**: Please see the feature documentation below if a feature supports specifying a version string. All version
-strings need to be provided in semver format (f.e. 1.2.3), the feature installers will take care about required "v"
-prefixes for github or similar.
+strings need to be provided in semver format (f.e. 1.2.3), the feature installers will take care about prefixes for
+download URLs, if required.
 
 ## Using Kubernetes (Preview)
 
@@ -264,7 +264,7 @@ docker-compose.yaml, it will ignore an invalid GPG key during the installation.
 
 *Please note though*, that this affects the security of the system and should not be used constantly.
 
-### When i try to start cloud control, it keeps exiting with "./ccc: exit status 1" and i want to debug that more
+### When I try to start CloudControl, it keeps exiting with "./ccc: exit status 1". What can I do?
 
 Use the `docker logs` command with the failed container to see the complete log output. You can enhance the log by using the
 "DEBUG_<feature>" options. If you are really stuck, you can convince the container to keep running by setting "CONTINUE_ON_ERROR=yes" as an
@@ -470,7 +470,7 @@ Runs commands inside the shell when entering the cloud control container
 
 ### stern
 
-Installs [stern](https://github.com/wercker/stern), a multi pod and container log tailing for Kubernetes
+Installs [stern](https://github.com/stern/stern), a multi pod and container log tailing for Kubernetes
 
 
 #### Configuration
