@@ -406,9 +406,6 @@ This generates the script `k8s-relogin` which allows you to recreate the Kuberne
 * (azure flavour) Environment AZ_K8S_INSTALL_OPTIONS: Additional options for the az aks install-cli programm.
 (Defaults to empty)
 
-* (azure flavour) Environment AZ_KUBELOGIN_VERSION: Version of kubelogin to install (e.g. v0.0.13). Kubelogin 
-won't be installed, if not set (which is the default)
-
 * (aws flavour) Environment AWS_K8S_CLUSTERS: A comma separated list of EKS clusters to manage
 inside *CloudControl* (only for aws flavour).
 For each cluster give the cluster name. If you need to assume an ARN role, add that to the clustername
