@@ -341,7 +341,7 @@ Installs [AzCopy](https://github.com/Azure/azure-storage-azcopy)
 
 ### bitwarden
 
-Installs the [Bitwarden cli](https://bitwarden.com/help/cli/)
+Installs the [Bitwarden CLI](https://bitwarden.com/help/cli/)
 
 #### Configuration
 

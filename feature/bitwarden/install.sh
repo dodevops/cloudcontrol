@@ -11,4 +11,5 @@ execHandle "Downloading bitwarden client" curl -L -o bw.zip "https://vault.bitwa
 execHandle "Unzipping bitwarden client" unzip bw.zip
 execHandle "Making bitwarden client executable" chmod +x bw
 execHandle "Installing bitwarden client" mv bw /home/cloudcontrol/bin
+cd - &>/dev/null || exit
 rm -rf "${TEMPDIR}"
