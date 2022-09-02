@@ -20,7 +20,7 @@ Following features and tools are supported:
 * 🐟 Fish Shell
 * 📷 AzCopy
 * 🔐 Bitwarden
-* ⚙️  Direnv
+* ⚙️ Direnv
 * ⛵️ Helm
 * 🛠  JQ
 * ⌨️ kc Quick Kubernetes Context switch
