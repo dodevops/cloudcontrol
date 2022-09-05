@@ -1,4 +1,5 @@
-title: "🐳 Kubernetes"
+icon: "🐳"
+title: "Kubernetes"
 description: "Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/) with [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) to connect to the flavour's kubernetes clusters"
 configuration:
     - |
@@ -45,4 +46,3 @@ configuration:
         * Environment TANZU_VSPHERE_PLUGIN_PATH: The path where to find the kubectl vsphere plugin [/wcp/plugin/linux-amd64/vsphere-plugin.zip]
         
         This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
-        

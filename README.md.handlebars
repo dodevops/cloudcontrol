@@ -11,19 +11,19 @@ The toolbox comes in different "flavours" depending on what cloud you are workin
 Currently supported cloud flavours are:
 
 {{#each docObjects.flavour}}
-* {{ this.title }}
+* {{{ this.title }}}
 {{/each}}
 
 Following features and tools are supported:
 
 {{#each docObjects.feature}}
-* {{ this.title }}
+* {{#if this.icon}}{{this.icon}}{{/if}} {{{ this.title }}}
 {{/each}}
 
 ## Table of contents
 
 * [Usage](#usage)
-* [Using Kubernetes](#using-kubernetes)
+* [Using Kubernetes](#using-kubernetes-preview)
 * [FAQ](#faq)
 * [Flavours](#flavours)
 {{#each docObjects.flavour}}
@@ -243,28 +243,28 @@ environment variable in the docker-compose file. Then you can debug with the run
 {{#each docObjects.flavour}}
 ### {{ @key }}
 
-{{ this.description }}
+{{{ this.description }}}
 
 #### Configuration
 
 {{#each this.configuration}}
-* {{ this }}
+* {{{ this }}}
 {{/each}}
 {{/each}}
 
 ## Features
 
 {{#each docObjects.feature}}
-### {{ @key }}
+### {{{ @key }}}
 
-{{ this.description }}
+{{{ this.description }}}
 
 #### Configuration
 
 * USE_{{ @key }}: Enable this feature
 * DEBUG_{{ @key }}: Debug this feature
 {{#each this.configuration }}
-* {{ this }}
+* {{{ this }}}
 {{/each}}
 
 {{/each}}

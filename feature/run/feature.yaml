@@ -1,4 +1,5 @@
-title: "👟 Run"
+icon: "👟"
+title: "Run"
 description: "Runs commands inside the shell when entering the cloud control container"
 configuration:
     - "Environment RUN_COMMANDS: Valid shell commands to run"

@@ -6,7 +6,7 @@ const handlebars = require('handlebars')
 const YAML = require('yaml')
 const fs = require('fs').promises
 const bluebird = require('bluebird')
-const sortRegexp = new RegExp("_(.+)")
+const sortRegexp = /_(.+)/
 
 // Build feature objects
 
@@ -20,15 +20,17 @@ bluebird
                     return bluebird.reduce(
                         partNames,
                         (docObject, partName) => {
-                            return fs.readFile(`${part}/${partName}/${part}.yaml`, { encoding: 'utf8' }).then(featureDescriptor => {
-                                let docPartName = partName
-                                if (sortRegexp.test(partName)) {
-                                  const matches = partName.match(sortRegexp)
-                                  docPartName = matches[1]
-                                }
-                                docObject[docPartName] = YAML.parse(featureDescriptor)
-                                return docObject
-                            })
+                            return fs
+                                .readFile(`${part}/${partName}/${part}.yaml`, {encoding: 'utf8'})
+                                .then(featureDescriptor => {
+                                    let docPartName = partName
+                                    if (sortRegexp.test(partName)) {
+                                        const matches = partName.match(sortRegexp)
+                                        docPartName = matches[1]
+                                    }
+                                    docObject[docPartName] = YAML.parse(featureDescriptor)
+                                    return docObject
+                                })
                         },
                         {}
                     )
@@ -41,12 +43,14 @@ bluebird
         {}
     )
     .then(docObjects => {
-        return fs.readFile('README.md.handlebars', { encoding: 'utf8' }).then(readmeTemplateSource => {
-            const readmeTemplate = handlebars.compile(readmeTemplateSource)
-            return readmeTemplate({
-                docObjects: docObjects
+        return fs
+            .readFile('README.md.handlebars', {encoding: 'utf8'})
+            .then(readmeTemplateSource => {
+                const readmeTemplate = handlebars.compile(readmeTemplateSource)
+                return readmeTemplate({
+                    docObjects: docObjects
+                })
             })
-        })
     })
     .then(readme => {
         return fs.writeFile('README.md', readme)
