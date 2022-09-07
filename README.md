@@ -19,7 +19,8 @@ Following features and tools are supported:
 
 * 🐟 Fish Shell
 * 📷 AzCopy
-* ⚙️  Direnv
+* 🔐 Bitwarden
+* ⚙️ Direnv
 * ⛵️ Helm
 * 🛠  JQ
 * ⌨️ kc Quick Kubernetes Context switch
@@ -49,6 +50,7 @@ Following features and tools are supported:
 * [Features](#features)
     * [fish](#fish)
     * [azcopy](#azcopy)
+    * [bitwarden](#bitwarden)
     * [direnv](#direnv)
     * [helm](#helm)
     * [jq](#jq)
@@ -336,6 +338,15 @@ Installs [AzCopy](https://github.com/Azure/azure-storage-azcopy)
 
 * USE_azcopy: Enable this feature
 * DEBUG_azcopy: Debug this feature
+
+### bitwarden
+
+Installs the [Bitwarden CLI](https://bitwarden.com/help/cli/)
+
+#### Configuration
+
+* USE_bitwarden: Enable this feature
+* DEBUG_bitwarden: Debug this feature
 
 ### direnv
 
