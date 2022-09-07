@@ -1,4 +1,5 @@
-title: "🌏 Terraform"
+icon: "🌏"
+title: "Terraform"
 description: "Installs and configures [Terraform](https://terraform.io)"
 configuration:
     - "Volume-target /terraform: Your local terraform base directory"

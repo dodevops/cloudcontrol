@@ -1,2 +1,3 @@
-title: "🐟 Fish Shell"
+icon: "🐟"
+title: "Fish Shell"
 description: "Installs and configures the [Fish Shell](https://fishshell.com/) with configured [Spacefish theme](https://spacefish.matchai.me/)"

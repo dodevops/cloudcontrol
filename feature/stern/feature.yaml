@@ -1,4 +1,5 @@
-title: "📜 Stern"
+icon: "📜"
+title: "Stern"
 description: |
     Installs [stern](https://github.com/stern/stern), a multi pod and container log tailing for Kubernetes
 configuration:

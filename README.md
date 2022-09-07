@@ -10,19 +10,18 @@ required and configured to manage modern cloud infrastructures.
 The toolbox comes in different "flavours" depending on what cloud you are working in.
 Currently supported cloud flavours are:
 
-* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-aws?sort&#x3D;semver) [AWS](https://hub.docker.com/r/dodevops/cloudcontrol-aws) (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli))
-* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-azure?sort&#x3D;semver) [Azure](https://hub.docker.com/r/dodevops/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))
-* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-simple?sort&#x3D;semver) [Simple](https://hub.docker.com/r/dodevops/cloudcontrol-simple) (based on [alpine](https://hub.docker.com/_/alpine))
-* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-tanzu?sort&#x3D;semver) [Tanzu](https://hub.docker.com/r/dodevops/cloudcontrol-tanzu) (based on [alpine](https://hub.docker.com/_/alpine))
+* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-aws?sort=semver) [AWS](https://hub.docker.com/r/dodevops/cloudcontrol-aws) (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli))
+* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-azure?sort=semver) [Azure](https://hub.docker.com/r/dodevops/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))
+* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-simple?sort=semver) [Simple](https://hub.docker.com/r/dodevops/cloudcontrol-simple) (based on [alpine](https://hub.docker.com/_/alpine))
+* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-tanzu?sort=semver) [Tanzu](https://hub.docker.com/r/dodevops/cloudcontrol-tanzu) (based on [alpine](https://hub.docker.com/_/alpine))
 
 Following features and tools are supported:
 
 * 🐟 Fish Shell
 * 📷 AzCopy
-* 🔐 Bitwarden
 * ⚙️ Direnv
 * ⛵️ Helm
-* 🛠  JQ
+* 🛠 JQ
 * ⌨️ kc Quick Kubernetes Context switch
 * 🐚 Kubectlnodeshell
 * 🐳 Kubernetes
@@ -34,13 +33,13 @@ Following features and tools are supported:
 * 🐗 Terragrunt
 * 🕰 Timezone configuration
 * 🌊 Velero
-* 𝑉  Vim
-* 🛠  YQ
+* 𝑉 Vim
+* 🛠 YQ
 
 ## Table of contents
 
 * [Usage](#usage)
-* [Using Kubernetes](#using-kubernetes)
+* [Using Kubernetes](#using-kubernetes-preview)
 * [FAQ](#faq)
 * [Flavours](#flavours)
     * [aws](#aws)
@@ -50,7 +49,6 @@ Following features and tools are supported:
 * [Features](#features)
     * [fish](#fish)
     * [azcopy](#azcopy)
-    * [bitwarden](#bitwarden)
     * [direnv](#direnv)
     * [helm](#helm)
     * [jq](#jq)
@@ -279,7 +277,7 @@ environment variable in the docker-compose file. Then you can debug with the run
 Can be used to connect to infrastructure in the AWS cloud. Also see [the AWS CLI documentation](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) for more configuration options.
 If you have activated MFA, set AWS_MFA_ARN to the ARN of your MFA device so CloudControl will ask you
 for your code.
-To start a new session in the CloudControl context, run &#x60;createSession &lt;token&gt;&#x60; afterwards
+To start a new session in the CloudControl context, run `createSession <token>` afterwards
 
 
 #### Configuration
@@ -290,7 +288,7 @@ To start a new session in the CloudControl context, run &#x60;createSession &lt;
 * Environment AWS_MFA_ARN: ARN of the MFA device to use to log in
 ### azure
 
-Can be used to connect to infrastructure in the Azure cloud. Because we&#x27;re using a container,
+Can be used to connect to infrastructure in the Azure cloud. Because we're using a container,
 a device login will happen, requiring the user to go to a website, enter a code and login.
 This only happens once during initialization phase.
 
@@ -310,10 +308,11 @@ Can be used to connect to infrastructure outside of a specific cloud provider.
 
 Includes workflows and tools to connect to a Tanzu cluster.
 
-#### Note about logins when using the &quot;kubernetes&quot; feature
+#### Note about logins when using the _"kubernetes"_ feature
 
-The kubernetes login tokens usually expire after a few hours already. You can run the &amp;#x60;relogin&amp;#x60; script (located in ~/bin, thus
-available without path) to re-execute the same login commands as the initialization process does.
+The kubernetes login tokens usually expire after a few hours already. You can run the `k8s-relogin` script
+(located in ~/bin, thus available without path) to re-execute the same login commands as the initialization process
+does.
 
 
 #### Configuration
@@ -338,15 +337,6 @@ Installs [AzCopy](https://github.com/Azure/azure-storage-azcopy)
 
 * USE_azcopy: Enable this feature
 * DEBUG_azcopy: Debug this feature
-
-### bitwarden
-
-Installs the [Bitwarden CLI](https://bitwarden.com/help/cli/)
-
-#### Configuration
-
-* USE_bitwarden: Enable this feature
-* DEBUG_bitwarden: Debug this feature
 
 ### direnv
 
@@ -397,7 +387,7 @@ Installs [kubectl node-shell](https://github.com/kvaps/kubectl-node-shell)
 
 ### kubernetes
 
-Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/) with [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) to connect to the flavour&#x27;s kubernetes clusters
+Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/) with [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) to connect to the flavour's kubernetes clusters
 
 #### Configuration
 
@@ -411,13 +401,13 @@ For example: myresourcegroup:myk8s,myotherresourcegroup@othersubscription:myseco
 the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup in the
 subscription othersubscription.
 Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
-This generates the script &#x60;k8s-relogin&#x60; which allows you to recreate the Kubernetes credentials.
+This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
 
 * (azure flavour) Environment AZ_K8S_INSTALL_OPTIONS: Additional options for the az aks install-cli programm.
 (Defaults to empty)
 
 * (azure flavour) Environment AZ_KUBELOGIN_VERSION: Version of kubelogin to install (e.g. v0.0.13). Kubelogin 
-won&#x27;t be installed, if not set (which is the default)
+won't be installed, if not set (which is the default)
 
 * (aws flavour) Environment AWS_K8S_CLUSTERS: A comma separated list of EKS clusters to manage
 inside *CloudControl* (only for aws flavour).
@@ -445,7 +435,7 @@ seems to fail.
 * Environment TANZU_SKIP_TLS_VERIFY: Skip TLS verification [false]
 * Environment TANZU_VSPHERE_PLUGIN_PATH: The path where to find the kubectl vsphere plugin [/wcp/plugin/linux-amd64/vsphere-plugin.zip]
 
-This generates the script &#x60;k8s-relogin&#x60; which allows you to recreate the Kubernetes credentials.
+This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
 
 
 ### packages
@@ -456,7 +446,7 @@ Installs additional packages into the container
 
 * USE_packages: Enable this feature
 * DEBUG_packages: Debug this feature
-* Environment PACKAGES: A whitespace separated list of packages to install. The packages will be installed with the flavour&#x27;s default package manager.
+* Environment PACKAGES: A whitespace separated list of packages to install. The packages will be installed with the flavour's default package manager.
 
 
 ### packer
@@ -514,7 +504,7 @@ Installs [Terragrunt](https://github.com/gruntwork-io/terragrunt)
 
 ### timezone
 
-Configures the container&#x27;s timezone
+Configures the container's timezone
 
 #### Configuration
 
