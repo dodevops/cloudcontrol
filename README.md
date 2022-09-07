@@ -353,7 +353,7 @@ Installs the [Bitwarden CLI](https://bitwarden.com/help/cli/)
 
 ### certificates
 
-Configures given certificate authorities (*.pem) into the container
+Adds specified trusted certificate authorities into the container
 
 #### Configuration
 
@@ -367,8 +367,9 @@ Configures given certificate authorities (*.pem) into the container
 * Volume-target /certificates: Target directory for certificates. If something different than /certificates is used, environment 
 CERTIFICATES_PATH needs to be set to this path
 
-* Environment CERTIFICATES_PATH: A path in the container to certificate authorities .pem files (optional). Defaults to 
-`/certificates`. If something different than the default is used, the volume-target needs to be adapted to the same directory
+* Environment CERTIFICATES_PATH: The container path to the volume mount that holds trusted certificate authorities as .pem files 
+(optional). Defaults to `/certificates`. If something different than the default is used, the volume-target needs to be adapted to 
+the same directory
 
 
 ### direnv
