@@ -19,6 +19,8 @@ Following features and tools are supported:
 
 * 🐟 Fish Shell
 * 📷 AzCopy
+* 🔐 Bitwarden
+* 🪪 Certificates
 * ⚙️ Direnv
 * ⛵️ Helm
 * 🛠 JQ
@@ -49,6 +51,8 @@ Following features and tools are supported:
 * [Features](#features)
     * [fish](#fish)
     * [azcopy](#azcopy)
+    * [bitwarden](#bitwarden)
+    * [certificates](#certificates)
     * [direnv](#direnv)
     * [helm](#helm)
     * [jq](#jq)
@@ -338,6 +342,35 @@ Installs [AzCopy](https://github.com/Azure/azure-storage-azcopy)
 * USE_azcopy: Enable this feature
 * DEBUG_azcopy: Debug this feature
 
+### bitwarden
+
+Installs the [Bitwarden CLI](https://bitwarden.com/help/cli/)
+
+#### Configuration
+
+* USE_bitwarden: Enable this feature
+* DEBUG_bitwarden: Debug this feature
+
+### certificates
+
+Configures given certificate authorities (*.pem) into the container
+
+#### Configuration
+
+* USE_certificates: Enable this feature
+* DEBUG_certificates: Debug this feature
+* Add a volume mount to the `volumes:` section of docker compose like this:
+     (...)
+     volumes:
+         - "<Path to directory with CA .pem files>:/certificates"
+
+* Volume-target /certificates: Target directory for certificates. If something different than /certificates is used, environment 
+CERTIFICATES_PATH needs to be set to this path
+
+* Environment CERTIFICATES_PATH: A path in the container to certificate authorities .pem files (optional). Defaults to 
+`/certificates`. If something different than the default is used, the volume-target needs to be adapted to the same directory
+
+
 ### direnv
 
 Installs [Direnv](https://direnv.net/)
@@ -488,9 +521,25 @@ Installs and configures [Terraform](https://terraform.io)
 
 * USE_terraform: Enable this feature
 * DEBUG_terraform: Debug this feature
-* Volume-target /terraform: Your local terraform base directory
-* Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. Terraform app secrets, etc.)
+* Add a volume mount to the `volumes:` section of docker compose like this:
+     (...)
+     volumes:
+         - "<path-to-terraform>:/terraform"
+
+* Volume-target /terraform: Terraform base target directory. If something different than /terraform is used, environment
+TERRAFORM_PATH needs to be set to this path
+
+* Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. 
+Terraform app secrets, etc.). If something different than /credentials.terraform is used, environment TERRAFORM_CREDENTIALS_PATH 
+needs to be set to this path
+
 * Environment TERRAFORM_VERSION: A valid terraform version to install (e.g. 0.12.17)
+* Environment TERRAFORM_PATH: Volume target for terraform base directory (optional). Defaults to `/terraform`. If something different 
+than the default is used, the volume-target needs to be adapted to the same directory
+
+* Environment TERRAFORM_CREDENTIALS_PATH: Volume target for terraform credentials (optional). Defaults to `/terraform`. If something 
+different than the default is used, the volume-target needs to be adapted to the same directory
+
 
 ### terragrunt
 
