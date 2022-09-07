@@ -2,8 +2,6 @@ version: "3"
 services:
     cli:
         image: "dodevops/cloudcontrol-tanzu:latest"
-        volumes:
-            - "<path-to-terraform>:/terraform"
         ports:
             - "8080" # CloudControlCenter port
             - "8081" # Port that can be used for port forwardings
