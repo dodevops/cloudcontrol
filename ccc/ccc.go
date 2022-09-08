@@ -3,20 +3,21 @@ package main
 
 import (
 	"fmt"
-	markdown "github.com/MichaelMure/go-term-markdown"
-	"github.com/gin-gonic/gin"
-	"gopkg.in/yaml.v2"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"nullprogram.com/x/optparse"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
 	"strings"
+
+	markdown "github.com/MichaelMure/go-term-markdown"
+	"github.com/gin-gonic/gin"
+	"gopkg.in/yaml.v2"
+	"nullprogram.com/x/optparse"
 )
 
 // All installation steps that need to be carried out
@@ -48,10 +49,10 @@ var sortingRegexp = regexp.MustCompile("_(.+)")
 
 // Simple handler to handle fatal errors
 func fatal(err error) {
-    _, _ = fmt.Fprintf(os.Stderr, "%s: %s\n", os.Args[0], err)
-    if _, exists := os.LookupEnv("CONTINUE_ON_ERROR"); ! exists {
-        os.Exit(1)
-    }
+	_, _ = fmt.Fprintf(os.Stderr, "%s: %s\n", os.Args[0], err)
+	if _, exists := os.LookupEnv("CONTINUE_ON_ERROR"); !exists {
+		os.Exit(1)
+	}
 }
 
 // ConsoleWriter used to capture console output
@@ -69,6 +70,7 @@ func (ConsoleWriter) Write(p []byte) (n int, err error) {
 
 type FeatureYaml struct {
 	Path          string
+	Icon          string
 	Title         string
 	Description   string
 	Configuration []string
@@ -284,12 +286,11 @@ func main() {
 		case "text/plain":
 			output := ""
 			for feature, featureInfo := range features {
-				output += fmt.Sprintf("# %s\n\n", featureInfo.Title)
-				output += fmt.Sprintf("%s\n\n", featureInfo.Description)
+				output += fmt.Sprintf("# %-4s%s\n%s\n\n\n", featureInfo.Icon, featureInfo.Title, featureInfo.Description)
 				motdFile := fmt.Sprintf("/home/cloudcontrol/feature-installers/%s/motd.sh", feature)
 				if _, err := os.Stat(motdFile); err == nil {
-					if commandOutput, err := exec.Command("bash", motdFile).Output(); err == nil {
-						output += string(commandOutput) + "\n\n"
+					if motdFileContent, err := exec.Command("bash", motdFile).Output(); err == nil {
+						output += string(motdFileContent) + "\n\n"
 					}
 				}
 			}
