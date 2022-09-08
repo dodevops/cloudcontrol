@@ -23,8 +23,8 @@
       </v-row>
       <v-row>
         <v-col cols="12">
-          If you want to change a configuration in your docker-compose.yaml, <b>rerun the init script</b> to
-            apply the changes.
+          If you want to change a configuration in your docker-compose.yaml,
+          <strong>rerun the init script</strong> to apply the changes.
         </v-col>
       </v-row>
       <v-row>
@@ -32,6 +32,7 @@
           <v-list>
             <v-subheader>Installed features</v-subheader>
             <v-list-item v-for="(feature, step) in features">
+              <v-list-item-icon>{{ feature.Icon }}</v-list-item-icon>
               <v-list-item-title>{{ feature.Title }}</v-list-item-title>
               <v-list-item-subtitle>
                 <vue-markdown :source="feature.Description"></vue-markdown>
@@ -51,6 +52,7 @@ import * as axios from 'axios';
 import VueMarkdown from 'vue-markdown-render';
 
 interface Feature {
+  Icon: string;
   Title: string;
   Description: string;
 }
