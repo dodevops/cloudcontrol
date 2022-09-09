@@ -1,6 +1,7 @@
 . /feature-installer-utils.sh
 
-if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XtanzuX" ]
+FLAVOUR="$(cat /home/cloudcontrol/flavour)"
+if [ "X${FLAVOUR}X" == "XazureX" ] || [ "X${FLAVOUR}X" == "XsimpleX" ] || [ "X${FLAVOUR}X" == "XtanzuX" ]
 then
   execHandle "Installing tzdata package" sudo apk add tzdata
 fi

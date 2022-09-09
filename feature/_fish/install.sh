@@ -1,10 +1,11 @@
 . /feature-installer-utils.sh
 
-if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XtanzuX" ]
+FLAVOUR="$(cat /home/cloudcontrol/flavour)"
+if [ "X${FLAVOUR}X" == "XazureX" ] || [ "X${FLAVOUR}X" == "XsimpleX" ] || [ "X${FLAVOUR}X" == "XtanzuX" ]
 then
   echo "Installing packages"
   execHandle 'Installing fish' sudo apk add fish perl fzf git
-elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
+elif [ "X${FLAVOUR}X" == "XawsX" ]
 then
   execHandle 'Downloading fish repo' sudo curl -f -s -L https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_7/shells:fish:release:3.repo -o /etc/yum.repos.d/shells:fish:release:3.repo
   execHandle 'Installing fish' sudo yum install -y fish git
@@ -33,7 +34,7 @@ if test -n "\$SSH_AUTH_SOCK" && test -e "\$SSH_AUTH_SOCK"
 end
 EOF
 
-if [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
+if [ "X${FLAVOUR}X" == "XawsX" ]
 then
   cat <<EOF >>~/.config/fish/conf.d/aws.fish
 set -x ORIGINAL_AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
