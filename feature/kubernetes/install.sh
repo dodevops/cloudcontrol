@@ -1,7 +1,7 @@
 . /feature-installer-utils.sh
 
-FLAVOUR="$(cat /home/cloudcontrol/flavour)"
-if [ "X${FLAVOUR}X" == "XazureX" ]; then
+FLAVOUR="X$(cat /home/cloudcontrol/flavour)X"
+if [ "${FLAVOUR}" == "XazureX" ]; then
   echo "#!/bin/sh" > ~/bin/k8s-relogin
 
   for CLUSTER in $(echo "${AZ_K8S_CLUSTERS}" | tr "," "\n"); do
@@ -49,7 +49,7 @@ if [ "X${FLAVOUR}X" == "XazureX" ]; then
 
       execHandle "Converting credentials to kubelogin" /home/cloudcontrol/bin/kubelogin convert-kubeconfig
   fi
-elif [ "X${FLAVOUR}X" == "XawsX" ]
+elif [ "${FLAVOUR}" == "XawsX" ]
 then
   waitForMfaCode
   for CLUSTER in $(echo "${AWS_K8S_CLUSTERS}" | tr "," "\n")
@@ -106,7 +106,7 @@ EOF
   fi
 
   execHandle "Installing kubectl..." sudo yum install -y "$KUBECTL_PACKAGE"
-elif [ "X${FLAVOUR}X" == "XsimpleX" ]
+elif [ "${FLAVOUR}" == "XsimpleX" ]
 then
   KUBECTL_VERSION=$(checkAndCleanVersion "${KUBECTL_VERSION}")
   TEMPDIR=$(mktemp -d)
@@ -116,7 +116,7 @@ then
   execHandle "Moving kubectl to bin" mv kubectl /home/cloudcontrol/bin
   cd - &>/dev/null || exit
   rm -rf "${TEMPDIR}"
-elif [ "X${FLAVOUR}X" == "XtanzuX" ]
+elif [ "${FLAVOUR}" == "XtanzuX" ]
 then
   TEMPDIR=$(mktemp -d)
   cd "${TEMPDIR}" || exit
