@@ -28,6 +28,8 @@
     "yaml": "^2.1.1"
   },
   "overrides": {
-    "minimist": ">=1.2.6"
+    "follow-redirects": "^1.15.2",
+    "minimist": ">=1.2.6",
+    "shelljs": "^0.8.3"
   }
 }

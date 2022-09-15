@@ -23,7 +23,10 @@
     "vuetify": "^2.2.11"
   },
   "overrides": {
-    "minimist": ">=1.2.6"
+    "follow-redirects": "^1.15.2",
+    "minimist": ">=1.2.6",
+    "url-parse": "^1.5.10",
+    "postcss": ">=8.4.16"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
