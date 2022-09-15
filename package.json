@@ -1,6 +1,6 @@
 {
   "name": "cloudcontrol",
-  "version": "0.0.1",
+  "version": "3.1.5",
   "description": "The cloud engineer's toolbox.",
   "main": "index.js",
   "scripts": {
@@ -16,10 +16,18 @@
     "url": "https://github.com/dodevops/cloudcontrol/issues"
   },
   "homepage": "https://github.com/dodevops/cloudcontrol#readme",
+  "engines": {
+    "node": ">=14 <18",
+    "npm": ">=8.3.0 <9"
+  },
   "dependencies": {
-    "prettier": "^1.19.1",
+    "bluebird": "^3.7.2",
     "handlebars": "^4.5.3",
-    "yaml": "^1.7.2",
-    "bluebird": "^3.7.2"
+    "prettier": "^2.7.1",
+    "vue": "^2.7.10",
+    "yaml": "^2.1.1"
+  },
+  "overrides": {
+    "minimist": ">=1.2.6"
   }
 }
