@@ -30,6 +30,6 @@
   "overrides": {
     "follow-redirects": "^1.15.2",
     "minimist": ">=1.2.6",
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.5"
   }
 }
