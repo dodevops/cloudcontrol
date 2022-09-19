@@ -31,4 +31,6 @@ do
   docker build . -t "dodevops/cloudcontrol-${FLAVOUR}:${TAG}"
 done
 
-mv Dockerfile.sav Dockerfile
+if [ -e Dockerfile.sav ] ; then
+  mv Dockerfile.sav Dockerfile
+fi
