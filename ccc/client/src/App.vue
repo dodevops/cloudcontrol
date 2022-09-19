@@ -1,29 +1,16 @@
 <template>
   <v-app>
     <v-main>
-      <v-container
-          class="fill-height"
-          fluid
-      >
-        <v-row
-            align="center"
-            justify="center"
-        >
-          <v-col
-              cols="12"
-              sm="8"
-              md="8"
-          >
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="8" md="8">
             <Startup v-if="status === 'INIT'"/>
             <MainScreen v-if="status === 'INITIALIZED'"/>
           </v-col>
         </v-row>
       </v-container>
       <v-footer absolute>
-        <v-col
-            class="text-center"
-            cols="12"
-        >
+        <v-col class="text-center" cols="12">
           ☁️ 🧰 <a href="https://cloudcontrol.dodevops.io">CloudControl</a> - The cloud engineer's toolbox.
         </v-col>
       </v-footer>

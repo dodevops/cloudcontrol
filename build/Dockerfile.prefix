@@ -1,13 +1,15 @@
-FROM node:lts as cccClientBuild
+FROM node:lts-slim as cccClientBuild
 
 WORKDIR /build
 COPY ccc/client /build
+RUN npm config set update-notifier false
 RUN npm install
 RUN npm run-script build
 
-FROM golang:1.14.6 AS cccBuild
+FROM golang:1.19 AS cccBuild
 
 WORKDIR /build
 COPY ccc/go.mod /build
+COPY ccc/go.sum /build
 COPY ccc/ccc.go /build
 RUN go build ccc.go

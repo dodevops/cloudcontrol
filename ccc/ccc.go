@@ -4,7 +4,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -16,7 +15,7 @@ import (
 
 	markdown "github.com/MichaelMure/go-term-markdown"
 	"github.com/gin-gonic/gin"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 	"nullprogram.com/x/optparse"
 )
 
@@ -222,7 +221,7 @@ func main() {
 
 			if value, exists := os.LookupEnv(fmt.Sprintf("USE_%s", featureName)); exists && value == "yes" {
 				var featureYaml FeatureYaml
-				featureFile, err := ioutil.ReadFile(feature)
+				featureFile, err := os.ReadFile(feature)
 
 				if err != nil {
 					fatal(err)
