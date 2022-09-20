@@ -1,5 +1,6 @@
 . /feature-installer-utils.sh
 
+AZ_DO_KUBELOGIN_CONVERT=false
 if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
   echo "#!/bin/sh" > ~/bin/k8s-relogin
 
@@ -29,25 +30,23 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
     echo az aks get-credentials --overwrite-existing --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER} "${K8S_SUBSCRIPTION[@]}" >> ~/bin/k8s-relogin
 
     execHandle "Fetching k8s credentials for ${CLUSTER}" az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER} "${K8S_SUBSCRIPTION[@]}"
+
+    # az aks get-credentials since kubernetes version 1.24 puts directly the kubelogin-way into kube config, hence the check here:
+    if [ "$(az aks show -n "${K8S_CLUSTER}" -g "${K8S_RESOURCEGROUP}" "${K8S_SUBSCRIPTION[@]}" | jq -r .currentKubernetesVersion | cut -d"." -f2)" -le 23 ]; then
+      AZ_DO_KUBELOGIN_CONVERT=true
+    fi
+
   done
   chmod +x ~/bin/k8s-relogin
+
+  if ${AZ_DO_KUBELOGIN_CONVERT}; then
+    execHandle "Converting credentials to kubelogin" /home/cloudcontrol/bin/kubelogin convert-kubeconfig
+  fi
 
   IFS=' ' read -r -a install_options <<< "${AZ_K8S_INSTALL_OPTIONS:=""}"
 
   execHandle "Installing kubectl" sudo az aks install-cli "${install_options[@]}"
 
-  if [ "X${AZ_KUBELOGIN_VERSION:=""}X" != "XX" ]; then
-      AZ_KUBELOGIN_VERSION=$(checkAndCleanVersion "${AZ_KUBELOGIN_VERSION}")
-      TEMPDIR=$(mktemp -d)
-      cd "${TEMPDIR}" || exit
-      execHandle "Downloading kubelogin" curl -LO "https://github.com/Azure/kubelogin/releases/download/v${AZ_KUBELOGIN_VERSION}/kubelogin-linux-$(getPlatform).zip"
-      execHandle "Unpacking kubelogin" unzip "kubelogin-linux-$(getPlatform).zip"
-      execHandle "Moving kubelogin to bin" mv "bin/linux_$(getPlatform)/kubelogin" /home/cloudcontrol/bin
-      cd - &>/dev/null || exit
-      rm -rf "${TEMPDIR}"
-
-      execHandle "Converting credentials to kubelogin" /home/cloudcontrol/bin/kubelogin convert-kubeconfig
-  fi
 elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
 then
   waitForMfaCode
