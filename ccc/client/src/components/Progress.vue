@@ -7,21 +7,21 @@
     </v-card-title>
     <v-card-text>
       <p>CloudControl is starting up. Please wait.</p>
-      <v-alert :hidden="oAuthCode === '' && oAuthUrl === ''" type="info">
+      <v-alert :value="oAuthCode !== '' && oAuthUrl !== ''" type="info">
         CloudControlCenter has detected an authentication request. Click here to copy the authentication code
         into the clipboard and open the authentication URL:
-        <v-btn v-on:click=doOAuth>
+        <v-btn v-on:click="doOAuth">
           Open Authentication
         </v-btn>
       </v-alert>
-      <v-alert :hidden="!requiresMFA" type="info">
+      <v-alert :value="requiresMFA" type="info">
         CloudControlCenter has detected an MFA code request. Enter the current code of your authenticator:
-        <v-form v-on:submit=sendMfa>
+        <v-form v-on:submit="sendMfa">
           <v-text-field autofocus v-model="mfaCode"></v-text-field>
           <v-btn type="submit">Send code</v-btn>
         </v-form>
       </v-alert>
-      <v-alert :hidden="currentError === ''" type="error">
+      <v-alert :value="currentError !== ''" type="error">
         {{ currentError }}
       </v-alert>
       <v-card>
@@ -39,10 +39,7 @@
           <template v-for="(stepName, step) in steps">
             <v-stepper-step :ref="`${step + 1}-step`" :complete="currentStep - 1 > step" :step="step + 1">{{ stepName }}
             </v-stepper-step>
-            <v-divider
-                v-if="step !== steps.length"
-                :key="step"
-            ></v-divider>
+            <v-divider v-if="step !== steps.length" :key="step"></v-divider>
           </template>
         </v-stepper-header>
       </v-stepper>
@@ -56,7 +53,7 @@
 <script lang=ts>
 import Vue from 'vue';
 import * as axios from 'axios';
-import { Component, Prop } from 'vue-property-decorator';
+import {Component} from 'vue-property-decorator';
 import VueMarkdown from 'vue-markdown-render';
 
 @Component({
@@ -97,16 +94,16 @@ export default class Progress extends Vue {
     window.open(this.oAuthUrl);
   }
 
-  public getCurrentStep() {
+  public getCurrentStep()
+  {
     axios.default.get('/api/steps/current')
         .then(
             (backendStep) => {
               this.stepTitle = backendStep.data.title;
               this.stepDescription = backendStep.data.description;
               this.currentStep = backendStep.data.currentStep;
-              const stepRef = (
-                  this.$refs[ `${this.currentStep}-step` ] as Vue[]
-              )[ 0 ].$el.scrollIntoView();
+              let $stepRef = this.$refs[`${this.currentStep}-step`] as Vue[];
+              $stepRef[0].$el.scrollIntoView();
               this.consoleOutput = this.reformatOutput(backendStep.data.output);
               const consoleCard = document.getElementById('console');
               if (consoleCard) {
@@ -126,6 +123,7 @@ export default class Progress extends Vue {
         });
   }
 
+
   public reformatOutput(output: string) {
     // Replace newlines with br
     output = output.replaceAll('\n', '<br/>');
@@ -141,22 +139,15 @@ export default class Progress extends Vue {
       const matches = azureOauthRegexp.exec(output);
       if (matches) {
         this.oAuthUrl = 'https://microsoft.com/devicelogin';
-        this.oAuthCode = matches[ 1 ];
+        this.oAuthCode = matches[1];
       }
     }
 
     // MFA feature. Check for a regexp request, but also check if the MFA was already entered.
-    const mfaRegexp = new RegExp(
-        '/tmp/mfa',
-    );
-    const mfaDoneRegExp = new RegExp(
-        '\[VALID_CODE\]'
-    )
-    if (mfaRegexp.test(output) && !mfaDoneRegExp.test(output)) {
-      this.requiresMFA = true;
-    } else {
-      this.requiresMFA = false;
-    }
+    const mfaRegexp = new RegExp('/tmp/mfa');
+    const mfaDoneRegExp = new RegExp('\[VALID_CODE\]')
+
+    this.requiresMFA = mfaRegexp.test(output) && !mfaDoneRegExp.test(output);
 
     return output;
   }

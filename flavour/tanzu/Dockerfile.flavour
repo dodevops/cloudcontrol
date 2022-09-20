@@ -2,7 +2,6 @@ FROM alpine:latest
 
 RUN apk add sudo bash curl libc6-compat && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/sbin/apk *" > /etc/sudoers.d/cloudcontrol && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/local/bin/az *" >> /etc/sudoers.d/cloudcontrol && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/bin/chmod *" >> /etc/sudoers.d/cloudcontrol && \
     adduser -D cloudcontrol && \
     mkdir /home/cloudcontrol/bin && \

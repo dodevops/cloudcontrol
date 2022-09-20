@@ -19,7 +19,10 @@ then
 
   if [ "X${MOTD_DISPLAY_DEFAULT}X" == "XyesX" ]
   then
+    echo
+    echo
     curl -H "Accept: text/plain" -s http://localhost:8080/api/features
+    echo
   fi
 
   echo
