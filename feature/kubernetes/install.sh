@@ -1,7 +1,8 @@
 . /feature-installer-utils.sh
 
 AZ_DO_KUBELOGIN_CONVERT=false
-if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
+FLAVOUR="X$(cat /home/cloudcontrol/flavour)X"
+if [ "${FLAVOUR}" == "XazureX" ]; then
   echo "#!/bin/sh" > ~/bin/k8s-relogin
 
   for CLUSTER in $(echo "${AZ_K8S_CLUSTERS}" | tr "," "\n"); do
@@ -47,7 +48,19 @@ if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ]; then
 
   execHandle "Installing kubectl" sudo az aks install-cli "${install_options[@]}"
 
-elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
+  if [ "X${AZ_KUBELOGIN_VERSION:=""}X" != "XX" ]; then
+      AZ_KUBELOGIN_VERSION=$(checkAndCleanVersion "${AZ_KUBELOGIN_VERSION}")
+      TEMPDIR=$(mktemp -d)
+      cd "${TEMPDIR}" || exit
+      execHandle "Downloading kubelogin" curl -LO "https://github.com/Azure/kubelogin/releases/download/v${AZ_KUBELOGIN_VERSION}/kubelogin-linux-$(getPlatform).zip"
+      execHandle "Unpacking kubelogin" unzip "kubelogin-linux-$(getPlatform).zip"
+      execHandle "Moving kubelogin to bin" mv "bin/linux_$(getPlatform)/kubelogin" /home/cloudcontrol/bin
+      cd - &>/dev/null || exit
+      rm -rf "${TEMPDIR}"
+
+      execHandle "Converting credentials to kubelogin" /home/cloudcontrol/bin/kubelogin convert-kubeconfig
+  fi
+elif [ "${FLAVOUR}" == "XawsX" ]
 then
   waitForMfaCode
   for CLUSTER in $(echo "${AWS_K8S_CLUSTERS}" | tr "," "\n")
@@ -104,7 +117,7 @@ EOF
   fi
 
   execHandle "Installing kubectl..." sudo yum install -y "$KUBECTL_PACKAGE"
-elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ]
+elif [ "${FLAVOUR}" == "XsimpleX" ]
 then
   KUBECTL_VERSION=$(checkAndCleanVersion "${KUBECTL_VERSION}")
   TEMPDIR=$(mktemp -d)
@@ -114,7 +127,7 @@ then
   execHandle "Moving kubectl to bin" mv kubectl /home/cloudcontrol/bin
   cd - &>/dev/null || exit
   rm -rf "${TEMPDIR}"
-elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XtanzuX" ]
+elif [ "${FLAVOUR}" == "XtanzuX" ]
 then
   TEMPDIR=$(mktemp -d)
   cd "${TEMPDIR}" || exit

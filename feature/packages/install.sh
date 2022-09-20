@@ -2,10 +2,11 @@
 
 IFS=' ' read -r -a packages_array <<< "${PACKAGES}"
 
-if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XtanzuX" ]
+FLAVOUR="X$(cat /home/cloudcontrol/flavour)X"
+if [ "${FLAVOUR}" == "XazureX" ] || [ "${FLAVOUR}" == "XsimpleX" ] || [ "${FLAVOUR}" == "XtanzuX" ]
 then
   execHandle "Installing packages" sudo apk add "${packages_array[@]}"
-elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
+elif [ "${FLAVOUR}" == "XawsX" ]
 then
   execHandle "Installing packages" sudo yum install -y "${packages_array[@]}"
 fi

@@ -1,9 +1,10 @@
 . /feature-installer-utils.sh
 
-if [ "X$(cat /home/cloudcontrol/flavour)X" == "XazureX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XsimpleX" ] || [ "X$(cat /home/cloudcontrol/flavour)X" == "XtanzuX" ]
+FLAVOUR="X$(cat /home/cloudcontrol/flavour)X"
+if [ "${FLAVOUR}" == "XazureX" ] || [ "${FLAVOUR}" == "XsimpleX" ] || [ "${FLAVOUR}" == "XtanzuX" ]
 then
   execHandle "Installing vim" sudo apk add vim
-elif [ "X$(cat /home/cloudcontrol/flavour)X" == "XawsX" ]
+elif [ "${FLAVOUR}" == "XawsX" ]
 then
   execHandle "Installing vim" sudo yum install -y vim
 fi

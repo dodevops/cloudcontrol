@@ -2,6 +2,22 @@ icon: "🌏"
 title: "Terraform"
 description: "Installs and configures [Terraform](https://terraform.io)"
 configuration:
-    - "Volume-target /terraform: Your local terraform base directory"
-    - "Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. Terraform app secrets, etc.)"
+    - |
+        Add a volume mount to the `volumes:` section of docker compose like this:
+             (...)
+             volumes:
+                 - "<path-to-terraform>:/terraform"
+    - | 
+        Volume-target /terraform: Terraform base target directory. If something different than /terraform is used, environment
+        TERRAFORM_PATH needs to be set to this path
+    - |
+        Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. 
+        Terraform app secrets, etc.). If something different than /credentials.terraform is used, environment TERRAFORM_CREDENTIALS_PATH 
+        needs to be set to this path
     - "Environment TERRAFORM_VERSION: A valid terraform version to install (e.g. 0.12.17)"
+    - |
+        Environment TERRAFORM_PATH: Volume target for terraform base directory (optional). Defaults to `/terraform`. If something different 
+        than the default is used, the volume-target needs to be adapted to the same directory
+    - |
+        Environment TERRAFORM_CREDENTIALS_PATH: Volume target for terraform credentials (optional). Defaults to `/terraform`. If something 
+        different than the default is used, the volume-target needs to be adapted to the same directory
