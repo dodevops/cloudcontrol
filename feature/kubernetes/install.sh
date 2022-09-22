@@ -1,10 +1,13 @@
 . /feature-installer-utils.sh
 
-AZ_DO_KUBELOGIN_CONVERT=false
 FLAVOUR="X$(cat /home/cloudcontrol/flavour)X"
 if [ "${FLAVOUR}" == "XazureX" ]; then
+  IFS=' ' read -r -a install_options <<< "${AZ_K8S_INSTALL_OPTIONS:=""}"
+  execHandle "Installing kubectl" sudo az aks install-cli "${install_options[@]}"
+
   echo "#!/bin/sh" > ~/bin/k8s-relogin
 
+  AZ_DO_KUBELOGIN_CONVERT=false
   for CLUSTER in $(echo "${AZ_K8S_CLUSTERS}" | tr "," "\n"); do
     K8S_RESOURCEGROUP=$(echo "$CLUSTER" | cut -d ":" -f 1)
     K8S_CLUSTER=$(echo "$CLUSTER" | cut -d ":" -f 2)
@@ -41,24 +44,7 @@ if [ "${FLAVOUR}" == "XazureX" ]; then
   chmod +x ~/bin/k8s-relogin
 
   if ${AZ_DO_KUBELOGIN_CONVERT}; then
-    execHandle "Converting credentials to kubelogin" /home/cloudcontrol/bin/kubelogin convert-kubeconfig
-  fi
-
-  IFS=' ' read -r -a install_options <<< "${AZ_K8S_INSTALL_OPTIONS:=""}"
-
-  execHandle "Installing kubectl" sudo az aks install-cli "${install_options[@]}"
-
-  if [ "X${AZ_KUBELOGIN_VERSION:=""}X" != "XX" ]; then
-      AZ_KUBELOGIN_VERSION=$(checkAndCleanVersion "${AZ_KUBELOGIN_VERSION}")
-      TEMPDIR=$(mktemp -d)
-      cd "${TEMPDIR}" || exit
-      execHandle "Downloading kubelogin" curl -LO "https://github.com/Azure/kubelogin/releases/download/v${AZ_KUBELOGIN_VERSION}/kubelogin-linux-$(getPlatform).zip"
-      execHandle "Unpacking kubelogin" unzip "kubelogin-linux-$(getPlatform).zip"
-      execHandle "Moving kubelogin to bin" mv "bin/linux_$(getPlatform)/kubelogin" /home/cloudcontrol/bin
-      cd - &>/dev/null || exit
-      rm -rf "${TEMPDIR}"
-
-      execHandle "Converting credentials to kubelogin" /home/cloudcontrol/bin/kubelogin convert-kubeconfig
+    execHandle "Converting credentials to kubelogin" kubelogin convert-kubeconfig
   fi
 elif [ "${FLAVOUR}" == "XawsX" ]
 then
