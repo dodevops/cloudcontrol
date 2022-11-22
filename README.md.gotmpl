@@ -1,3 +1,4 @@
+{{- /*gotype: main.TemplateData*/ -}}
 # CloudControl ☁️ 🧰
 
 The cloud engineer's toolbox.
@@ -10,15 +11,15 @@ required and configured to manage modern cloud infrastructures.
 The toolbox comes in different "flavours" depending on what cloud you are working in.
 Currently supported cloud flavours are:
 
-{{#each docObjects.flavour}}
-* {{{ this.title }}}
-{{/each}}
+{{- range .Flavours }}
+* {{ .Title -}}
+{{ end }}
 
 Following features and tools are supported:
 
-{{#each docObjects.feature}}
-* {{#if this.icon}}{{this.icon}}{{/if}} {{{ this.title }}}
-{{/each}}
+{{- range .Features}}
+* {{ if .Icon }}{{.Icon}}{{ end }} {{ .Title -}}
+{{ end }}
 
 ## Table of contents
 
@@ -26,13 +27,13 @@ Following features and tools are supported:
 * [Using Kubernetes](#using-kubernetes-preview)
 * [FAQ](#faq)
 * [Flavours](#flavours)
-{{#each docObjects.flavour}}
-    * [{{ @key }}](#{{ @key }})
-{{/each}}
+{{- range $name, $flavour := .Flavours }}
+    * [{{ $name }}](#{{ $name }})
+{{- end }}
 * [Features](#features)
-{{#each docObjects.feature}}
-    * [{{ @key }}](#{{ @key }})
-{{/each}}
+{{- range $name, $feature := .Features }}
+    * [{{ $feature.Title }}](#{{ $name }})
+{{- end }}
 * [Development](#development)
 * [Building](#building)
 
@@ -45,7 +46,7 @@ compose file and to convenience scripts. It includes a small web server written 
 Copy the compose file and configure it to your needs. Check below for configuration options per flavour and feature.
 
 Run `init.sh`. This script basically just runs `docker-compose up -d` and tells you the URL for CloudControlCenter.
-Open it and wait for CloudControl to finish initializing.
+Open it and wait for *CloudControl* to finish initializing.
 
 The initialization process will download and configure the additional tools and completes with a message when its done.
 It will run each time when the stack is recreated.
@@ -54,12 +55,12 @@ After the initialization process you can simply run `docker-compose exec cli /us
 into the running container and work with the installed features.
 
 If you need to change any of the configuration environment variables, rerun the init script afterwards to apply
-the changes. Remember, that CloudControl needs to reininitialize for this.
+the changes. Remember, that *CloudControl* needs to reininitialize for this.
 
 ## Configuring features
 
 There are two ways to configure a feature and the version it should use. The first way is to use the given
-`USE_<feature name>=yes` environment variable and specifying the version with `<FEATURE NAME>_VERSION=<version>`.
+`USE_[feature name]=yes` environment variable and specifying the version with `[FEATURE NAME]_VERSION=[version]`.
 
 If there are multiple features configured, this can get a bit messy. Another approach is to use the `FEATURES`
 environment variable and list the features and optionally the version like this:
@@ -93,12 +94,12 @@ Modify them to your local requirements and then run
 to apply them.
 
 This will create a new namespace for your project and a deployment and a service in that. Check
-`kubectl get -n <project> pod` to watch the progress until a cli pod has been created.
+`kubectl get -n [project] pod` to watch the progress until a cli pod has been created.
 
-Use `kubectl get -n <project> svc cli` to see the bound ports for the cli service and use your browser to connect
+Use `kubectl get -n [project] svc cli` to see the bound ports for the cli service and use your browser to connect
 to the *CloudControlCenter* instance.
 
-After the initialization is done, use `kubectl -n <project> exec -it deployment/cli -- /usr/local/bin/cloudcontrol run`
+After the initialization is done, use `kubectl -n [project] exec -it deployment/cli -- /usr/local/bin/cloudcontrol run`
 to enter *CloudControl*.
 
 *Warning*: This implementation is currently a preview feature and hasn't been tested thoroughly. It highly depends on
@@ -107,7 +108,7 @@ documentation and support of your Kubernetes distribution if something isn't wor
 
 ## FAQ
 
-### How can I add an informational text for users of CloudControl?
+### How can I add an informational text for users of *CloudControl*?
 
 If you want to display a *custom login message* when users enter the container, set environment variable `MOTD`
 to that message. If you want to display the default login message as well, also
@@ -147,7 +148,7 @@ kubectl port-forward --address 172.21.0.2 svc/my-service 8081:8080
 docker-compose port cli 8081
 ```
 
-* Connect to localhost:<host port> on your host
+* Connect to localhost:[host port] on your host
 
 ### How to set up command aliases
 
@@ -157,19 +158,19 @@ environment variables:
 * `USE_run=yes`: Set up the run feature
 * `RUN_COMMANDS=alias firstalias=command;alias secondalias=command`: Set up some aliases
 
-### How can I share my SSH-keys with the CloudControl container
+### How can I share my SSH-keys with the *CloudControl* container
 
 First, mount your .ssh directory into the container at /home/cloudcontrol/.ssh.
 
 Also, to not enter your passphrase every time you use the key, you should mount the ssh agent socket into the
-container and set the environment variable SSH_AUTH_SOCK to that path. CloudControl will automatically fix the
-permissions of that file so the CloudControl user can use it.
+container and set the environment variable SSH_AUTH_SOCK to that path. *CloudControl* will automatically fix the
+permissions of that file so the *CloudControl* user can use it.
 
 Here are snippets for your docker-compose file for convenience:
 
     (...)
     volumes:
-        - "<Path to .ssh directory>:/home/cloudcontrol/.ssh"
+        - "[Path to .ssh directory]:/home/cloudcontrol/.ssh"
         # for Linux:
         - "${SSH_AUTH_SOCK}:/ssh-agent"
         # for macOS:
@@ -177,9 +178,9 @@ Here are snippets for your docker-compose file for convenience:
     environment:
         - "SSH_AUTH_SOCK=/ssh-agent"
 
-### How to identify Terraform state locks by other CloudControl-users
+### How to identify Terraform state locks by other *CloudControl*-users
 
-Because of how CloudControl is designed it uses a defined user named "cloudcontrol", so Terraform state lock
+Because of how *CloudControl* is designed it uses a defined user named "cloudcontrol", so Terraform state lock
 messages look like this:
 
 > Error: Error locking state: Error acquiring the state lock: storage: service returned error: StatusCode=409, ErrorCode=LeaseAlreadyPresent, ErrorMessage=There is already a lease present.
@@ -194,7 +195,7 @@ messages look like this:
   Created:   2021-05-05 07:38:01.188897776 +0000 UTC
   Info:
 
-It's hard to identify from that who the other CloudControl user is, that may have opened a lock. The system
+It's hard to identify from that who the other *CloudControl* user is, that may have opened a lock. The system
 user can't be changed, but it's possible to set a better hostname than the one Docker autogenerated.
 
 See this docker-compose snippet on how to set a better hostname:
@@ -203,7 +204,7 @@ See this docker-compose snippet on how to set a better hostname:
     services:
     cli:
     image: "dodevops/cloudcontrol-azure:latest"
-    hostname: "<TODO yourname>"
+    hostname: "[TODO yourname]"
     volumes:
     (...)
 
@@ -223,7 +224,7 @@ If you set hostname in that snippet to "alice", the state lock will look like th
 
 ### I get an error "repomd.xml signature could not be verified for kubernetes" when using Kubernetes in the AWS flavour
 
-CloudControl uses the
+*CloudControl* uses the
 [official guide to install kubectl on an RPM-based system](https://kubernetes.io/de/docs/tasks/tools/install-kubectl/).
 However, Google seems to
 [regularly have problems with its key-signing in the used repository](https://github.com/kubernetes/kubernetes/issues/60134),
@@ -232,67 +233,69 @@ docker-compose.yaml, it will ignore an invalid GPG key during the installation.
 
 *Please note though*, that this affects the security of the system and should not be used constantly.
 
-### When I try to start CloudControl, it keeps exiting with "./ccc: exit status 1". What can I do?
+### When I try to start *CloudControl*, it keeps exiting with "./ccc: exit status 1". What can I do?
 
 Use the `docker logs` command with the failed container to see the complete log output. You can enhance the log by using the
-"DEBUG_<feature>" options. If you are really stuck, you can convince the container to keep running by setting "CONTINUE_ON_ERROR=yes" as an
+"DEBUG_[feature]" options or add the environment variable "DEBUG_FLAVOUR" to turn on the debug log for the flavour
+installation.
+
+If you are really stuck, you can convince the container to keep running by setting "CONTINUE_ON_ERROR=yes" as an
 environment variable in the docker-compose file. Then you can debug with the running container.
 
 ## Flavours
 
-{{#each docObjects.flavour}}
-### {{ @key }}
+{{- range $name, $flavour := .Flavours }}
 
-{{{ this.description }}}
+### <a id="{{ $name }}"></a> {{ $name }}
 
-#### Configuration
-
-{{#each this.configuration}}
-* {{{ this }}}
-{{/each}}
-{{/each}}
-
+{{ $flavour.Description }}
+{{ if $flavour.Configuration }}#### Configuration
+{{ range $flavour.Configuration }}
+* {{ . }}
+{{- end }}
+{{- end }}
+{{- end -}}
 ## Features
 
-{{#each docObjects.feature}}
-### {{{ @key }}}
+{{- range $name, $feature := .Features }}
+### <a id="{{ $name }}"></a> {{ $feature.Title }}
 
-{{{ this.description }}}
+{{ $feature.Description }}
 
 #### Configuration
 
-* USE_{{ @key }}: Enable this feature
-* DEBUG_{{ @key }}: Debug this feature
-{{#each this.configuration }}
-* {{{ this }}}
-{{/each}}
-
-{{/each}}
+* USE_{{ trimPrefix "_" $name }}: Enable this feature
+* DEBUG_{{ trimPrefix "_" $name }}: Debug this feature
+{{- range $feature.Configuration }}
+* {{ . }}
+{{- end }}
+{{ end }}
 
 ## Development
 
 *CloudControl* supports a decoupled development of features and flavours. If you're missing something, just fork this
 repository, create a subfolder for your new feature under "features" and add these files:
 
-* feature.yaml: A descriptor for your feature with a title, a description and configuration notes
-* install.sh: A shell script that is run by CloudControlCenter and should install everything you need
+* `feature.yaml`: A descriptor for your feature with a title, a description and configuration notes
+* `install.sh`: A shell script that is run by CloudControlCenter and should install everything you need
   for your new feature
-* motd.sh: (optional) If you want to show some information to the users upon login, put them here.
+* `motd.sh`: (optional) If you want to show some information to the users upon login, put them here.
 
 If you need another flavour (aka cloud provider), add a new subdirectory under "flavour" and add a flavour.yaml describing
 your flavour the same way as a feature. For the rest of the files, please check out existing flavours for details. Please,
 include a sample configuration for your flavour to make it easier for other people to work with it.
+
+### Features with versions
+
+When your feature needs a version specification, the recommended way is to use the environment variable
+`[FEATURE NAME]_VERSION`. This variable is also filled if the *CloudControl* user uses the FEATURES-variable approach
+to enable features.
 
 ### Installer utilities
 
 In your install script, you can source the utils library
 
     . /feature-installer-utils.sh
-
-#### Specifying features
-
-The environment variable `<FEATURE NAME>_VERSION` is the default variable to specify a feature version, if you support
-it.
 
 #### execHandle
 
@@ -306,12 +309,89 @@ the output of the command and exit with status code 1.
 
 Using this makes installer script way shorter and easier to maintain.
 
+### Integration testing
+
+To validate if your feature correctly installs on a target flavour, [goss](https://github.com/goss-org/goss) is used.
+
+goss can test various things you specify in a yaml formatted file. The *CloudControl* test runner expects a subdirectory
+`goss` in your feature, which can hold these files:
+
+  * goss.yaml: A goss file containing tests specific for your feature. See the
+    [goss manual](https://github.com/goss-org/goss/blob/master/docs/manual.md) for the available tests. You can also
+    use [template](https://github.com/goss-org/goss/blob/master/docs/manual.md#templates) directives to filter
+    specific tests only for specific flavours by using e.g. `\{\{ if eq .Env.FLAVOUR "aws" }}(... aws tests)\{\{ end }}`
+  * .env: (optional) A file containing environment variable for the automatic tests. Can be empty. **Please do not put
+    any sensitive information in this file!**
+  * .env.[flavour]: (optional) An .env file that is specifically used for the given flavour
+  * .ignore-integration: (optional) Ignore this test for the final integration test (for example if it tests a
+    a different shell than the shell in the integration test)
+
+This subdirectory is mounted as /goss-sup into your container. Additionally, another directory which contains
+flavour-specific supplemental data (such as access keys) is mounted as /flavour. You can use these two directories
+in environment variables and tests to build the required environment for your test.
+
+**Warning**: When doing an integration test of all features, the test runner copies the contents of all supplemental
+paths into one directory. Make sure to provide unique filenames for supplemental files for your feature, so they're not
+overwritten by a file from another feature in that stage.
+
+The test runner runs tests from all subdirectories starting with "goss", so you can add multiple directories to test
+multiple variations of your feature.
+
+### Features for specific flavours ###
+
+If your feature only supports specific flavours, add a `test` key to your `feature.yaml` and under that a 'flavours'
+key and list the available flavours. In this example the flavour "some flavour" will only be tested with the gcloud
+flavour:
+
+    title: "some flavour"
+    test:
+      flavours:
+        - gcloud
+
 ## Building
 
 Build a flavor container image with the base of the repository as the build context like this:
 
-    build.sh <tag> <flavour>
+    build.sh [tag] [flavour]
 
 To build all flavours with the same tag, use
 
-    build.sh <tag>
+    build.sh [tag]
+
+## Testing
+
+To run the test suite for a specific flavour, you need to create a local directory that holds flavour-specific data
+(e.g. keys for authentication) and optionally an .env-file with flavour-specific environment variables.
+
+First, you need to compile the test runner:
+
+    cd tests
+    docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o test-features
+
+After that, download the latest goss binary for the target architecture you will test (linux/amd64 or linux/arm64) from
+the [Goss site](https://github.com/goss-org/goss) and put it somewhere local.
+
+Once that is done, run the tests like following:
+
+    cd tests
+    ./test-features -f [flavour] -i [image:tag] -t [path to flavour-data] -p [test architecture, e.g. linux/amd64] -g [path to the goss binary]
+
+This will run the tests of all features that supply a test suite one by one and, if all succeed, will test all
+features together for integration testing. Check out `test-features --help` for other options.
+
+### Test debugging
+
+To check why a test failed, run the test-runner using the -x bash parameter to see the different commands it issues.
+
+Then, take the failing command and instead of `dgoss run` execute `docker run` with the same arguments to analyze the
+tests locally.
+
+## Building documentation ##
+
+To rebuild this documentation, first compile the documentation maker:
+
+    docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o mkdoc
+
+Then run it to rebuild README.md based on README.md.gotmpl:
+
+    ./mkdoc

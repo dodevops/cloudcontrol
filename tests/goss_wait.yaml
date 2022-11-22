@@ -1,0 +1,3 @@
+file:
+    /home/cloudcontrol/initialization.done:
+        exists: true

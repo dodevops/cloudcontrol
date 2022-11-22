@@ -1,0 +1,6 @@
+command:
+    packer:
+        exec: "/home/cloudcontrol/bin/packer --version"
+        exit-status: 0
+        stdout:
+            - 1.8.4

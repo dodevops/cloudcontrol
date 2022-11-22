@@ -5,7 +5,6 @@ go 1.19
 require (
 	github.com/MichaelMure/go-term-markdown v0.1.4
 	github.com/gin-gonic/gin v1.8.1
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	nullprogram.com/x/optparse v1.0.0
 )
 

@@ -1,0 +1,6 @@
+command:
+    jq:
+        exec: "/usr/bin/jq --version"
+        exit-status: 0
+        stdout:
+            - jq-

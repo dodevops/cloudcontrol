@@ -1,0 +1,6 @@
+command:
+    yq:
+        exec: "/home/cloudcontrol/bin/yq --version"
+        exit-status: 0
+        stdout:
+            - "yq (https://github.com/mikefarah/yq/) version v4.30.6"

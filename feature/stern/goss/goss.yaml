@@ -1,0 +1,6 @@
+command:
+    stern:
+        exec: "/home/cloudcontrol/bin/stern --version"
+        exit-status: 0
+        stdout:
+            - "version: 1.22.0"

@@ -1,0 +1,6 @@
+command:
+    terraform:
+        exec: "/home/cloudcontrol/bin/terraform --version"
+        exit-status: 0
+        stdout:
+            - "Terraform v1.3.6"

@@ -1,0 +1,13 @@
+version: "3"
+services:
+    cli:
+        volumes:
+            - "/path/to/directory/with/gcloud_key_json:/gcloud_key:"
+        image: "dodevops/cloudcontrol-gcloud:latest"
+        ports:
+            - "8080" # CloudControlCenter port
+            - "8081" # Port that can be used for port forwardings
+        environment:
+            - "FEATURES=terraform:3.1.5 helm:3.10.0 kubernetes"
+            - "GCLOUD_PROJECTID=my-project-id"
+            - "GCLOUD_KEYPATH=/gcloud-key/gcloud-key.json"

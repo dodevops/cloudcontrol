@@ -5,9 +5,24 @@ if [ "${FLAVOUR}" == "XazureX" ]; then
   IFS=' ' read -r -a install_options <<< "${AZ_K8S_INSTALL_OPTIONS:=""}"
   execHandle "Installing kubectl" sudo az aks install-cli "${install_options[@]}"
 
+  case $(cat /home/cloudcontrol/.shell) in
+  fish)
+    cat <<EOF >> ~/.config/fish/conf.d/kubernetes-spi.fish
+export AAD_SERVICE_PRINCIPAL_CLIENT_ID=${ARM_CLIENT_ID}
+export AAD_SERVICE_PRINCIPAL_CLIENT_SECRET=${ARM_CLIENT_SECRET}
+EOF
+    ;;
+  bash)
+    cat <<EOF >> ~/.bashrc
+export AAD_SERVICE_PRINCIPAL_CLIENT_ID=${ARM_CLIENT_ID}
+export AAD_SERVICE_PRINCIPAL_CLIENT_SECRET=${ARM_CLIENT_SECRET}
+EOF
+    ;;
+  esac
+
   echo "#!/bin/sh" > ~/bin/k8s-relogin
 
-  AZ_DO_KUBELOGIN_CONVERT=false
+  AZ_DO_KUBELOGIN_CONVERT="${AZ_USE_ARM_SPI:-false}"
   for CLUSTER in $(echo "${AZ_K8S_CLUSTERS}" | tr "," "\n"); do
     K8S_RESOURCEGROUP=$(echo "$CLUSTER" | cut -d ":" -f 1)
     K8S_CLUSTER=$(echo "$CLUSTER" | cut -d ":" -f 2)
@@ -44,7 +59,14 @@ if [ "${FLAVOUR}" == "XazureX" ]; then
   chmod +x ~/bin/k8s-relogin
 
   if ${AZ_DO_KUBELOGIN_CONVERT}; then
-    execHandle "Converting credentials to kubelogin" kubelogin convert-kubeconfig
+    args=()
+    if ${AZ_USE_ARM_SPI:-false};
+    then
+      args+=("-l" "spn")
+    fi
+
+    execHandle "Converting credentials to kubelogin" kubelogin convert-kubeconfig "${args[@]}"
+    echo kubelogin convert-kubeconfig "${args[@]}" >> ~/bin/k8s-relogin
   fi
 elif [ "${FLAVOUR}" == "XawsX" ]
 then
@@ -149,4 +171,29 @@ then
     echo kubectl vsphere login "${loginArgs[@]}" --tanzu-kubernetes-cluster-namespace="${NAMESPACE}" --tanzu-kubernetes-cluster-name="${CLUSTER}" >> ~/bin/k8s-relogin
   done
   chmod +x ~/bin/k8s-relogin
+elif [ "${FLAVOUR}" == "XgcloudX" ]
+then
+  KUBECTL_VERSION=$(checkAndCleanVersion "${KUBECTL_VERSION}")
+  TEMPDIR=$(mktemp -d)
+  cd "${TEMPDIR}" || exit
+  execHandle "Downloading kubectl" curl -LO "https://dl.k8s.io/release/${KUBECTL_VERSION:-$(curl -L -s https://dl.k8s.io/release/stable.txt)}/bin/linux/$(getPlatform)/kubectl"
+  execHandle "Making kubectl executable" chmod +x kubectl
+  execHandle "Moving kubectl to bin" mv kubectl /home/cloudcontrol/bin
+  cd - &>/dev/null || exit
+  rm -rf "${TEMPDIR}"
+
+  if [ "${K8S_USE_GCLOUD_AUTH:-true}" == "true" ]
+  then
+    execHandle "Installing gke-cloud-auth-plugin" sudo gcloud components install gke-gcloud-auth-plugin
+    export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+  fi
+
+  for ZONEDCLUSTER in $(echo "${GCLOUD_K8S_CLUSTERS}" | tr "," "\n")
+  do
+    ZONE=$(echo "${ZONEDCLUSTER}" | cut -d ":" -f 1)
+    CLUSTER=$(echo "${ZONEDCLUSTER}" | cut -d ":" -f 2)
+    execHandle "Authenticating against cluster ${CLUSTER} in zone ${ZONE}" gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}" --project "${GCLOUD_PROJECTID}"
+    echo gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}" --project "${GCLOUD_PROJECTID}" >> ~/bin/k8s-relogin
+    chmod +x ~/bin/k8s-relogin
+  done
 fi

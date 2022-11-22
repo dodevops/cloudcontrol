@@ -1,0 +1,6 @@
+command:
+    bash:
+        exec: "bash -ic 'exit 0'"
+        exit-status: 0
+        stdout:
+            - TEST SUCCEEDED

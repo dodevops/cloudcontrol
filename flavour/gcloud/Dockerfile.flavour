@@ -1,0 +1,17 @@
+FROM gcr.io/google.com/cloudsdktool/google-cloud-cli:alpine
+
+RUN apk add sudo bash curl && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/sbin/apk *" > /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/bin/chmod *" >> /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/bin/cp *" >> /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/google-cloud-sdk/bin/gcloud *" >> /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/bin/su - -c cat /usr/local/share/ca-certificates/*.pem >> /etc/ssl/certs/ca-certificates.crt" >> /etc/sudoers.d/cloudcontrol && \
+    adduser -D cloudcontrol && \
+    mkdir /home/cloudcontrol/bin && \
+    chown cloudcontrol /home/cloudcontrol/bin
+
+# Flavour
+
+COPY flavour/gcloud/flavour /home/cloudcontrol/flavour
+COPY flavour/gcloud/flavourinit.sh /home/cloudcontrol/bin/flavourinit.sh
+RUN chmod +x /home/cloudcontrol/bin/flavourinit.sh

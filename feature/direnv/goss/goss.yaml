@@ -1,0 +1,4 @@
+command:
+    test:
+        exec: "bash /goss-sup/test-direnv.sh"
+        exit-status: 0

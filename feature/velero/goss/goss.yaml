@@ -1,0 +1,6 @@
+command:
+    velero:
+        exec: "/home/cloudcontrol/bin/velero version --client-only"
+        exit-status: 0
+        stdout:
+            - "Version: v1.9.5"

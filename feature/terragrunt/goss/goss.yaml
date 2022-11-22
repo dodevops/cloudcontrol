@@ -1,0 +1,6 @@
+command:
+    terragrunt:
+        exec: "/home/cloudcontrol/bin/terragrunt --version"
+        exit-status: 0
+        stdout:
+            - "terragrunt version v0.42.5"
