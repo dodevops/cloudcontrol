@@ -5,3 +5,7 @@ configuration:
     - >
         Environment PACKAGES: A whitespace separated list of packages to install. The packages will be installed
         with the flavour's default package manager.
+test:
+    flavours:
+        - gcloud
+        - azur

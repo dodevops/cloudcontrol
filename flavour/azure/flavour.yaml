@@ -6,3 +6,4 @@ description: |
 configuration:
     - "Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container"
     - "Environment AZ_TENANTID: The Azure tenant id to log into (optional)"
+    - "Environment AZ_USE_ARM_SPI: Uses the environment variables ARM_CLIENT_ID and ARM_CLIENT_SECRET for service principal auth [false]"

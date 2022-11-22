@@ -1,0 +1,4 @@
+command:
+    vim:
+        exec: "/usr/bin/vim --version"
+        exit-status: 0

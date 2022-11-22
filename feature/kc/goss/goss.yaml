@@ -1,0 +1,11 @@
+command:
+    dialog:
+        exec: "/usr/bin/dialog --version"
+        exit-status: 0
+        stdout:
+            - "Version:"
+file:
+    /home/cloudcontrol/bin/kc:
+        exists: true
+        contains:
+            - KC Quick kubernetes context switch

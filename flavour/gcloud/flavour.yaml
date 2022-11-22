@@ -1,0 +1,14 @@
+title: "![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-gcloud?sort=semver) [Google Cloud](https://hub.docker.com/r/dodevops/cloudcontrol-gcloud) (based on [google-cloud-cli](https://console.cloud.google.com/gcr/images/google.com:cloudsdktool/GLOBAL/google-cloud-cli))"
+description: |
+    Includes workflows and tools to connect to Google Cloud.
+    
+    Authentication requires the following:
+    
+    * Enable [Cloud Resource Manager API](https://console.cloud.google.com/apis/api/cloudresourcemanager.googleapis.com)
+    * Create a [service account](https://console.cloud.google.com/iam-admin/serviceaccounts), that has access to the
+      required project
+    * Create a key and download it as a JSON file
+    * Mount a directory that contains the JSON file into the CloudControl container and set GCLOUD_KEYPATH accordingly
+configuration:
+    - "Environment GCLOUD_PROJECTID: The id of the Google Cloud project to connect to"
+    - "Environment GCLOUD_KEYPATH: Path inside CloudControl that holds the service account JSON file"

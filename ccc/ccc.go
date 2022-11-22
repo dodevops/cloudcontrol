@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"gopkg.in/yaml.v2"
 	"io"
 	"log"
 	"net/http"
@@ -15,7 +16,6 @@ import (
 
 	markdown "github.com/MichaelMure/go-term-markdown"
 	"github.com/gin-gonic/gin"
-	"gopkg.in/yaml.v3"
 	"nullprogram.com/x/optparse"
 )
 
@@ -100,7 +100,15 @@ func cccInitialization() {
 
 	log.Println("Starting flavour initialization")
 
-	cmd := exec.Command("bash", "/home/cloudcontrol/bin/flavourinit.sh")
+	var args []string
+
+	if value, exists := os.LookupEnv("DEBUG_FLAVOUR"); exists && value == "yes" {
+		args = append(args, "-x")
+	}
+
+	args = append(args, "/home/cloudcontrol/bin/flavourinit.sh")
+
+	cmd := exec.Command("bash", args...)
 	cmd.Stderr = consoleWriter
 	cmd.Stdout = consoleWriter
 	if err := cmd.Start(); err != nil {

@@ -8,11 +8,16 @@ then
   tenantArg+=("--tenant" "${AZ_TENANTID}")
 fi
 
+if ${AZ_USE_ARM_SPI:-false};
+then
+  tenantArg+=("--service-principal" "-u ${ARM_CLIENT_ID}" "-p ${ARM_CLIENT_SECRET}")
+fi
+
 if ! az login "${tenantArg[@]}"
-  then
-    echo "Can not login into Azure"
-    exit 1
-  fi
+then
+  echo "Can not login into Azure"
+  exit 1
+fi
 
 if [ "X${AZ_SUBSCRIPTION}X" == "XX" ]
 then

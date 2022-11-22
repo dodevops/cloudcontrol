@@ -1,0 +1,4 @@
+command:
+    tz-test:
+        exec: TZ="Europe/Berlin" date +%H >/tmp/1 && TZ="UTC" date +%H >/tmp/2 && diff /tmp/1 /tmp/2
+        exit-status: 1

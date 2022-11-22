@@ -1,0 +1,6 @@
+command:
+    fish:
+        exec: "fish -c 'exit 0'"
+        exit-status: 0
+        stdout:
+            - TEST SUCCEEDED
