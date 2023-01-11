@@ -200,3 +200,8 @@ then
     chmod +x ~/bin/k8s-relogin
   done
 fi
+
+if [ -n "${KUBECTL_DEFAULT_CONTEXT}" ]; then
+  execHandle "Switching to default context" kubectl config use-context "${KUBECTL_DEFAULT_CONTEXT}"
+  echo kubectl config use-context "${KUBECTL_DEFAULT_CONTEXT}" >> ~/bin/k8s-relogin
+fi

@@ -3,6 +3,9 @@ title: "Kubernetes"
 description: "Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubectl/overview/) with [kubectl](https://kubernetes.io/docs/reference/kubectl/overview/) to connect to the flavour's kubernetes clusters"
 configuration:
     - |
+        Environment KUBECTL_DEFAULT_CONTEXT: Sets the default kubectl context after initialisation and when using the
+        k8s-relogin script
+    - |
         (azure flavour) Environment AZ_K8S_CLUSTERS: A comma separated list of AKS clusters to manage
         inside *CloudControl* (only for azure flavour).
         Each cluster is a pair of resource group and cluster name, separated by a colon. Optionally, you can specify
