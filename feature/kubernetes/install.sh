@@ -5,20 +5,23 @@ if [ "${FLAVOUR}" == "XazureX" ]; then
   IFS=' ' read -r -a install_options <<< "${AZ_K8S_INSTALL_OPTIONS:=""}"
   execHandle "Installing kubectl" sudo az aks install-cli "${install_options[@]}"
 
-  case $(cat /home/cloudcontrol/.shell) in
-  fish)
-    cat <<EOF >> ~/.config/fish/conf.d/kubernetes-spi.fish
+  if ${AZ_USE_ARM_SPI:-false}
+  then
+    case $(cat /home/cloudcontrol/.shell) in
+      fish)
+      cat <<EOF >> ~/.config/fish/conf.d/kubernetes-spi.fish
 export AAD_SERVICE_PRINCIPAL_CLIENT_ID=${ARM_CLIENT_ID}
 export AAD_SERVICE_PRINCIPAL_CLIENT_SECRET=${ARM_CLIENT_SECRET}
 EOF
-    ;;
-  bash)
-    cat <<EOF >> ~/.bashrc
+      ;;
+      bash)
+      cat <<EOF >> ~/.bashrc
 export AAD_SERVICE_PRINCIPAL_CLIENT_ID=${ARM_CLIENT_ID}
 export AAD_SERVICE_PRINCIPAL_CLIENT_SECRET=${ARM_CLIENT_SECRET}
 EOF
-    ;;
-  esac
+      ;;
+    esac
+  fi
 
   echo "#!/bin/sh" > ~/bin/k8s-relogin
 
