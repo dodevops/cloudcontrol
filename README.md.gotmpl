@@ -285,9 +285,21 @@ If you need another flavour (aka cloud provider), add a new subdirectory under "
 your flavour the same way as a feature. For the rest of the files, please check out existing flavours for details. Please,
 include a sample configuration for your flavour to make it easier for other people to work with it.
 
-### Features with versions
+### Configuration best practices
 
-When your feature needs a version specification, the recommended way is to use the environment variable
+The `feature.yaml` is a descriptor file used to automatically create this documentation. It includes a "configuration"
+key, that should be used to inform the user of ways to configure the feature. Usually, this is done using
+environment variables.
+
+It is recommended to use prefixed variables for the feature. For example, when creating a feature called "myfeature",
+use environment variables prefixed with "MYFEATURE_" to circumvent the problem of accidentally sharing configuration
+variables with another feature or a flavour.
+
+Additionally, please add enough information to the configuration array of your feature so the user knows what values
+to set for the specific environment variable. If a configuration option is required, please add an asterisk (*) after
+its name and check if the variable is set in your installation script and break accordingly if not.
+
+If your feature needs a version specification, the recommended way is to use the environment variable
 `[FEATURE NAME]_VERSION`. This variable is also filled if the *CloudControl* user uses the FEATURES-variable approach
 to enable features.
 
@@ -378,6 +390,15 @@ Once that is done, run the tests like following:
 
 This will run the tests of all features that supply a test suite one by one and, if all succeed, will test all
 features together for integration testing. Check out `test-features --help` for other options.
+
+### Testing for failing configurations
+
+If you'd like to test if a specific configuration fails to install, create a goss subdirectory and only put a file
+named `.will-fail` into it.
+
+When the testrunner encounters such file it will check if CloudControl fails to complete initialization.
+
+You can add a regular expression pattern into `.will-fail` to test if the container or command output matches it.
 
 ### Test debugging
 

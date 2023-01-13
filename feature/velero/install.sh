@@ -1,5 +1,11 @@
 . /feature-installer-utils.sh
 
+if [ -z "${VELERO_VERSION}" ]
+then
+  echo "The velero feature requires a version set using VELERO_VERSION. See https://github.com/vmware-tanzu/velero/releases for valid versions"
+  exit 1
+fi
+
 VELERO_VERSION=$(checkAndCleanVersion "${VELERO_VERSION}")
 
 TEMPDIR=$(mktemp -d)

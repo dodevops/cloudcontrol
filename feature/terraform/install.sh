@@ -1,5 +1,11 @@
 . /feature-installer-utils.sh
 
+if [ -z "${TERRAFORM_VERSION}" ]
+then
+  echo "The terraform feature requires a version set using TERRAFORM_VERSION. See https://releases.hashicorp.com/terraform for valid versions"
+  exit 1
+fi
+
 TERRAFORM_VERSION=$(checkAndCleanVersion "${TERRAFORM_VERSION}")
 
 TEMPDIR=$(mktemp -d)

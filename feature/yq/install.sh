@@ -1,5 +1,11 @@
 . /feature-installer-utils.sh
 
+if [ -z "${YQ_VERSION}" ]
+then
+  echo "The yq feature requires a version set using YQ_VERSION. See https://github.com/mikefarah/yq/releases for valid versions"
+  exit 1
+fi
+
 YQ_VERSION=$(checkAndCleanVersion "${YQ_VERSION}")
 
 TEMPDIR=$(mktemp -d)
