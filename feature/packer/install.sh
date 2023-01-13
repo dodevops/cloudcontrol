@@ -1,5 +1,11 @@
 . /feature-installer-utils.sh
 
+if [ -z "${PACKER_VERSION}" ]
+then
+  echo "The packer feature requires a version set using PACKER_VERSION. See https://github.com/hashicorp/packer/releases for valid versions"
+  exit 1
+fi
+
 PACKER_VERSION=$(checkAndCleanVersion "${PACKER_VERSION}")
 
 TEMPDIR=$(mktemp -d)

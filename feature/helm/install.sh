@@ -1,5 +1,11 @@
 . /feature-installer-utils.sh
 
+if [ -z "${HELM_VERSION}" ]
+then
+  echo "The helm feature requires a version set using HELM_VERSION. See https://github.com/helm/helm/releases for valid versions"
+  exit 1
+fi
+
 HELM_VERSION=$(checkAndCleanVersion "${HELM_VERSION}")
 
 TEMPDIR=$(mktemp -d)

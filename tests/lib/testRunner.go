@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"tests/lib/container"
 	"text/template"
 )
@@ -44,6 +45,19 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 		containerErr := func() error {
 			var testDir string
 
+			var willFail = false
+			var failPattern = ""
+
+			if _, err := os.Stat(filepath.Join(testSuite, ".will-fail")); err == nil {
+				willFail = true
+				logrus.Debug("Found .will-fail file, test will fail.")
+				if tmp, err := os.ReadFile(filepath.Join(testSuite, ".will-fail")); err != nil {
+					return fmt.Errorf("loading the contents of %s failed: %w", filepath.Join(testSuite, ".will-fail"), err)
+				} else {
+					failPattern = strings.TrimSuffix(string(tmp), "\n")
+				}
+			}
+
 			if tempReturn, err := os.MkdirTemp("", "cctest-*"); err != nil {
 				return fmt.Errorf("error creating temporary directory for testbed: %w", err)
 			} else {
@@ -71,7 +85,7 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 			if _, err := fileutils.CopyFile(
 				filepath.Join(testSuite, "goss.yaml"),
 				filepath.Join(testDir, "goss.yaml"),
-			); err != nil {
+			); err != nil && !willFail {
 				return fmt.Errorf("can not copy goss.yaml: %w", err)
 			}
 
@@ -149,19 +163,41 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 					fmt.Sprintf("/goss/goss -g /goss/goss_wait.yaml validate -r %ds -s 1s", testBed.MaxWait),
 				},
 			); err != nil {
-				var runCommandError *container.RunCommandError
-				switch {
-				case errors.As(err, &runCommandError):
-					return &GossError{
-						returnCode: runCommandError.ReturnCode,
-						logOutput: fmt.Sprintf(
-							"Command output:\n%s\n\nContainer output:\n%s",
-							runCommandError.CommandOutput,
-							runCommandError.ContainerOutput,
-						),
+				if !willFail || failPattern != "" {
+					var runCommandError *container.RunCommandError
+					switch {
+					case errors.As(err, &runCommandError):
+						if !willFail {
+							return &GossError{
+								returnCode: runCommandError.ReturnCode,
+								logOutput: fmt.Sprintf(
+									"Command output:\n%s\n\nContainer output:\n%s",
+									runCommandError.CommandOutput,
+									runCommandError.ContainerOutput,
+								),
+							}
+						} else if found, err := regexp.Match(
+							failPattern,
+							[]byte(fmt.Sprintf("%s%s", runCommandError.CommandOutput, runCommandError.ContainerOutput)),
+						); err != nil || !found {
+							return &GossError{
+								returnCode: 0,
+								logOutput: fmt.Sprintf(
+									"Container failed but the pattern %s was not found in the logs:\n%s\n\n%s",
+									failPattern,
+									runCommandError.CommandOutput,
+									runCommandError.ContainerOutput,
+								),
+							}
+						}
+					default:
+						return err
 					}
-				default:
-					return err
+				}
+			} else if err == nil && willFail {
+				return &GossError{
+					returnCode: 0,
+					logOutput:  "Container was created successfully when it shouldn't have been.",
 				}
 			}
 
@@ -178,19 +214,26 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 					"documentation",
 				},
 			); err != nil {
-				var runCommandError *container.RunCommandError
-				switch {
-				case errors.As(err, &runCommandError):
-					return &GossError{
-						returnCode: runCommandError.ReturnCode,
-						logOutput: fmt.Sprintf(
-							"Command output:\n%s\n\nContainer output:\n%s",
-							runCommandError.CommandOutput,
-							runCommandError.ContainerOutput,
-						),
+				if !willFail {
+					var runCommandError *container.RunCommandError
+					switch {
+					case errors.As(err, &runCommandError):
+						return &GossError{
+							returnCode: runCommandError.ReturnCode,
+							logOutput: fmt.Sprintf(
+								"Command output:\n%s\n\nContainer output:\n%s",
+								runCommandError.CommandOutput,
+								runCommandError.ContainerOutput,
+							),
+						}
+					default:
+						return err
 					}
-				default:
-					return err
+				}
+			} else if err == nil && willFail {
+				return &GossError{
+					returnCode: 0,
+					logOutput:  "Container was created successfully when it shouldn't have been.",
 				}
 			}
 			return nil
@@ -241,6 +284,14 @@ func IntegrationTests(features []Feature, testBed TestBed, containerAdapter cont
 			for _, testSuite := range testSuites {
 				if _, err := os.Stat(filepath.Join(testSuite, ".ignore-integration")); err == nil {
 					logrus.Infof("Test %s for feature %s is ignored for integration testing", filepath.Base(testSuite), feature.Name)
+					continue
+				}
+				if _, err := os.Stat(filepath.Join(testSuite, ".will-fail")); err == nil {
+					logrus.Infof(
+						"Test %s for feature %s is ignored for integration testing, because it will fail",
+						filepath.Base(testSuite),
+						feature.Name,
+					)
 					continue
 				}
 				envs = append(envs, fmt.Sprintf("USE_%s=yes", feature.Name))

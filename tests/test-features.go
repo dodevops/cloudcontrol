@@ -4,6 +4,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/MakeNowJust/heredoc"
 	"github.com/akamensky/argparse"
@@ -267,11 +268,11 @@ func main() {
 		if _, err := failureTemplate.Parse(heredoc.Doc(`
 			❌  The following tests didn't succeed (⏱  {{ .Timer }}s):
 			{{ range .Tests }}
-			* {{ .Feature.Name }} ({{ .Feature.FullPath }}) ⏱ {{ .ElapsedSeconds }}s:
-			
-			{{ .ErrorMessage }}
-			{{ end }}
+			* {{ .Feature.Name }} ({{ .Feature.FullPath }}) (⏱ {{ .ElapsedSeconds }}s)
+			{{- end }}
+
 			Not running integration suite.
+
 		`)); err != nil {
 			panic(fmt.Sprintf("Can not parse failure template: %s", err.Error()))
 		}
@@ -281,12 +282,15 @@ func main() {
 			Tests []lib.TestFailure
 		}
 
-		if err := failureTemplate.Execute(os.Stderr, templateData{
+		var templateOutput bytes.Buffer
+		if err := failureTemplate.Execute(&templateOutput, templateData{
 			Tests: featuresWithFailures,
 			Timer: int(math.Round(time.Since(timer).Seconds())),
 		}); err != nil {
 			panic(fmt.Sprintf("Can not run failure template: %s", err.Error()))
 		}
+
+		logrus.Error(templateOutput.String())
 	} else if !*skipIntegrationTest {
 		logrus.Debugf("Running integration tests")
 		var integrationTimer = time.Now()
@@ -305,5 +309,5 @@ func main() {
 		}
 	}
 
-	logrus.Infof("✅  completed tests in ⏱  %ds", int(math.Round(time.Since(timer).Seconds())))
+	logrus.Infof("⏱  Finished running tests in %ds", int(math.Round(time.Since(timer).Seconds())))
 }

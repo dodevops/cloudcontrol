@@ -2,4 +2,4 @@ icon: "🐗"
 title: "Terragrunt"
 description: "Installs [Terragrunt](https://github.com/gruntwork-io/terragrunt)"
 configuration:
-    - "Environment TERRAGRUNT_VERSION: Valid version of terragrunt to install"
+    - "Environment TERRAGRUNT_VERSION*: Valid version of terragrunt to install"

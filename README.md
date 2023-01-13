@@ -375,14 +375,16 @@ Adds specified trusted certificate authorities into the container
 * USE_certificates: Enable this feature
 * DEBUG_certificates: Debug this feature
 * Add a volume mount to the `volumes:` section of docker compose like this:
-       (...)
-       volumes:
-           - "<Path to directory with CA .pem files>:/certificates"
+     (...)
+     volumes:
+         - "<Path to directory with CA .pem files>:/certificates"
+
 * Volume-target /certificates: Target directory for certificates. If something different than /certificates is used, environment 
-  CERTIFICATES_PATH needs to be set to this path
+CERTIFICATES_PATH needs to be set to this path
+
 * Environment CERTIFICATES_PATH: The container path to the volume mount that holds trusted certificate authorities as .pem files 
-  (optional). Defaults to `/certificates`. If something different than the default is used, the volume-target needs to be adapted to 
-  the same directory
+(optional). Defaults to `/certificates`. If something different than the default is used, the volume-target needs to be adapted to 
+the same directory
 
 ### <a id="direnv"></a> Direnv
 
@@ -401,7 +403,7 @@ Installs [Helm](https://helm.sh)
 
 * USE_helm: Enable this feature
 * DEBUG_helm: Debug this feature
-* Environment HELM_VERSION: Valid Helm version to install (e.g. 1.5.4)
+* Environment HELM_VERSION*: Valid Helm version to install (e.g. 1.5.4)
 
 ### <a id="jq"></a> JQ
 
@@ -440,43 +442,50 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
 * USE_kubernetes: Enable this feature
 * DEBUG_kubernetes: Debug this feature
 * (azure flavour) Environment AZ_K8S_CLUSTERS: A comma separated list of AKS clusters to manage
-  inside *CloudControl* (only for azure flavour).
-  Each cluster is a pair of resource group and cluster name, separated by a colon. Optionally, you can specify
-  the target subscription.
-  For example: myresourcegroup:myk8s,myotherresourcegroup@othersubscription:mysecondk8s will install myk8s from
-  the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup in the
-  subscription othersubscription.
-  Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
-  This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
+inside *CloudControl* (only for azure flavour).
+Each cluster is a pair of resource group and cluster name, separated by a colon. Optionally, you can specify
+the target subscription.
+For example: myresourcegroup:myk8s,myotherresourcegroup@othersubscription:mysecondk8s will install myk8s from
+the myresourcegroup resource group and mysecondk8s from the resource group myotherresourcegroup in the
+subscription othersubscription.
+Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
+This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
+
 * (azure flavour) Environment AZ_K8S_INSTALL_OPTIONS: Additional options for the az aks install-cli programm.
-  (Defaults to empty)
+(Defaults to empty)
+
 * (aws flavour) Environment AWS_K8S_CLUSTERS: A comma separated list of EKS clusters to manage
-  inside *CloudControl* (only for aws flavour).
-  For each cluster give the cluster name. If you need to assume an ARN role, add that to the clustername
-  with an additional | added.
-  For example: myekscluster|arn:aws:iam::32487234892:sample/sample
-  
-  If you additionally need to assume a role before fetching the EKS credentials, add the role, prefixed with
-  an @:
-  myekscluster|arn:aws:iam::4327849324:sample/sample@arn:aws:iam::specialrole
+inside *CloudControl* (only for aws flavour).
+For each cluster give the cluster name. If you need to assume an ARN role, add that to the clustername
+with an additional | added.
+For example: myekscluster|arn:aws:iam::32487234892:sample/sample
+
+If you additionally need to assume a role before fetching the EKS credentials, add the role, prefixed with
+an @:
+myekscluster|arn:aws:iam::4327849324:sample/sample@arn:aws:iam::specialrole
+
 * (aws flavour) Environment AWS_SKIP_GPG: If set, skips the gpg checks for the yum repo of kubectl,
-  as [this](https://github.com/kubernetes/kubernetes/issues/37922)
-  [sometimes](https://github.com/kubernetes/kubernetes/issues/60134)
-  seems to fail.
+as [this](https://github.com/kubernetes/kubernetes/issues/37922)
+[sometimes](https://github.com/kubernetes/kubernetes/issues/60134)
+seems to fail.
+
 * (simple and aws flavour) Environment KUBECTL_VERSION: The version of kubectl to install
+
 * (tanzu flavour)
-  * Environment TANZU_HOST: The tanzu host to download the kubectl vsphere plugin from and authenticate against
-  * Environment TANZU_USERNAME: The username to authenticate with
-  * Environment KUBECTL_VSPHERE_PASSWORD: The password to authenticate with
-  * Environment TANZU_CLUSTERS: A comma separated list of namespace:cluster name pairs
-  * Environment TANZU_ADD_CONTROL_CLUSTER: Whether to also authenticate against the control cluster [false]
-  * Environment TANZU_SKIP_TLS_VERIFY: Skip TLS verification [false]
-  * Environment TANZU_VSPHERE_PLUGIN_PATH: The path where to find the kubectl vsphere plugin [/wcp/plugin/linux-amd64/vsphere-plugin.zip]
-  
-  This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
+* Environment TANZU_HOST: The tanzu host to download the kubectl vsphere plugin from and authenticate against
+* Environment TANZU_USERNAME: The username to authenticate with
+* Environment KUBECTL_VSPHERE_PASSWORD: The password to authenticate with
+* Environment TANZU_CLUSTERS: A comma separated list of namespace:cluster name pairs
+* Environment TANZU_ADD_CONTROL_CLUSTER: Whether to also authenticate against the control cluster [false]
+* Environment TANZU_SKIP_TLS_VERIFY: Skip TLS verification [false]
+* Environment TANZU_VSPHERE_PLUGIN_PATH: The path where to find the kubectl vsphere plugin [/wcp/plugin/linux-amd64/vsphere-plugin.zip]
+
+This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
+
 * (gcloud flavor)
-  * Environment GCLOUD_K8S_CLUSTERS: A comma separated list of zone:cluster-name
-  * Environment K8S_USE_GCLOUD_AUTH: Whether to use the new GKE_GCLOUD_AUTH plugin [true]
+* Environment GCLOUD_K8S_CLUSTERS: A comma separated list of zone:cluster-name
+* Environment K8S_USE_GCLOUD_AUTH: Whether to use the new GKE_GCLOUD_AUTH plugin [true]
+
 
 ### <a id="packages"></a> Packages
 
@@ -488,6 +497,7 @@ Installs additional packages into the container
 * DEBUG_packages: Debug this feature
 * Environment PACKAGES: A whitespace separated list of packages to install. The packages will be installed with the flavour's default package manager.
 
+
 ### <a id="packer"></a> Packer
 
 Installs [Packer](https://packer.io)
@@ -496,7 +506,7 @@ Installs [Packer](https://packer.io)
 
 * USE_packer: Enable this feature
 * DEBUG_packer: Debug this feature
-* Environment PACKER_VERSION: Valid Packer version to install (e.g. 1.5.4)
+* Environment PACKER_VERSION*: Valid Packer version to install (e.g. 1.5.4)
 
 ### <a id="run"></a> Run
 
@@ -517,7 +527,7 @@ Installs [stern](https://github.com/stern/stern), a multi pod and container log 
 
 * USE_stern: Enable this feature
 * DEBUG_stern: Debug this feature
-* Environment STERN_VERSION: Valid Stern version (e.g. 1.21.0)
+* Environment STERN_VERSION*: Valid Stern version (e.g. 1.21.0)
 
 ### <a id="terraform"></a> Terraform
 
@@ -528,19 +538,24 @@ Installs and configures [Terraform](https://terraform.io)
 * USE_terraform: Enable this feature
 * DEBUG_terraform: Debug this feature
 * Add a volume mount to the `volumes:` section of docker compose like this:
-       (...)
-       volumes:
-           - "<path-to-terraform>:/terraform"
+     (...)
+     volumes:
+         - "<path-to-terraform>:/terraform"
+
 * Volume-target /terraform: Terraform base target directory. If something different than /terraform is used, environment
-  TERRAFORM_PATH needs to be set to this path
+TERRAFORM_PATH needs to be set to this path
+
 * Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. 
-  Terraform app secrets, etc.). If something different than /credentials.terraform is used, environment TERRAFORM_CREDENTIALS_PATH 
-  needs to be set to this path
-* Environment TERRAFORM_VERSION: A valid terraform version to install (e.g. 0.12.17)
+Terraform app secrets, etc.). If something different than /credentials.terraform is used, environment TERRAFORM_CREDENTIALS_PATH 
+needs to be set to this path
+
+* Environment TERRAFORM_VERSION*: A valid terraform version to install (e.g. 0.12.17)
 * Environment TERRAFORM_PATH: Volume target for terraform base directory (optional). Defaults to `/terraform`. If something different 
-  than the default is used, the volume-target needs to be adapted to the same directory
+than the default is used, the volume-target needs to be adapted to the same directory
+
 * Environment TERRAFORM_CREDENTIALS_PATH: Volume target for terraform credentials (optional). Defaults to `/terraform`. If something 
-  different than the default is used, the volume-target needs to be adapted to the same directory
+different than the default is used, the volume-target needs to be adapted to the same directory
+
 
 ### <a id="terragrunt"></a> Terragrunt
 
@@ -550,7 +565,7 @@ Installs [Terragrunt](https://github.com/gruntwork-io/terragrunt)
 
 * USE_terragrunt: Enable this feature
 * DEBUG_terragrunt: Debug this feature
-* Environment TERRAGRUNT_VERSION: Valid version of terragrunt to install
+* Environment TERRAGRUNT_VERSION*: Valid version of terragrunt to install
 
 ### <a id="timezone"></a> Timezone configuration
 
@@ -570,7 +585,7 @@ Installs the [Velero](https://velero.io) kubernetes backup CLI
 
 * USE_velero: Enable this feature
 * DEBUG_velero: Debug this feature
-* Environment VELERO_VERSION: Valid velero version to install (e.g. 1.4.2)
+* Environment VELERO_VERSION*: Valid velero version to install (e.g. 1.4.2)
 
 ### <a id="vim"></a> Vim
 
@@ -589,7 +604,7 @@ Installs the [YAML parser and processor yq](https://github.com/mikefarah/yq)
 
 * USE_yq: Enable this feature
 * DEBUG_yq: Debug this feature
-* Environment YQ_VERSION: Valid YQ version to install (e.g. 4.5.0)
+* Environment YQ_VERSION*: Valid YQ version to install (e.g. 4.5.0)
 
 
 ## Development
@@ -606,9 +621,21 @@ If you need another flavour (aka cloud provider), add a new subdirectory under "
 your flavour the same way as a feature. For the rest of the files, please check out existing flavours for details. Please,
 include a sample configuration for your flavour to make it easier for other people to work with it.
 
-### Features with versions
+### Configuration best practices
 
-When your feature needs a version specification, the recommended way is to use the environment variable
+The `feature.yaml` is a descriptor file used to automatically create this documentation. It includes a "configuration"
+key, that should be used to inform the user of ways to configure the feature. Usually, this is done using
+environment variables.
+
+It is recommended to use prefixed variables for the feature. For example, when creating a feature called "myfeature",
+use environment variables prefixed with "MYFEATURE_" to circumvent the problem of accidentally sharing configuration
+variables with another feature or a flavour.
+
+Additionally, please add enough information to the configuration array of your feature so the user knows what values
+to set for the specific environment variable. If a configuration option is required, please add an asterisk (*) after
+its name and check if the variable is set in your installation script and break accordingly if not.
+
+If your feature needs a version specification, the recommended way is to use the environment variable
 `[FEATURE NAME]_VERSION`. This variable is also filled if the *CloudControl* user uses the FEATURES-variable approach
 to enable features.
 
@@ -700,6 +727,15 @@ Once that is done, run the tests like following:
 This will run the tests of all features that supply a test suite one by one and, if all succeed, will test all
 features together for integration testing. Check out `test-features --help` for other options.
 
+### Testing for failing configurations
+
+If you'd like to test if a specific configuration fails to install, create a goss subdirectory and only put a file
+named `.will-fail` into it.
+
+When the testrunner encounters such file it will check if CloudControl fails to complete initialization.
+
+You can add a regular expression pattern into `.will-fail` to test if the container or command output matches it.
+
 ### Test debugging
 
 To check why a test failed, run the test-runner using the -x bash parameter to see the different commands it issues.
@@ -712,16 +748,6 @@ tests locally.
 To rebuild this documentation, first compile the documentation maker:
 
     docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o mkdoc
-
-Then run it to rebuild README.md based on README.md.gotmpl:
-
-    ./mkdoc
-D":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o mkdoc
-
-Then run it to rebuild README.md based on README.md.gotmpl:
-
-    ./mkdoc
-uild -o mkdoc
 
 Then run it to rebuild README.md based on README.md.gotmpl:
 

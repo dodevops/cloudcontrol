@@ -14,7 +14,7 @@ configuration:
         Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. 
         Terraform app secrets, etc.). If something different than /credentials.terraform is used, environment TERRAFORM_CREDENTIALS_PATH 
         needs to be set to this path
-    - "Environment TERRAFORM_VERSION: A valid terraform version to install (e.g. 0.12.17)"
+    - "Environment TERRAFORM_VERSION*: A valid terraform version to install (e.g. 0.12.17)"
     - |
         Environment TERRAFORM_PATH: Volume target for terraform base directory (optional). Defaults to `/terraform`. If something different 
         than the default is used, the volume-target needs to be adapted to the same directory
