@@ -42,13 +42,6 @@ func fetchDocData(basePath string, filenamePattern string) (map[string]YamlDescr
 }
 
 func main() {
-	//var rootPath string
-	//if ex, err := os.Executable(); err == nil {
-	//	rootPath = filepath.Join(filepath.Dir(ex), "..")
-	//} else {
-	//	panic(err)
-	//}
-
 	templateData := TemplateData{}
 
 	if docData, err := fetchDocData(filepath.Join("feature", "*"), "feature.yaml"); err != nil {
