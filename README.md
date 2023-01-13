@@ -288,14 +288,10 @@ To start a new session in the CloudControl context, run `createSession <token>` 
 
 #### Configuration
 
-* 
-  Environment AWS_ACCESS_KEY_ID: Specifies an AWS access key associated with an IAM user or role
-* 
-  Environment AWS_SECRET_ACCESS_KEY: Specifies the secret key associated with the access key. This is essentially the password for the access key
-* 
-  Environment AWS_DEFAULT_REGION: Specifies the AWS Region to send the request to
-* 
-  Environment AWS_MFA_ARN: ARN of the MFA device to use to log in
+* Environment AWS_ACCESS_KEY_ID: Specifies an AWS access key associated with an IAM user or role
+* Environment AWS_SECRET_ACCESS_KEY: Specifies the secret key associated with the access key. This is essentially the password for the access key
+* Environment AWS_DEFAULT_REGION: Specifies the AWS Region to send the request to
+* Environment AWS_MFA_ARN: ARN of the MFA device to use to log in
 
 ### <a id="azure"></a> azure
 
@@ -305,12 +301,9 @@ This only happens once during initialization phase.
 
 #### Configuration
 
-* 
-  Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container
-* 
-  Environment AZ_TENANTID: The Azure tenant id to log into (optional)
-* 
-  Environment AZ_USE_ARM_SPI: Uses the environment variables ARM_CLIENT_ID and ARM_CLIENT_SECRET for service principal auth [false]
+* Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container
+* Environment AZ_TENANTID: The Azure tenant id to log into (optional)
+* Environment AZ_USE_ARM_SPI: Uses the environment variables ARM_CLIENT_ID and ARM_CLIENT_SECRET for service principal auth [false]
 
 ### <a id="gcloud"></a> gcloud
 
@@ -326,10 +319,8 @@ Authentication requires the following:
 
 #### Configuration
 
-* 
-  Environment GCLOUD_PROJECTID: The id of the Google Cloud project to connect to
-* 
-  Environment GCLOUD_KEYPATH: Path inside CloudControl that holds the service account JSON file
+* Environment GCLOUD_PROJECTID: The id of the Google Cloud project to connect to
+* Environment GCLOUD_KEYPATH: Path inside CloudControl that holds the service account JSON file
 
 ### <a id="simple"></a> simple
 
@@ -383,18 +374,13 @@ Adds specified trusted certificate authorities into the container
 
 * USE_certificates: Enable this feature
 * DEBUG_certificates: Debug this feature
-* 
-  Add a volume mount to the `volumes:` section of docker compose like this:
+* Add a volume mount to the `volumes:` section of docker compose like this:
        (...)
        volumes:
            - "<Path to directory with CA .pem files>:/certificates"
-  
-* 
-  Volume-target /certificates: Target directory for certificates. If something different than /certificates is used, environment 
+* Volume-target /certificates: Target directory for certificates. If something different than /certificates is used, environment 
   CERTIFICATES_PATH needs to be set to this path
-  
-* 
-  Environment CERTIFICATES_PATH: The container path to the volume mount that holds trusted certificate authorities as .pem files 
+* Environment CERTIFICATES_PATH: The container path to the volume mount that holds trusted certificate authorities as .pem files 
   (optional). Defaults to `/certificates`. If something different than the default is used, the volume-target needs to be adapted to 
   the same directory
 
@@ -415,8 +401,7 @@ Installs [Helm](https://helm.sh)
 
 * USE_helm: Enable this feature
 * DEBUG_helm: Debug this feature
-* 
-  Environment HELM_VERSION: Valid Helm version to install (e.g. 1.5.4)
+* Environment HELM_VERSION: Valid Helm version to install (e.g. 1.5.4)
 
 ### <a id="jq"></a> JQ
 
@@ -454,8 +439,7 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
 
 * USE_kubernetes: Enable this feature
 * DEBUG_kubernetes: Debug this feature
-* 
-  (azure flavour) Environment AZ_K8S_CLUSTERS: A comma separated list of AKS clusters to manage
+* (azure flavour) Environment AZ_K8S_CLUSTERS: A comma separated list of AKS clusters to manage
   inside *CloudControl* (only for azure flavour).
   Each cluster is a pair of resource group and cluster name, separated by a colon. Optionally, you can specify
   the target subscription.
@@ -464,13 +448,9 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
   subscription othersubscription.
   Prefix a cluster name with an ! to load the admin-credentials for that cluster instead of the user credentials.
   This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
-  
-* 
-  (azure flavour) Environment AZ_K8S_INSTALL_OPTIONS: Additional options for the az aks install-cli programm.
+* (azure flavour) Environment AZ_K8S_INSTALL_OPTIONS: Additional options for the az aks install-cli programm.
   (Defaults to empty)
-  
-* 
-  (aws flavour) Environment AWS_K8S_CLUSTERS: A comma separated list of EKS clusters to manage
+* (aws flavour) Environment AWS_K8S_CLUSTERS: A comma separated list of EKS clusters to manage
   inside *CloudControl* (only for aws flavour).
   For each cluster give the cluster name. If you need to assume an ARN role, add that to the clustername
   with an additional | added.
@@ -479,18 +459,12 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
   If you additionally need to assume a role before fetching the EKS credentials, add the role, prefixed with
   an @:
   myekscluster|arn:aws:iam::4327849324:sample/sample@arn:aws:iam::specialrole
-  
-* 
-  (aws flavour) Environment AWS_SKIP_GPG: If set, skips the gpg checks for the yum repo of kubectl,
+* (aws flavour) Environment AWS_SKIP_GPG: If set, skips the gpg checks for the yum repo of kubectl,
   as [this](https://github.com/kubernetes/kubernetes/issues/37922)
   [sometimes](https://github.com/kubernetes/kubernetes/issues/60134)
   seems to fail.
-  
-* 
-  (simple and aws flavour) Environment KUBECTL_VERSION: The version of kubectl to install
-  
-* 
-  (tanzu flavour)
+* (simple and aws flavour) Environment KUBECTL_VERSION: The version of kubectl to install
+* (tanzu flavour)
   * Environment TANZU_HOST: The tanzu host to download the kubectl vsphere plugin from and authenticate against
   * Environment TANZU_USERNAME: The username to authenticate with
   * Environment KUBECTL_VSPHERE_PASSWORD: The password to authenticate with
@@ -500,12 +474,9 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
   * Environment TANZU_VSPHERE_PLUGIN_PATH: The path where to find the kubectl vsphere plugin [/wcp/plugin/linux-amd64/vsphere-plugin.zip]
   
   This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
-  
-* 
-  (gcloud flavor)
+* (gcloud flavor)
   * Environment GCLOUD_K8S_CLUSTERS: A comma separated list of zone:cluster-name
   * Environment K8S_USE_GCLOUD_AUTH: Whether to use the new GKE_GCLOUD_AUTH plugin [true]
-  
 
 ### <a id="packages"></a> Packages
 
@@ -515,9 +486,7 @@ Installs additional packages into the container
 
 * USE_packages: Enable this feature
 * DEBUG_packages: Debug this feature
-* 
-  Environment PACKAGES: A whitespace separated list of packages to install. The packages will be installed with the flavour's default package manager.
-  
+* Environment PACKAGES: A whitespace separated list of packages to install. The packages will be installed with the flavour's default package manager.
 
 ### <a id="packer"></a> Packer
 
@@ -527,8 +496,7 @@ Installs [Packer](https://packer.io)
 
 * USE_packer: Enable this feature
 * DEBUG_packer: Debug this feature
-* 
-  Environment PACKER_VERSION: Valid Packer version to install (e.g. 1.5.4)
+* Environment PACKER_VERSION: Valid Packer version to install (e.g. 1.5.4)
 
 ### <a id="run"></a> Run
 
@@ -538,8 +506,7 @@ Runs commands inside the shell when entering the cloud control container
 
 * USE_run: Enable this feature
 * DEBUG_run: Debug this feature
-* 
-  Environment RUN_COMMANDS: Valid shell commands to run
+* Environment RUN_COMMANDS: Valid shell commands to run
 
 ### <a id="stern"></a> Stern
 
@@ -550,8 +517,7 @@ Installs [stern](https://github.com/stern/stern), a multi pod and container log 
 
 * USE_stern: Enable this feature
 * DEBUG_stern: Debug this feature
-* 
-  Environment STERN_VERSION: Valid Stern version (e.g. 1.21.0)
+* Environment STERN_VERSION: Valid Stern version (e.g. 1.21.0)
 
 ### <a id="terraform"></a> Terraform
 
@@ -561,31 +527,20 @@ Installs and configures [Terraform](https://terraform.io)
 
 * USE_terraform: Enable this feature
 * DEBUG_terraform: Debug this feature
-* 
-  Add a volume mount to the `volumes:` section of docker compose like this:
+* Add a volume mount to the `volumes:` section of docker compose like this:
        (...)
        volumes:
            - "<path-to-terraform>:/terraform"
-  
-* 
-  Volume-target /terraform: Terraform base target directory. If something different than /terraform is used, environment
+* Volume-target /terraform: Terraform base target directory. If something different than /terraform is used, environment
   TERRAFORM_PATH needs to be set to this path
-  
-* 
-  Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. 
+* Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. 
   Terraform app secrets, etc.). If something different than /credentials.terraform is used, environment TERRAFORM_CREDENTIALS_PATH 
   needs to be set to this path
-  
-* 
-  Environment TERRAFORM_VERSION: A valid terraform version to install (e.g. 0.12.17)
-* 
-  Environment TERRAFORM_PATH: Volume target for terraform base directory (optional). Defaults to `/terraform`. If something different 
+* Environment TERRAFORM_VERSION: A valid terraform version to install (e.g. 0.12.17)
+* Environment TERRAFORM_PATH: Volume target for terraform base directory (optional). Defaults to `/terraform`. If something different 
   than the default is used, the volume-target needs to be adapted to the same directory
-  
-* 
-  Environment TERRAFORM_CREDENTIALS_PATH: Volume target for terraform credentials (optional). Defaults to `/terraform`. If something 
+* Environment TERRAFORM_CREDENTIALS_PATH: Volume target for terraform credentials (optional). Defaults to `/terraform`. If something 
   different than the default is used, the volume-target needs to be adapted to the same directory
-  
 
 ### <a id="terragrunt"></a> Terragrunt
 
@@ -595,8 +550,7 @@ Installs [Terragrunt](https://github.com/gruntwork-io/terragrunt)
 
 * USE_terragrunt: Enable this feature
 * DEBUG_terragrunt: Debug this feature
-* 
-  Environment TERRAGRUNT_VERSION: Valid version of terragrunt to install
+* Environment TERRAGRUNT_VERSION: Valid version of terragrunt to install
 
 ### <a id="timezone"></a> Timezone configuration
 
@@ -606,8 +560,7 @@ Configures the container's timezone
 
 * USE_timezone: Enable this feature
 * DEBUG_timezone: Debug this feature
-* 
-  Environment TZ: The timezone to use
+* Environment TZ: The timezone to use
 
 ### <a id="velero"></a> Velero
 
@@ -617,8 +570,7 @@ Installs the [Velero](https://velero.io) kubernetes backup CLI
 
 * USE_velero: Enable this feature
 * DEBUG_velero: Debug this feature
-* 
-  Environment VELERO_VERSION: Valid velero version to install (e.g. 1.4.2)
+* Environment VELERO_VERSION: Valid velero version to install (e.g. 1.4.2)
 
 ### <a id="vim"></a> Vim
 
@@ -637,8 +589,7 @@ Installs the [YAML parser and processor yq](https://github.com/mikefarah/yq)
 
 * USE_yq: Enable this feature
 * DEBUG_yq: Debug this feature
-* 
-  Environment YQ_VERSION: Valid YQ version to install (e.g. 4.5.0)
+* Environment YQ_VERSION: Valid YQ version to install (e.g. 4.5.0)
 
 
 ## Development
@@ -761,6 +712,11 @@ tests locally.
 To rebuild this documentation, first compile the documentation maker:
 
     docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o mkdoc
+
+Then run it to rebuild README.md based on README.md.gotmpl:
+
+    ./mkdoc
+D":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o mkdoc
 
 Then run it to rebuild README.md based on README.md.gotmpl:
 

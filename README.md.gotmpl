@@ -251,7 +251,7 @@ environment variable in the docker-compose file. Then you can debug with the run
 {{ $flavour.Description }}
 {{ if $flavour.Configuration }}#### Configuration
 {{ range $flavour.Configuration }}
-* {{ nindent 2 . }}
+* {{ indent 2 . | trim }}
 {{- end }}
 {{- end }}
 {{- end -}}
@@ -267,7 +267,7 @@ environment variable in the docker-compose file. Then you can debug with the run
 * USE_{{ trimPrefix "_" $name }}: Enable this feature
 * DEBUG_{{ trimPrefix "_" $name }}: Debug this feature
 {{- range $feature.Configuration }}
-* {{ nindent 2 . }}
+* {{ indent 2 . | trim }}
 {{- end }}
 {{ end }}
 
