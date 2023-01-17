@@ -296,8 +296,9 @@ use environment variables prefixed with "MYFEATURE_" to circumvent the problem o
 variables with another feature or a flavour.
 
 Additionally, please add enough information to the configuration array of your feature so the user knows what values
-to set for the specific environment variable. If a configuration option is required, please add an asterisk (*) after
-its name and check if the variable is set in your installation script and break accordingly if not.
+to set for the specific environment variable. If a configuration option is required, please state this in the
+environment declaration using `(required)` after its name and check if the variable is set in your installation script
+and break accordingly if not.
 
 If your feature needs a version specification, the recommended way is to use the environment variable
 `[FEATURE NAME]_VERSION`. This variable is also filled if the *CloudControl* user uses the FEATURES-variable approach
