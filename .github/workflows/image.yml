@@ -1,0 +1,93 @@
+name: "Build Images"
+
+on:
+    push:
+        branches:
+            - main
+            - develop
+    release:
+        types:
+            - published
+
+env:
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+    build:
+        strategy:
+            matrix:
+                flavour:
+                    - name: aws
+                      platforms: "linux/amd64,linux/arm64"
+                    - name: azure
+                      platforms: "linux/amd64"
+                    - name: gcloud
+                      platforms: "linux/amd64,linux/arm64"
+                    - name: simple
+                      platforms: "linux/amd64,linux/arm64"
+                    - name: tanzu
+                      platforms: "linux/amd64"
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            packages: write
+            id-token: write
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+
+            -   name: Install cosign
+                uses: sigstore/cosign-installer@v2.8.1
+
+            # Set up QEMU to be able to build to multiple architectures
+            -   name: Set up QEMU
+                uses: docker/setup-qemu-action@v1
+
+            -   name: Setup Docker buildx
+                uses: docker/setup-buildx-action@v2.4.0
+
+            -   name: Log into registry ${{ env.REGISTRY }}
+                uses: docker/login-action@v2.1.0
+                with:
+                    registry: ${{ env.REGISTRY }}
+                    username: ${{ github.actor }}
+                    password: ${{ secrets.GITHUB_TOKEN }}
+
+            -   name: Extract Docker metadata
+                id: meta
+                uses: docker/metadata-action@v4.3.0
+                with:
+                    images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-${{ matrix.flavour.name }}
+                    tags: |
+                        type=ref,event=branch
+                        type=semver,pattern={{version}}
+                        type=edge,branch=develop
+                        type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+
+            -   name: Prepare build
+                run: |
+                    cat build/Dockerfile.prefix > Dockerfile
+                    cat "flavour/${{ matrix.flavour.name }}/Dockerfile.flavour" >> Dockerfile
+                    cat build/Dockerfile.suffix >> Dockerfile
+
+            -   name: Clean up Docker
+                run: |
+                    docker system prune -f --filter "until=5h"
+
+            - name: Build and push Docker image
+              id: build-and-push
+              uses: docker/build-push-action@v4.0.0
+              with:
+                  context: .
+                  push: true
+                  pull: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  no-cache: true
+                  platforms:  ${{ matrix.flavour.platforms }}
+
+            - name: Sign the published Docker image
+              env:
+                  COSIGN_EXPERIMENTAL: "true"
+              run: echo "${{ steps.meta.outputs.tags }}" | xargs -I {} cosign sign {}@${{ steps.build-and-push.outputs.digest }}

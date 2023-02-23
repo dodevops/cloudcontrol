@@ -2,6 +2,7 @@ package lib
 
 import (
 	"bytes"
+	"cloudcontroltools/internal/tests/lib/container"
 	"errors"
 	"fmt"
 	"github.com/MakeNowJust/heredoc"
@@ -13,7 +14,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"tests/lib/container"
 	"text/template"
 )
 
@@ -31,7 +31,9 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 	if testSuitesGlob, err := filepath.Glob(filepath.Join(feature.FullPath, "goss*")); err != nil {
 		return fmt.Errorf("error searching for testsuites in %s: %w", feature.FullPath, err)
 	} else {
-		testSuites = testSuitesGlob
+		testSuites = funk.Map(testSuitesGlob, func(entry string) string {
+			return filepath.Join(testBed.RootPath, entry)
+		}).([]string)
 	}
 
 	newLineRegExp := regexp.MustCompile("\r?\n")
@@ -46,7 +48,7 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 			var testDir string
 
 			var willFail = false
-			var failPattern = ""
+			var failPattern = ".*"
 
 			if _, err := os.Stat(filepath.Join(testSuite, ".will-fail")); err == nil {
 				willFail = true
@@ -155,7 +157,7 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 			}()
 
 			logrus.Debug("Waiting for goss_wait")
-			if _, err := containerAdapter.RunCommand(
+			if waitOutput, err := containerAdapter.RunCommand(
 				containerId,
 				[]string{
 					"sh",
@@ -163,41 +165,41 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 					fmt.Sprintf("/goss/goss -g /goss/goss_wait.yaml validate -r %ds -s 1s", testBed.MaxWait),
 				},
 			); err != nil {
-				if !willFail || failPattern != "" {
-					var runCommandError *container.RunCommandError
-					switch {
-					case errors.As(err, &runCommandError):
-						if !willFail {
-							return &GossError{
-								returnCode: runCommandError.ReturnCode,
-								logOutput: fmt.Sprintf(
-									"Command output:\n%s\n\nContainer output:\n%s",
-									runCommandError.CommandOutput,
-									runCommandError.ContainerOutput,
-								),
-							}
-						} else if found, err := regexp.Match(
-							failPattern,
-							[]byte(fmt.Sprintf("%s%s", runCommandError.CommandOutput, runCommandError.ContainerOutput)),
-						); err != nil || !found {
-							return &GossError{
-								returnCode: 0,
-								logOutput: fmt.Sprintf(
-									"Container failed but the pattern %s was not found in the logs:\n%s\n\n%s",
-									failPattern,
-									runCommandError.CommandOutput,
-									runCommandError.ContainerOutput,
-								),
-							}
+				var runCommandError *container.RunCommandError
+				switch {
+				case errors.As(err, &runCommandError):
+					if !willFail {
+						return &GossError{
+							returnCode: runCommandError.ReturnCode,
+							logOutput: fmt.Sprintf(
+								"Command output:\n%s\n\nContainer output:\n%s\n&s",
+								runCommandError.CommandOutput,
+								runCommandError.ContainerOutput,
+								runCommandError.Error(),
+							),
 						}
-					default:
-						return err
+					} else if found, err := regexp.Match(
+						failPattern,
+						[]byte(fmt.Sprintf("%s%s", runCommandError.CommandOutput, runCommandError.ContainerOutput)),
+					); err != nil || !found {
+						return &GossError{
+							returnCode: 0,
+							logOutput: fmt.Sprintf(
+								"Container failed but the pattern %s was not found in the logs:\n%s\n\n%s\n%s",
+								failPattern,
+								runCommandError.CommandOutput,
+								runCommandError.ContainerOutput,
+								runCommandError.Error(),
+							),
+						}
 					}
+				default:
+					return err
 				}
 			} else if err == nil && willFail {
 				return &GossError{
 					returnCode: 0,
-					logOutput:  "Container was created successfully when it shouldn't have been.",
+					logOutput:  fmt.Sprintf("Container was created successfully when it shouldn't have been: %s", waitOutput),
 				}
 			}
 

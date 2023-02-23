@@ -7,20 +7,17 @@ if [ "${FLAVOUR}" == "XazureX" ]; then
 
   if ${AZ_USE_ARM_SPI:-false}
   then
-    case $(cat /home/cloudcontrol/.shell) in
-      fish)
+    if [ -e ~/.config/fish/conf.d/ ]
+    then
       cat <<EOF >> ~/.config/fish/conf.d/kubernetes-spi.fish
 export AAD_SERVICE_PRINCIPAL_CLIENT_ID=${ARM_CLIENT_ID}
 export AAD_SERVICE_PRINCIPAL_CLIENT_SECRET=${ARM_CLIENT_SECRET}
 EOF
-      ;;
-      bash)
-      cat <<EOF >> ~/.bashrc
+    fi
+    cat <<EOF >> ~/.bashrc
 export AAD_SERVICE_PRINCIPAL_CLIENT_ID=${ARM_CLIENT_ID}
 export AAD_SERVICE_PRINCIPAL_CLIENT_SECRET=${ARM_CLIENT_SECRET}
 EOF
-      ;;
-    esac
   fi
 
   echo "#!/bin/sh" > ~/bin/k8s-relogin
