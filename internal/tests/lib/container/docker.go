@@ -144,52 +144,59 @@ func (d DockerAdapter) RunCommand(containerID string, cmd []string) (string, err
 		AttachStderr: true,
 		Cmd:          cmd,
 	}); err != nil {
-		return "", fmt.Errorf("can not create wait exec in goss container %s: %w", containerID, err)
+		return "", fmt.Errorf("can not create exec in goss container %s: %w", containerID, err)
 	} else {
 		executeID = idResponse.ID
 	}
 
 	var waitLogReader *bufio.Reader
 	if resp, err := dockerCli.ContainerExecAttach(context.Background(), executeID, types.ExecStartCheck{}); err != nil {
-		return "", fmt.Errorf("can not attach to wait in container %s: %w", containerID, err)
+		return "", fmt.Errorf("can not attach to exec in container %s: %w", containerID, err)
 	} else {
 		waitLogReader = resp.Reader
 		defer resp.Close()
 	}
 
-	if err := dockerCli.ContainerExecStart(context.Background(), executeID, types.ExecStartCheck{}); err != nil {
-		return "", fmt.Errorf("can not start wait in container %s: %w", containerID, err)
-	}
-
 	for {
 		if execInspect, err := dockerCli.ContainerExecInspect(context.Background(), executeID); err != nil {
-			return "", fmt.Errorf("wrror waiting for goss in container %s: %w", containerID, err)
+			return "", fmt.Errorf("error waiting for exec in container %s: %w", containerID, err)
 		} else {
 			if !execInspect.Running {
 				commandLogbuf := new(strings.Builder)
 				if _, err := io.Copy(commandLogbuf, waitLogReader); err != nil {
 					return "", fmt.Errorf("can not get command logs from reader: %w", err)
 				}
-				if execInspect.ExitCode != 0 {
-					containerLogBuf := new(strings.Builder)
-					if logReader, err := dockerCli.ContainerLogs(context.Background(), containerID, types.ContainerLogsOptions{
-						ShowStderr: true,
-						ShowStdout: true,
-					}); err != nil {
-						return "", fmt.Errorf("can not get logs of container %s: %w", containerID, err)
-					} else {
-						if _, err := io.Copy(containerLogBuf, logReader); err != nil {
-							return "", fmt.Errorf("can not get container logs from reader: %w", err)
-						}
+				containerLogBuf := new(strings.Builder)
+				if logReader, err := dockerCli.ContainerLogs(context.Background(), containerID, types.ContainerLogsOptions{
+					ShowStderr: true,
+					ShowStdout: true,
+				}); err != nil {
+					return "", fmt.Errorf("can not get logs of container %s: %w", containerID, err)
+				} else {
+					if _, err := io.Copy(containerLogBuf, logReader); err != nil {
+						return "", fmt.Errorf("can not get container logs from reader: %w", err)
 					}
-
+				}
+				if execInspect.ExitCode != 0 {
 					return "", &RunCommandError{
 						ReturnCode:      execInspect.ExitCode,
 						CommandOutput:   commandLogbuf.String(),
 						ContainerOutput: containerLogBuf.String(),
 					}
 				}
-				return commandLogbuf.String(), nil
+
+				if containerInspect, err := dockerCli.ContainerInspect(context.Background(), containerID); err != nil {
+					return "", fmt.Errorf("can not inspect container after exec: %w", err)
+				} else {
+					if !containerInspect.State.Running {
+						return "", &RunCommandError{
+							ReturnCode:      0,
+							CommandOutput:   fmt.Sprintf("container was stopped after exec: %s", commandLogbuf.String()),
+							ContainerOutput: containerLogBuf.String(),
+						}
+					}
+				}
+				return fmt.Sprintf("Command output: %s\n\nContainer output: %s\n%s", commandLogbuf.String(), containerLogBuf.String(), err), nil
 			}
 		}
 	}

@@ -1,7 +1,8 @@
-// Create the README.md file based on README.md.gotmpl and the yaml data in the flavour and feature directories
 package main
 
+// Create the README.md file based on README.md.gotmpl and the yaml data in the flavour and feature directories
 import (
+	"cloudcontroltools/internal"
 	"fmt"
 	"github.com/Masterminds/sprig/v3"
 	"gopkg.in/yaml.v3"
@@ -11,12 +12,12 @@ import (
 )
 
 type TemplateData struct {
-	Features map[string]YamlDescriptor
-	Flavours map[string]YamlDescriptor
+	Features map[string]internal.YamlDescriptor
+	Flavours map[string]internal.YamlDescriptor
 }
 
-func fetchDocData(basePath string, filenamePattern string) (map[string]YamlDescriptor, error) {
-	docDatas := make(map[string]YamlDescriptor)
+func fetchDocData(basePath string, filenamePattern string) (map[string]internal.YamlDescriptor, error) {
+	docDatas := make(map[string]internal.YamlDescriptor)
 
 	if subDirs, err := filepath.Glob(basePath); err != nil {
 		return docDatas, err
@@ -26,7 +27,7 @@ func fetchDocData(basePath string, filenamePattern string) (map[string]YamlDescr
 				if yamlFile, err := os.ReadFile(filepath.Join(dir, filenamePattern)); err != nil {
 					return docDatas, err
 				} else {
-					var descriptor YamlDescriptor
+					var descriptor internal.YamlDescriptor
 					if err := yaml.Unmarshal(yamlFile, &descriptor); err != nil {
 						return docDatas, err
 					}

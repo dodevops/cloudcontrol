@@ -1,0 +1,96 @@
+name: "Run tests"
+
+on:
+    - pull_request
+
+env:
+    GOSSVERSION: v0.3.21
+
+jobs:
+    test:
+        strategy:
+            matrix:
+                flavour:
+                    - aws
+                    - azure
+                    # Commented until gcloud playground exists
+                    #- gcloud
+                    - simple
+                    - tanzu
+                arch:
+                    - linux/amd64
+                    # Commented until Github supports arm64 runners
+                    #- linux/arm64
+                exclude:
+                    - flavour: "azure"
+                      arch: "linux/arm64"
+                    - flavour: "tanzu"
+                      arch: "linux/arm64"
+
+
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v2
+
+            -   name: Set up Go
+                uses: actions/setup-go@v3
+                with:
+                    go-version: 1.19
+            -   name: Setup Docker buildx
+                uses: docker/setup-buildx-action@v2.4.0
+            -   name: Set up QEMU
+                uses: docker/setup-qemu-action@v1
+
+            -   name: Prepare flavour data (common)
+                run: |
+                    mkdir .testbed
+
+            -   name: Prepare flavour data (azure)
+                if: matrix.flavour == 'azure'
+                run: |
+                    echo "AZ_SUBSCRIPTION=${{ secrets.TEST_AZURE_SUBSCRIPTION }}" > .testbed/.env
+                    echo "AZ_K8S_CLUSTERS=${{ secrets.TEST_AZURE_K8SCLUSTERS }}" >> .testbed/.env
+                    echo "AZ_TENANTID=${{ secrets.TEST_AZURE_TENANTID }}" >> .testbed/.env
+                    echo "ARM_SUBSCRIPTION_ID=${{ secrets.TEST_AZURE_SUBSCRIPTION }}" >> .testbed/.env
+                    echo "ARM_CLIENT_ID=${{ secrets.TEST_AZURE_CLIENT_ID }}" >> .testbed/.env
+                    echo "ARM_CLIENT_SECRET=${{ secrets.TEST_AZURE_CLIENT_SECRET }}" >> .testbed/.env
+                    echo "AZ_USE_ARM_SPI=true" >> .testbed/.env
+
+            -   name: Prepare flavour data (gcloud)
+                if: matrix.flavour == 'gcloud'
+                run: |
+                    echo "${{ secrets.TEST_GCLOUD_KEY_JSON }}" | base64 -d > .testbed/gcloud_key.json
+                    echo "GCLOUD_PROJECTID=${{ secrets.TEST_GCLOUD_PROJECT }}" > .testbed/.env
+                    echo "GCLOUD_K8S_CLUSTERS=${{ secrets.TEST_GCLOUD_K8SCLUSTERS }}" >> .testbed/.env
+                    echo "GCLOUD_KEYPATH=/flavour/gcloud_key.json" >> .testbed/.env
+
+            -   name: Prepare flavour container
+                run: |
+                    cat build/Dockerfile.prefix > Dockerfile
+                    cat "flavour/${{ matrix.flavour }}/Dockerfile.flavour" >> Dockerfile
+                    cat build/Dockerfile.suffix >> Dockerfile
+            -   name: build flavour container
+                id: build-and-push
+                uses: docker/build-push-action@v4.0.0
+                with:
+                    context: .
+                    pull: true
+                    tags: test-image-${{ matrix.flavour }}-${{ matrix.arch}}:local
+                    load: true
+                    no-cache: true
+                    platforms: ${{ matrix.arch }}
+
+            -   name: Run Tests
+                run: |
+                    set -x
+                    GOSS_ARCH=$(echo "${{ matrix.arch }}" | tr / -)
+                    curl -sL "https://github.com/goss-org/goss/releases/download/${{ env.GOSSVERSION }}/goss-${GOSS_ARCH}" -o goss
+                    chmod +x goss
+                    go build cmd/tests/test-features.go
+                    ./test-features -f ${{ matrix.flavour }} -i test-image-${{ matrix.flavour }}-${{ matrix.arch}}:local -p ${{ matrix.arch }} -t ${PWD}/.testbed -g ${PWD}/goss -l debug
+            -   name: Cleanup
+                run: |
+                    rm -rf .testbed
+                    rm goss

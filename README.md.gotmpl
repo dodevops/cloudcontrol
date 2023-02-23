@@ -412,8 +412,27 @@ tests locally.
 
 To rebuild this documentation, first compile the documentation maker:
 
-    docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o mkdoc
+    docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go run cmd/doc/mkdoc
 
 Then run it to rebuild README.md based on README.md.gotmpl:
 
     ./mkdoc
+
+## Workflows
+
+This repository includes different workflows to test and automate PRs and Pushes. The following workflows are used:
+
+```mermaid
+flowchart TD
+    A[Every Push] --> B[Update documentation]
+    D[Every PR] --> E[Check commits]
+    D --> F[Run Testsuite]
+    G[Push to Main] --> H[Generate Changelog and Release]
+    G --> C
+    I[Push to Develop] --> C[Build images]
+    click B "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/docs.yml" "Docs workflow"
+    click C "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/image.yml" "Image workflow"
+    click E "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/check_commits.yml" "Check workflow"
+    click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
+    click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
+```mermaid

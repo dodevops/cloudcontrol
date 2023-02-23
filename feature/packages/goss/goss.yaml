@@ -1,8 +1,6 @@
 command:
-    {{if or (eq .Env.FLAVOUR "gcloud") (eq .Env.FLAVOUR "azure") }}
     jq:
         exec: "/usr/bin/jq --version"
         exit-status: 0
         stdout:
             - jq-
-    {{end}}
