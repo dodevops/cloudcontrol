@@ -14,6 +14,12 @@
           Open Authentication
         </v-btn>
       </v-alert>
+      <v-alert :value="oAuthCode === '' && oAuthUrl !== ''" type="info">
+        CloudControlCenter has detected an authentication request. Click here to open the authentication URL:
+        <v-btn v-on:click="doOAuth">
+          Open Authentication
+        </v-btn>
+      </v-alert>
       <v-alert :value="requiresMFA" type="info">
         CloudControlCenter has detected an MFA code request. Enter the current code of your authenticator:
         <v-form v-on:submit="sendMfa">
@@ -90,7 +96,9 @@ export default class Progress extends Vue {
   }
 
   public async doOAuth() {
-    await navigator.clipboard.writeText(this.oAuthCode);
+    if (this.oAuthCode !== '') {
+      await navigator.clipboard.writeText(this.oAuthCode);
+    }
     window.open(this.oAuthUrl);
   }
 
@@ -143,6 +151,15 @@ export default class Progress extends Vue {
       }
     }
 
+    const googleOauthRegexp = new RegExp(
+        'Your browser has been opened to visit:\n\n\s+(.+)$'
+    );
+    if (googleOauthRegexp.test(output)) {
+      const matches = googleOauthRegexp.exec(output);
+      if (matches) {
+        this.oAuthUrl = matches[1];
+      }
+    }
     // MFA feature. Check for a regexp request, but also check if the MFA was already entered.
     const mfaRegexp = new RegExp('/tmp/mfa');
     const mfaDoneRegExp = new RegExp('\[VALID_CODE\]')
