@@ -1,78 +1,48 @@
-name: release
+# Create a new release on main automatically based on conventional commit messages
+
+name: "Release"
 
 on:
     push:
         branches:
-            - 'main'
-        tags:
-            - 'v*.*.*'
-    pull_request:
-        branches:
-            - 'main'
+            - main
 
 jobs:
-    check:
+    release:
+        name: Releasing a new version
         runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v2
-            -   run: |
-                    apt-get update >/dev/null && apt-get install -y shellcheck >/dev/null
-                    bash check.sh
-    build:
-        strategy:
-            matrix:
-                flavour:
-                    - name: aws
-                      platforms: "linux/amd64,linux/arm64"
-                    - name: azure
-                      platforms: "linux/amd64"
-                    - name: simple
-                      platforms: "linux/amd64,linux/arm64"
-                    - name: tanzu
-                      platforms: "linux/amd64"
-        runs-on: ubuntu-latest
-        steps:
-            -   name: Checkout
-                uses: actions/checkout@v2
-            -   name: Docker meta
-                id: meta
-                uses: docker/metadata-action@v3
                 with:
-                    # list of Docker images to use as base name for tags
-                    images: |
-                        dodevops/cloudcontrol-${{ matrix.flavour.name }}
-                    # generate Docker tags based on the following events/attributes
-                    tags: |
-                        type=ref,event=branch
-                        type=ref,event=pr
-                        type=semver,pattern={{version}}
-                        type=semver,pattern={{major}}.{{minor}}
-                        type=semver,pattern={{major}}
-            -   name: Set up Docker Buildx
-                uses: docker/setup-buildx-action@v1
-            -   name: Set up QEMU
-                uses: docker/setup-qemu-action@v1
-            -   name: Login to DockerHub
-                uses: docker/login-action@v1
+                    fetch-depth: 0
+            -   name: Calculate version
+                id: calculate_version
+                uses: mathieudutour/github-tag-action@v6.1
                 with:
-                    username: ${{ secrets.DOCKER_USERNAME }}
-                    password: ${{ secrets.DOCKER_TOKEN }}
-            -   name: Build
+                    tag_prefix: ""
+                    dry_run: true
+                    default_bump: false
+            -   name: "Write changelog"
                 run: |
-                    cat build/Dockerfile.prefix > Dockerfile
-                    cat "flavour/${{ matrix.flavour.name }}/Dockerfile.flavour" >> Dockerfile
-                    cat build/Dockerfile.suffix >> Dockerfile
-            -   name: Clean up Docker
-                run: |
-                    docker system prune -f --filter "until=5h"
-            -   name: Build and push
-                id: docker_build
-                uses: docker/build-push-action@v2
+                    CHANGELOG=""
+                    if [ -e CHANGELOG.md ]
+                    then
+                        CHANGELOG=$(cat CHANGELOG.md)
+                    fi
+                    echo -e "${{steps.calculate_version.outputs.changelog}}\n\n${CHANGELOG}" > CHANGELOG.md
+                if: steps.calculate_version.outputs.new_version != ''
+            -   name: "Commit"
+                id: "commit"
+                uses: EndBug/add-and-commit@v9.1.1
                 with:
-                    context: .
-                    push: ${{ github.event_name != 'pull_request' }}
-                    tags: ${{ steps.meta.outputs.tags }}
-                    labels: ${{ steps.meta.outputs.labels }}
-                    pull: true
-                    no-cache: true
-                    platforms:  ${{ matrix.flavour.platforms }}
+                    message: 'chore: storing version and changelog'
+                    push: true
+                if: steps.calculate_version.outputs.new_version != ''
+            -   name: Create Release
+                uses: ncipollo/release-action@v1.12.0
+                with:
+                    commit: ${{ steps.commit.outputs.commit_long_sha }}
+                    tag: ${{ steps.create_version.outputs.new_tag }}
+                    name: ${{ steps.create_version.outputs.new_tag }}
+                    body: ${{ steps.create_version.outputs.changelog }}
+                if: steps.calculate_version.outputs.new_version != ''

@@ -1,0 +1,35 @@
+name: 'Commit Checks'
+on:
+    pull_request:
+        types:
+            - opened
+            - edited
+            - reopened
+            - synchronize
+
+jobs:
+    check-commit-message:
+        name: Check Commit Message
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v3
+                with:
+                    fetch-depth: 0
+            -   name: Get PR Commits
+                id: 'get-pr-commits'
+                uses: tim-actions/get-pr-commits@master
+                with:
+                    token: ${{ secrets.GITHUB_TOKEN }}
+            -   name: Check conventional commits
+                uses: tim-actions/commit-message-checker-with-regex@v0.3.1
+                with:
+                    commits: ${{ steps.get-pr-commits.outputs.commits }}
+                    pattern: '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([\w\-\.]+\))?(!)?: ([\w ])+([\s\S]*)'
+                    error: 'Commit messages do not follow https://www.conventionalcommits.org/en/v1.0.0/'
+            -   name: Get Changed Files
+                uses: tj-actions/changed-files@v35.5.6
+            -   name: Check if CHANGELOG wasn't included
+                run: |
+                    if echo ${{ steps.changed-files.outputs.all_changed_files }} | grep CHANGELOG.md; then
+                        echo "::error file=CHANGELOG.md,title=CHANGELOG was modified::Please don't modify the changelog. It will be automatically updated when the changes are released."
+                    fi

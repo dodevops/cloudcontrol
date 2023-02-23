@@ -1,22 +1,24 @@
+package main
+
 // CloudControl feature test runnner
 // Using Goss https://github.com/goss-org/goss
 
-package main
-
 import (
 	"bytes"
+	"cloudcontroltools/internal"
+	"cloudcontroltools/internal/tests/lib"
+	"cloudcontroltools/internal/tests/lib/container"
 	"fmt"
 	"github.com/MakeNowJust/heredoc"
 	"github.com/akamensky/argparse"
 	"github.com/sirupsen/logrus"
 	"github.com/thoas/go-funk"
+	"gopkg.in/yaml.v3"
 	"math"
 	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
-	"tests/lib"
-	"tests/lib/container"
 	"text/template"
 	"time"
 )
@@ -57,13 +59,14 @@ func getFlavours() []string {
 	return flavours
 }
 
-// Load features from the feature directory and transform them.
-func getFeatures() []lib.Feature {
+// Load features from the feature directory and transform them. Requires the flavour it is testing
+// to filter out features not available for it.
+func getFeatures(flavour string) []lib.Feature {
 	if features == nil {
 		featuresGlob, err := filepath.Glob(filepath.Join(rootPath, "feature", "*"))
 
 		if err != nil {
-			logrus.Warn("Error loading flavours: ", err)
+			logrus.Warn("Error loading features: ", err)
 			return []lib.Feature{}
 		}
 
@@ -75,6 +78,17 @@ func getFeatures() []lib.Feature {
 				featuresGlob,
 				func(value string) bool {
 					if correctPathRegexp.Match([]byte(filepath.Dir(value))) {
+						if yamlFile, err := os.ReadFile(filepath.Join(value, "feature.yaml")); err != nil {
+							return false
+						} else {
+							var descriptor internal.YamlDescriptor
+							if err := yaml.Unmarshal(yamlFile, &descriptor); err != nil {
+								return false
+							}
+							if len(descriptor.Test.Flavours) > 0 && !funk.ContainsString(descriptor.Test.Flavours, flavour) {
+								return false
+							}
+						}
 						if testDirs, err := filepath.Glob(filepath.Join(value, "goss*")); err != nil {
 							panic(fmt.Sprintf("Can not look for test suite directories: %s", err.Error()))
 						} else {
@@ -108,12 +122,6 @@ func getFeatures() []lib.Feature {
 }
 
 func main() {
-	if ex, err := os.Executable(); err == nil {
-		rootPath = filepath.Join(filepath.Dir(ex), "..")
-	} else {
-		panic(err)
-	}
-
 	parser := argparse.NewParser("test-features", "Test CloudControl features")
 	flavour := parser.String("f", "flavour", &argparse.Options{Required: true, Help: "Flavour to test"})
 	image := parser.String("i", "image", &argparse.Options{Required: true, Help: "Image to test"})
@@ -144,6 +152,30 @@ func main() {
 
 	err := parser.Parse(os.Args)
 	if err != nil {
+		fmt.Print(parser.Usage(err))
+		os.Exit(1)
+	}
+
+	var rootPath string
+	if p, err := os.Getwd(); err != nil {
+		fmt.Print(parser.Usage(err))
+		os.Exit(1)
+	} else {
+		rootPath = p
+	}
+
+	if _, err := os.Stat(filepath.Join(rootPath, "feature")); err != nil {
+		if os.IsNotExist(err) {
+			println("Features not found. Are you running this command from the CloudControl root directory?")
+		}
+		fmt.Print(parser.Usage(err))
+		os.Exit(1)
+	}
+
+	if _, err := os.Stat(filepath.Join(rootPath, "flavour")); err != nil {
+		if os.IsNotExist(err) {
+			println("Features not found. Are you running this command from the CloudControl root directory?")
+		}
 		fmt.Print(parser.Usage(err))
 		os.Exit(1)
 	}
@@ -189,7 +221,7 @@ func main() {
 	}
 
 	for _, includeFeature := range *includeFeatures {
-		if !funk.Contains(getFeatures(), func(feature lib.Feature) bool {
+		if !funk.Contains(getFeatures(*flavour), func(feature lib.Feature) bool {
 			return feature.Name == includeFeature
 		}) {
 			logrus.Errorf("%s is not a known feature", includeFeature)
@@ -199,7 +231,7 @@ func main() {
 	}
 
 	for _, excludeFeature := range *excludeFeatures {
-		if !funk.Contains(getFeatures(), func(feature lib.Feature) bool {
+		if !funk.Contains(getFeatures(*flavour), func(feature lib.Feature) bool {
 			return feature.Name == excludeFeature
 		}) {
 			logrus.Errorf("%s is not a known feature", excludeFeature)
@@ -210,7 +242,7 @@ func main() {
 
 	featuresToTest := funk.Filter(
 		funk.Filter(
-			getFeatures(),
+			getFeatures(*flavour),
 			func(feature lib.Feature) bool {
 				return len(*includeFeatures) == 0 || funk.Contains(*includeFeatures, feature.Name)
 			},
@@ -241,7 +273,7 @@ func main() {
 	for _, feature := range featuresToTest {
 		var featureTimer = time.Now()
 		if err := lib.TestFeature(feature, testBed, containerAdapter); err != nil {
-			logrus.Warnf(
+			logrus.Errorf(
 				"❌  %s (%s) ⏱  %ds :\n\n%s\n",
 				feature.Name,
 				feature.FullPath,
@@ -291,6 +323,7 @@ func main() {
 		}
 
 		logrus.Error(templateOutput.String())
+		os.Exit(1)
 	} else if !*skipIntegrationTest {
 		logrus.Debugf("Running integration tests")
 		var integrationTimer = time.Now()
