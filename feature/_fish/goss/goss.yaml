@@ -5,7 +5,11 @@ command:
         stdout:
             - fish, version
     fzf:
+        {{ if eq .Env.FLAVOUR "aws" -}}
+        exec: "/home/cloudcontrol/bin/fzf-master/bin/fzf --version"
+        {{ else -}}
         exec: "/usr/bin/fzf --version"
+        {{ end }}
         exit-status: 0
     fisher-packages:
         exec: "/usr/bin/fish -c 'fisher ls'"
@@ -25,14 +29,3 @@ file:
         exists: true
     /home/cloudcontrol/.config/fish/conf.d/spacefish.fish:
         exists: true
-    {{if eq .Env.FLAVOUR "aws" }}
-    /home/cloudcontrol/.config/fish/conf.d/aws.fish:
-        exists: true
-        contains:
-            - |
-                set -x ORIGINAL_AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
-                set -x ORIGINAL_AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
-                function createSession -S
-                  source ~/bin/createSession.fish \$argv
-                end
-    {{end}}

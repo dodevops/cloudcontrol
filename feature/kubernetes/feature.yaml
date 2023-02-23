@@ -52,5 +52,4 @@ configuration:
         * Environment K8S_USE_GCLOUD_AUTH: Whether to use the new GKE_GCLOUD_AUTH plugin [true]
 test:
     flavours:
-        - gcloud
         - azure
