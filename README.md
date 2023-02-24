@@ -320,7 +320,7 @@ Authentication requires the following:
 #### Configuration
 
 * Environment GCLOUD_PROJECTID: The id of the Google Cloud project to connect to
-* Environment GCLOUD_USE_SA: Use a service account to log into Google Cloud. Requires GCLOUD_KEYPATH (defaults to false)
+* Environment GCLOUD_USE_SA (Possible values: true, false. Defaults to false): Use a service account to log into Google Cloud. Requires GCLOUD_KEYPATH
 * Environment GCLOUD_KEYPATH: Path inside CloudControl that holds the service account JSON file
 
 ### <a id="simple"></a> simple
@@ -440,6 +440,8 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
 
 * USE_kubernetes: Enable this feature
 * DEBUG_kubernetes: Debug this feature
+* Environment KUBECTL_DEFAULT_CONTEXT: Sets the default kubectl context after initialisation and when using the
+  k8s-relogin script
 * (azure flavour) Environment AZ_K8S_CLUSTERS: A comma separated list of AKS clusters to manage
   inside *CloudControl* (only for azure flavour).
   Each cluster is a pair of resource group and cluster name, separated by a colon. Optionally, you can specify
