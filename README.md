@@ -320,7 +320,7 @@ Authentication requires the following:
 #### Configuration
 
 * Environment GCLOUD_PROJECTID: The id of the Google Cloud project to connect to
-* Environment GCLOUD_USE_SA: Use a service account to log into Google Cloud. Requires GCLOUD_KEYPATH (defaults to false)
+* Environment GCLOUD_USE_SA (Possible values: true, false. Defaults to false): Use a service account to log into Google Cloud. Requires GCLOUD_KEYPATH
 * Environment GCLOUD_KEYPATH: Path inside CloudControl that holds the service account JSON file
 
 ### <a id="simple"></a> simple
