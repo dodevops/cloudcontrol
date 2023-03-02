@@ -15,6 +15,7 @@ env:
 
 jobs:
     build:
+        if: "github.event.head_commit.message != 'chore: storing version and changelog'"
         strategy:
             matrix:
                 flavour:
