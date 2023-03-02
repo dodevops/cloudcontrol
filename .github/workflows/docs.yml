@@ -30,4 +30,3 @@ jobs:
                     author_email: "info@dodevops.io"
                     message: "docs: Automatic docs update"
                     push: true
-
