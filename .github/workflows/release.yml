@@ -19,7 +19,7 @@ jobs:
                 id: calculate_version
                 uses: mathieudutour/github-tag-action@v6.1
                 with:
-                    github_token: "${{ secrets.GITHUB_TOKEN }}"
+                    github_token: "${{ secrets.PROTECTEDBRANCHPUSHER_SECRET }}"
                     dry_run: true
                     default_bump: false
             -   name: "Write changelog"
