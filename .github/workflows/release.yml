@@ -49,7 +49,7 @@ jobs:
             -   name: Create Release
                 uses: ncipollo/release-action@v1.12.0
                 with:
-                    commit: ${{ steps.calculate_version.outputs.commit_long_sha }}
+                    commit: ${{ steps.commit.outputs.commit_long_sha }}
                     tag: ${{ steps.calculate_version.outputs.new_tag }}
                     name: ${{ steps.calculate_version.outputs.new_tag }}
                     body: ${{ steps.calculate_version.outputs.changelog }}
