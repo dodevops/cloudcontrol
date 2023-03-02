@@ -1,7 +1,9 @@
 name: "Update docs"
 
 on:
-    - push
+    push:
+        branches-ignore:
+            - main
 jobs:
     docs:
         runs-on: ubuntu-latest
