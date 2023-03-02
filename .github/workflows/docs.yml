@@ -3,7 +3,7 @@ name: "Update docs"
 on:
     push:
         tags-ignore:
-            - *
+            - '*'
         branches-ignore:
             - main
 jobs:
