@@ -58,6 +58,15 @@ jobs:
                     echo "ARM_CLIENT_SECRET=${{ secrets.TEST_AZURE_CLIENT_SECRET }}" >> .testbed/.env
                     echo "AZ_USE_ARM_SPI=true" >> .testbed/.env
 
+            -   name: Prepare flavour data (aws)
+                if: matrix.flavour == 'aws'
+                run: |
+                    echo "AWS_ACCESS_KEY_ID=${{ secrets.TEST_AWS_ACCESS_KEY_ID }}" > .testbed/.env
+                    echo "AWS_SECRET_ACCESS_KEY=${{ secrets.TEST_AWS_SECRET_ACCESS_KEY }}" >> .testbed/.env
+                    echo "AWS_DEFAULT_REGION=${{ secrets.TEST_AWS_DEFAULT_REGION }}" >> .testbed/.env
+                    echo "AWS_K8S_CLUSTERS=${{ secrets.TEST_AWS_K8S_CLUSTERS }}" >> .testbed/.env
+                    echo "AWS_SKIP_GPG=1" >> .testbed/.env
+
             -   name: Prepare flavour data (gcloud)
                 if: matrix.flavour == 'gcloud'
                 run: |
