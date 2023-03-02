@@ -1,7 +1,9 @@
 command:
-    kubectl-nodes:
+    kubectl-test:
         {{ if eq .Env.FLAVOUR "azure" -}}
         exec: test $(bash -c ". /home/cloudcontrol/.bashrc && /usr/local/bin/kubectl get nodes -o name | wc -l") -ge 1
+        {{ else if eq .Env.FLAVOUR "aws" -}}
+        exec: test $(/usr/bin/kubectl api-resources | wc -l) -ge 1
         {{ else -}}
         exec: test $(/home/cloudcontrol/bin/kubectl get nodes -o name | wc -l) -ge 1
         {{ end }}
