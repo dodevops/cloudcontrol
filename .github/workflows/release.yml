@@ -12,14 +12,21 @@ jobs:
         name: Releasing a new version
         runs-on: ubuntu-latest
         steps:
+            -   name: Set token for protected branch pusher app
+                id: app
+                uses: getsentry/action-github-app-token@v2
+                with:
+                    app_id: ${{ secrets.PROTECTEDBRANCHPUSHER_APP_ID }}
+                    private_key: ${{ secrets.PROTECTEDBRANCHPUSHER_PRIVATE_KEY }}
             -   uses: actions/checkout@v2
                 with:
                     fetch-depth: 0
+                    token: "${{ steps.app.outputs.token }}"
             -   name: Calculate version
                 id: calculate_version
                 uses: mathieudutour/github-tag-action@v6.1
                 with:
-                    github_token: "${{ secrets.PROTECTEDBRANCHPUSHER_SECRET }}"
+                    github_token: "${{ steps.app.outputs.token }}"
                     dry_run: true
                     default_bump: false
             -   name: "Write changelog"
@@ -45,4 +52,5 @@ jobs:
                     tag: ${{ steps.create_version.outputs.new_tag }}
                     name: ${{ steps.create_version.outputs.new_tag }}
                     body: ${{ steps.create_version.outputs.changelog }}
+                    token: "${{ steps.app.outputs.token }}"
                 if: steps.calculate_version.outputs.new_version != ''
