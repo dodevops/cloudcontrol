@@ -12,8 +12,8 @@ The toolbox comes in different "flavours" depending on what cloud you are workin
 Currently supported cloud flavours are:
 
 {{- range .Flavours }}
-* {{ .Title -}}
-{{ end }}
+* {{ .Title }} [{{ $sep := "" }}{{ range .Platforms }}{{ $sep }}{{ . }}{{ $sep = ", " }}{{ end }}]
+{{- end }}
 
 Following features and tools are supported:
 
@@ -107,6 +107,16 @@ the proper support for host based volumes and networking of the Kubernetes distr
 documentation and support of your Kubernetes distribution if something isn't working.
 
 ## FAQ
+
+### What does an error message like "no matching manifest for linux/arm64/v8 in the manifest list entries" mean?
+
+Apparently you're using *CloudControl* on a system for which no specific image exist. Some cloud providers have not
+provided base images for all architectures (e.g. the Apple ARM-based processors) yet. See the list of flavours above
+for the available platforms per flavour.
+
+As a workaround this, you can use the [`platform`](https://docs.docker.com/compose/compose-file/compose-file-v2/#platform)
+parameter for docker-compose or the `--platform` parameter for `docker run` to specify a compatible architecture
+(e.g. linux/amd64 on Apple ARM-based machines).
 
 ### How can I add an informational text for users of *CloudControl*?
 

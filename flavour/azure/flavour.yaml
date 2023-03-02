@@ -1,4 +1,4 @@
-title: "![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-azure?sort=semver) [Azure](https://hub.docker.com/r/dodevops/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))"
+title: "[Azure](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))"
 description: |
     Can be used to connect to infrastructure in the Azure cloud. Because we're using a container,
     a device login will happen, requiring the user to go to a website, enter a code and login.
@@ -7,3 +7,5 @@ configuration:
     - "Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container"
     - "Environment AZ_TENANTID: The Azure tenant id to log into (optional)"
     - "Environment AZ_USE_ARM_SPI: Uses the environment variables ARM_CLIENT_ID and ARM_CLIENT_SECRET for service principal auth [false]"
+platforms:
+    - linux/amd64

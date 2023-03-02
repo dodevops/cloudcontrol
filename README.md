@@ -9,11 +9,11 @@ required and configured to manage modern cloud infrastructures.
 
 The toolbox comes in different "flavours" depending on what cloud you are working in.
 Currently supported cloud flavours are:
-* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-aws?sort=semver) [AWS](https://hub.docker.com/r/dodevops/cloudcontrol-aws) (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli))
-* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-azure?sort=semver) [Azure](https://hub.docker.com/r/dodevops/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))
-* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-gcloud?sort=semver) [Google Cloud](https://hub.docker.com/r/dodevops/cloudcontrol-gcloud) (based on [google-cloud-cli](https://console.cloud.google.com/gcr/images/google.com:cloudsdktool/GLOBAL/google-cloud-cli))
-* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-simple?sort=semver) [Simple](https://hub.docker.com/r/dodevops/cloudcontrol-simple) (based on [alpine](https://hub.docker.com/_/alpine))
-* ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-tanzu?sort=semver) [Tanzu](https://hub.docker.com/r/dodevops/cloudcontrol-tanzu) (based on [alpine](https://hub.docker.com/_/alpine))
+* [AWS](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-aws) (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli)) [linux/amd64, linux/arm64]
+* [Azure](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli)) [linux/amd64]
+* [Google Cloud](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-gcloud) (based on [google-cloud-cli](https://console.cloud.google.com/gcr/images/google.com:cloudsdktool/GLOBAL/google-cloud-cli)) [linux/amd64, linux/arm64]
+* [Simple](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-simple) (based on [alpine](https://hub.docker.com/_/alpine)) [linux/amd64, linux/arm64]
+* [Tanzu](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-tanzu) (based on [alpine](https://hub.docker.com/_/alpine)) [linux/amd64]
 
 Following features and tools are supported:
 * 🐟 Fish Shell
@@ -142,6 +142,16 @@ the proper support for host based volumes and networking of the Kubernetes distr
 documentation and support of your Kubernetes distribution if something isn't working.
 
 ## FAQ
+
+### What does an error message like "no matching manifest for linux/arm64/v8 in the manifest list entries" mean?
+
+Apparently you're using *CloudControl* on a system for which no specific image exist. Some cloud providers have not
+provided base images for all architectures (e.g. the Apple ARM-based processors) yet. See the list of flavours above
+for the available platforms per flavour.
+
+As a workaround this, you can use the [`platform`](https://docs.docker.com/compose/compose-file/compose-file-v2/#platform)
+parameter for docker-compose or the `--platform` parameter for `docker run` to specify a compatible architecture
+(e.g. linux/amd64 on Apple ARM-based machines).
 
 ### How can I add an informational text for users of *CloudControl*?
 
@@ -760,3 +770,5 @@ flowchart TD
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
 ```mermaid
+maid
+
