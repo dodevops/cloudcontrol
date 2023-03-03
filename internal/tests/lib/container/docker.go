@@ -188,7 +188,7 @@ func (d DockerAdapter) RunCommand(containerID string, cmd []string) (string, err
 				if containerInspect, err := dockerCli.ContainerInspect(context.Background(), containerID); err != nil {
 					return "", fmt.Errorf("can not inspect container after exec: %w", err)
 				} else {
-					if !containerInspect.State.Running {
+					if !containerInspect.State.Running || containerInspect.State.Restarting || containerInspect.State.Dead {
 						return "", &RunCommandError{
 							ReturnCode:      0,
 							CommandOutput:   fmt.Sprintf("container was stopped after exec: %s", commandLogbuf.String()),
