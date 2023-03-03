@@ -3,7 +3,7 @@ services:
     cli:
         volumes:
             - "/path/to/directory/with/gcloud_key_json:/gcloud_key:"
-        image: "dodevops/cloudcontrol-gcloud:latest"
+        image: "ghcr.io/dodevops/cloudcontrol-gcloud:latest"
         ports:
             - "8080" # CloudControlCenter port
             - "8081" # Port that can be used for port forwardings
