@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/MichaelMure/go-term-markdown v0.1.4
 	github.com/gin-gonic/gin v1.8.1
+	gopkg.in/yaml.v2 v2.4.0
 	nullprogram.com/x/optparse v1.0.0
 )
 
@@ -40,5 +41,4 @@ require (
 	golang.org/x/sys v0.0.0-20210806184541-e5e7981a1069 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
