@@ -36,7 +36,7 @@ spec:
                             value: yes
                         -   name: HELM_VERSION
                             value: 2.16.1
-                    image: dodevops/cloudcontrol-aws:latest
+                    image: ghcr.io/dodevops/cloudcontrol-aws:latest
                     name: cli
                     ports:
                         -   containerPort: 8080
