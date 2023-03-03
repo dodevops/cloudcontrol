@@ -1,7 +1,7 @@
 version: "3"
 services:
     cli:
-        image: "dodevops/cloudcontrol-aws:latest"
+        image: "ghcr.io/dodevops/cloudcontrol-aws:latest"
         ports:
             - "8080" # CloudControlCenter port
             - "8081" # Port that can be used for port forwardings

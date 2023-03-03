@@ -28,7 +28,7 @@ do
   cat build/Dockerfile.prefix > Dockerfile
   cat "flavour/${FLAVOUR}/Dockerfile.flavour" >> Dockerfile
   cat build/Dockerfile.suffix >> Dockerfile
-  docker build --pull . -t "dodevops/cloudcontrol-${FLAVOUR}:${TAG}"
+  docker build --pull . -t "ghcr.io/dodevops/cloudcontrol-${FLAVOUR}:${TAG}"
 done
 
 if [ -e Dockerfile.sav ] ; then
