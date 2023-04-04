@@ -6,7 +6,7 @@ require (
 	github.com/MakeNowJust/heredoc v1.0.0
 	github.com/Masterminds/sprig/v3 v3.2.3
 	github.com/akamensky/argparse v1.4.0
-	github.com/docker/docker v20.10.22+incompatible
+	github.com/docker/docker v20.10.24+incompatible
 	github.com/opencontainers/image-spec v1.0.2
 	github.com/otiai10/copy v1.9.0
 	github.com/sirupsen/logrus v1.9.0
