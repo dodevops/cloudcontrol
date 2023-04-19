@@ -3,7 +3,7 @@
 if [ -n "${CILIUM_CLI_VERSION}" ]
 then
   CILIUM_CLI_VERSION=$(checkAndCleanVersion "${CILIUM_CLI_VERSION}")
-  echo "Using git version ${CILIUM_CLI_VERSION}..."
+  echo "Using cilium version ${CILIUM_CLI_VERSION}..."
 else
   CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/master/stable.txt)
 fi
