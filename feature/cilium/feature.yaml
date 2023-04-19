@@ -1,0 +1,5 @@
+icon: ""
+title: "Cilium CLI"
+description: "Installs [Cilium CLI]()"
+configuration:
+    - "Environment CILIUM_CLI_VERSION (optional): Valid Cilium version to install (e.g. v0.13.2)"
