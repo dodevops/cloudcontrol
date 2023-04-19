@@ -55,6 +55,7 @@ Following features and tools are supported:
     * [Bitwarden](#bitwarden)
     * [Certificates](#certificates)
     * [Direnv](#direnv)
+    * [Git](#git)
     * [Helm](#helm)
     * [JQ](#jq)
     * [kc Quick Kubernetes Context switch](#kc)
@@ -380,10 +381,10 @@ Adds specified trusted certificate authorities into the container
        (...)
        volumes:
            - "<Path to directory with CA .pem files>:/certificates"
-* Volume-target /certificates: Target directory for certificates. If something different than /certificates is used, environment
+* Volume-target /certificates: Target directory for certificates. If something different than /certificates is used, environment 
   CERTIFICATES_PATH needs to be set to this path
-* Environment CERTIFICATES_PATH: The container path to the volume mount that holds trusted certificate authorities as .pem files
-  (optional). Defaults to `/certificates`. If something different than the default is used, the volume-target needs to be adapted to
+* Environment CERTIFICATES_PATH: The container path to the volume mount that holds trusted certificate authorities as .pem files 
+  (optional). Defaults to `/certificates`. If something different than the default is used, the volume-target needs to be adapted to 
   the same directory
 
 ### <a id="direnv"></a> Direnv
@@ -394,6 +395,16 @@ Installs [Direnv](https://direnv.net/)
 
 * USE_direnv: Enable this feature
 * DEBUG_direnv: Debug this feature
+
+### <a id="git"></a> Git
+
+Installs [Git](https://git-scm.com/download/)
+
+#### Configuration
+
+* USE_git: Enable this feature
+* DEBUG_git: Debug this feature
+* Environment GIT_VERSION (optional): Valid Git version to install (e.g. 2.39.0)
 
 ### <a id="helm"></a> Helm
 
@@ -459,7 +470,7 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
   For each cluster give the cluster name. If you need to assume an ARN role, add that to the clustername
   with an additional | added.
   For example: myekscluster|arn:aws:iam::32487234892:sample/sample
-
+  
   If you additionally need to assume a role before fetching the EKS credentials, add the role, prefixed with
   an @:
   myekscluster|arn:aws:iam::4327849324:sample/sample@arn:aws:iam::specialrole
@@ -476,7 +487,7 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
   * Environment TANZU_ADD_CONTROL_CLUSTER: Whether to also authenticate against the control cluster [false]
   * Environment TANZU_SKIP_TLS_VERIFY: Skip TLS verification [false]
   * Environment TANZU_VSPHERE_PLUGIN_PATH: The path where to find the kubectl vsphere plugin [/wcp/plugin/linux-amd64/vsphere-plugin.zip]
-
+  
   This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
 * (gcloud flavor)
   * Environment GCLOUD_K8S_CLUSTERS: A comma separated list of zone:cluster-name
@@ -537,13 +548,13 @@ Installs and configures [Terraform](https://terraform.io)
            - "<path-to-terraform>:/terraform"
 * Volume-target /terraform: Terraform base target directory. If something different than /terraform is used, environment
   TERRAFORM_PATH needs to be set to this path
-* Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g.
-  Terraform app secrets, etc.). If something different than /credentials.terraform is used, environment TERRAFORM_CREDENTIALS_PATH
+* Volume-target /credentials.terraform: A Terraform variable file holding sensitive information when working with terraform (e.g. 
+  Terraform app secrets, etc.). If something different than /credentials.terraform is used, environment TERRAFORM_CREDENTIALS_PATH 
   needs to be set to this path
 * Environment TERRAFORM_VERSION (required): A valid terraform version to install (e.g. 0.12.17)
-* Environment TERRAFORM_PATH: Volume target for terraform base directory (optional). Defaults to `/terraform`. If something different
+* Environment TERRAFORM_PATH: Volume target for terraform base directory (optional). Defaults to `/terraform`. If something different 
   than the default is used, the volume-target needs to be adapted to the same directory
-* Environment TERRAFORM_CREDENTIALS_PATH: Volume target for terraform credentials (optional). Defaults to `/terraform`. If something
+* Environment TERRAFORM_CREDENTIALS_PATH: Volume target for terraform credentials (optional). Defaults to `/terraform`. If something 
   different than the default is used, the volume-target needs to be adapted to the same directory
 
 ### <a id="terragrunt"></a> Terragrunt
