@@ -391,7 +391,7 @@ Adds specified trusted certificate authorities into the container
 
 ### <a id="cilium"></a> Cilium CLI
 
-Installs [Cilium CLI]()
+Installs [Cilium CLI](https://cilium.io)
 
 #### Configuration
 
