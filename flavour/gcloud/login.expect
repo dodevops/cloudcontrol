@@ -1,0 +1,18 @@
+proc wait_for_auth_code {} {
+    if {[file exists /tmp/gcloud_auth]} {
+        set fp [open "/tmp/gcloud_auth" r]
+        set file_data [read $fp]
+        close $fp
+        return $file_data
+    } else {
+        after 3000
+        wait_for_auth_code
+    }
+}
+
+set timeout 90000
+spawn gcloud auth login --no-launch-browser
+expect "Enter authorization code"
+set auth_code [wait_for_auth_code]
+send $auth_code
+expect eof
