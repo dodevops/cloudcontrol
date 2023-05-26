@@ -14,4 +14,5 @@ RUN apk add sudo bash curl && \
 
 COPY flavour/gcloud/flavour /home/cloudcontrol/flavour
 COPY flavour/gcloud/flavourinit.sh /home/cloudcontrol/bin/flavourinit.sh
+COPY flavour/gcloud/login.expect /home/cloudcontrol/bin/login.expect
 RUN chmod +x /home/cloudcontrol/bin/flavourinit.sh
