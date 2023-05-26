@@ -10,9 +10,10 @@ description: |
     * Create a key and download it as a JSON file
     * Mount a directory that contains the JSON file into the CloudControl container and set GCLOUD_KEYPATH accordingly
 configuration:
-    - "Environment GCLOUD_PROJECTID: The id of the Google Cloud project to connect to"
-    - "Environment GCLOUD_USE_SA (Possible values: true, false. Defaults to false): Use a service account to log into Google Cloud. Requires GCLOUD_KEYPATH"
-    - "Environment GCLOUD_KEYPATH: Path inside CloudControl that holds the service account JSON file"
+    - "Environment GOOGLE_PROJECT: The id of the Google Cloud project to connect to"
+    - |
+        Environment GOOGLE_CREDENTIALS: Path inside CloudControl that holds the service account JSON file. Will use
+        browser based login if unset.
 platforms:
     - linux/amd64
     - linux/arm64
