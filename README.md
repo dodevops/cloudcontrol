@@ -329,9 +329,9 @@ Authentication requires the following:
 
 #### Configuration
 
-* Environment GCLOUD_PROJECTID: The id of the Google Cloud project to connect to
-* Environment GCLOUD_USE_SA (Possible values: true, false. Defaults to false): Use a service account to log into Google Cloud. Requires GCLOUD_KEYPATH
-* Environment GCLOUD_KEYPATH: Path inside CloudControl that holds the service account JSON file
+* Environment GOOGLE_PROJECT: The id of the Google Cloud project to connect to
+* Environment GOOGLE_CREDENTIALS: Path inside CloudControl that holds the service account JSON file. Will use
+  browser based login if unset.
 
 ### <a id="simple"></a> simple
 
@@ -769,6 +769,8 @@ flowchart TD
     click E "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/check_commits.yml" "Check workflow"
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
+```mermaid
+github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
 ```mermaid
 maid
 
