@@ -2,7 +2,7 @@ version: "3"
 services:
     cli:
         volumes:
-            - "/path/to/directory/with/gcloud_key_json:/gcloud_key:"
+            - "/path/to/directory/with/gcloud_key_json:/gcloud-key:"
         image: "ghcr.io/dodevops/cloudcontrol-gcloud:latest"
         ports:
             - "8080" # CloudControlCenter port
