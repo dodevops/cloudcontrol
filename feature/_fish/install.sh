@@ -20,7 +20,7 @@ then
   rm -rf "${TEMPDIR}"
 fi
 
-execHandle 'Installing fisher' curl -f https://git.io/fisher --create-dirs -sLo /home/cloudcontrol/.config/fish/functions/fisher.fish
+execHandle 'Installing fisher' curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
 
 execHandle 'Installing fish packages' fish -c "fisher install edc/bass evanlucas/fish-kubectl-completions FabioAntunes/fish-nvm jethrokuan/fzf matchai/spacefish jethrokuan/fzf"
 mkdir -p /home/cloudcontrol/.config/fish/conf.d &>/dev/null
