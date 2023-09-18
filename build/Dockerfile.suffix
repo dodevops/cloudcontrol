@@ -24,3 +24,14 @@ USER cloudcontrol
 ENTRYPOINT ["/usr/local/bin/cloudcontrol"]
 WORKDIR /home/cloudcontrol
 CMD ["serve"]
+
+# Labels
+
+LABEL io.artifacthub.package.readme-url=https://github.com/dodevops/cloudcontrol
+LABEL org.opencontainers.image.created={{BUILD_DATE}}
+LABEL org.opencontainers.image.description="The cloud engineer's toolbox - {{FLAVOUR}} flavour"
+LABEL org.opencontainers.image.documentation=https://github.com/dodevops/cloudcontrol
+LABEL org.opencontainers.image.source=https://github.com/dodevops/cloudcontrol
+LABEL org.opencontainers.image.title="cloudcontrol-{{FLAVOUR}}"
+LABEL org.opencontainers.image.url=https://github.com/dodevops/cloudcontrol
+LABEL org.opencontainers.image.vendor="DO! DevOps"
