@@ -78,8 +78,17 @@ jobs:
             -   name: Prepare flavour container
                 run: |
                     cat build/Dockerfile.prefix > Dockerfile
-                    cat "flavour/${{ matrix.flavour }}/Dockerfile.flavour" >> Dockerfile
+                    cat "flavour/${{ matrix.flavour.name }}/Dockerfile.flavour" >> Dockerfile
+                    
+                    # Download mo
+                    curl -sSL https://raw.githubusercontent.com/tests-always-included/mo/master/mo -o mo
+                    chmod +x mo
+                    
+                    cat build/Dockerfile.suffix.mo | BUILD_DATE=$(date -Ins) FLAVOUR=${{ matrix.flavour.name }} ./mo > build/Dockerfile.suffix
+                    
                     cat build/Dockerfile.suffix >> Dockerfile
+                    
+                    rm mo
             -   name: build flavour container
                 id: build-and-push
                 uses: docker/build-push-action@v4.0.0
