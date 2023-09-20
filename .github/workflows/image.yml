@@ -75,9 +75,9 @@ jobs:
                     curl -sSL https://raw.githubusercontent.com/tests-always-included/mo/master/mo -o mo
                     chmod +x mo
                     
-                    export BUILD_DATE=$(date -Ins)
+                    cat build/Dockerfile.suffix.mo | BUILD_DATE=$(date -Ins) FLAVOUR=${{ matrix.flavour.name }} ./mo > build/Dockerfile.suffix
                     
-                    cat build/Dockerfile.suffix | ./mo >> Dockerfile
+                    cat build/Dockerfile.suffix >> Dockerfile
                     
                     rm mo
                 env:
