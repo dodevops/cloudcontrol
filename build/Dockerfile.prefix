@@ -1,10 +1,10 @@
 FROM node:lts-slim as cccClientBuild
 
 WORKDIR /build
-COPY ccc/client /build
+COPY ccc-client /build
 RUN npm config set update-notifier false
 RUN npm install
-RUN npm run-script build
+RUN npm run-script build -- --base=/client/
 
 FROM golang:1.19 AS cccBuild
 
