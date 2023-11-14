@@ -129,8 +129,6 @@ export default defineComponent({
                 this.stepTitle = backendStep.data.title;
                 this.stepDescription = backendStep.data.description;
                 this.currentStep = backendStep.data.currentStep;
-                let $stepRef = [this.$refs[`${this.currentStep}-step`] as Ref<Element>];
-                $stepRef[ 0 ].value.scrollIntoView();
                 this.consoleOutput = this.reformatOutput(backendStep.data.output);
                 const consoleCard = document.getElementById('console');
                 if (consoleCard) {
