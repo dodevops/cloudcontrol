@@ -554,6 +554,10 @@ Installs and configures [Terraform](https://terraform.io)
   than the default is used, the volume-target needs to be adapted to the same directory
 * Environment TERRAFORM_CREDENTIALS_PATH: Volume target for terraform credentials (optional). Defaults to `/terraform`. If something 
   different than the default is used, the volume-target needs to be adapted to the same directory
+* If you used the browser based login in gcloud, you'll probably need to authenticate using the application-default
+  login using the gcloud cli by running
+  
+      gcloud auth application-default login
 
 ### <a id="terragrunt"></a> Terragrunt
 

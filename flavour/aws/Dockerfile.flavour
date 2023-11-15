@@ -13,9 +13,10 @@ RUN yum install -y sudo shadow-utils unzip tar net-tools curl && \
 
 # AWS Sudo
 
-RUN curl -sL https://rpm.nodesource.com/setup_16.x | bash - && \
-    yum install -y nodejs && \
-    npm install -g awsudo
+RUN yum install https://rpm.nodesource.com/pub_16.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm -y && \
+    yum install nodejs -y --setopt=nodesource-nodejs.module_hotfixes=1
+
+RUN npm install -g awsudo
 
 # Flavour
 

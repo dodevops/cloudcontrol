@@ -70,7 +70,18 @@ jobs:
                 run: |
                     cat build/Dockerfile.prefix > Dockerfile
                     cat "flavour/${{ matrix.flavour.name }}/Dockerfile.flavour" >> Dockerfile
+                    
+                    # Download mo
+                    curl -sSL https://raw.githubusercontent.com/tests-always-included/mo/master/mo -o mo
+                    chmod +x mo
+                    
+                    cat build/Dockerfile.suffix.mo | BUILD_DATE=$(date -Iseconds) FLAVOUR=${{ matrix.flavour.name }} ./mo > build/Dockerfile.suffix
+                    
                     cat build/Dockerfile.suffix >> Dockerfile
+                    
+                    rm mo
+                env:
+                    FLAVOUR: "${{ matrix.flavour.name }}"
 
             -   name: Clean up Docker
                 run: |
