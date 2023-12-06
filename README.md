@@ -307,7 +307,10 @@ To start a new session in the CloudControl context, run `createSession <token>` 
 
 Can be used to connect to infrastructure in the Azure cloud. Because we're using a container,
 a device login will happen, requiring the user to go to a website, enter a code and login.
-This only happens once during initialization phase.
+
+The azure login tokens usually expire after some time. You can run the `azure-relogin` script
+(located in ~/bin, thus available without path) to re-execute the same login commands as the 
+initialization process does.
 
 #### Configuration
 
@@ -774,7 +777,3 @@ flowchart TD
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
 ```mermaid
-github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
-```mermaid
-maid
-

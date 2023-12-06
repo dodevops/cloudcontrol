@@ -19,6 +19,20 @@ then
   exit 1
 fi
 
+echo "#!/bin/sh" > ~/bin/azure-relogin
+cat <<EOF >>~/bin/azure-relogin
+AZ_ACCOUNT_SHOW_OUTPUT="$(az account show 2>&1)"
+if [ $? -eq 0 ]; then
+  echo "Azure login still valid, no relogin required"
+  exit 0
+else
+  echo "Azure login expired, relogin required, see following error:"
+  echo "${AZ_ACCOUNT_SHOW_OUTPUT}"
+  echo "Performing relogin now..."
+fi
+EOF
+echo az login "${tenantArg[@]}" >> ~/bin/azure-relogin
+
 if [ "X${AZ_SUBSCRIPTION}X" == "XX" ]
 then
   echo -n "* Subscription: "
@@ -32,6 +46,9 @@ then
   echo "Can not set subscription"
   exit 1
 fi
+echo az account set --subscription "${AZ_SUBSCRIPTION}" >> ~/bin/azure-relogin
+
+chmod +x ~/bin/azure-relogin
 
 echo "Preparing bashrc"
 cat <<EOF >>~/.bashrc
