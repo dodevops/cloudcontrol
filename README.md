@@ -24,6 +24,7 @@ Following features and tools are supported:
 * ⛵️ Helm
 * 🛠 JQ
 * ⌨️ kc Quick Kubernetes Context switch
+* 🟦 krew
 * 🐚 Kubectlnodeshell
 * 🐳 Kubernetes
 * 📦 Packages
@@ -57,6 +58,7 @@ Following features and tools are supported:
     * [Helm](#helm)
     * [JQ](#jq)
     * [kc Quick Kubernetes Context switch](#kc)
+    * [krew](#krew)
     * [Kubectlnodeshell](#kubectlnodeshell)
     * [Kubernetes](#kubernetes)
     * [Packages](#packages)
@@ -435,6 +437,17 @@ Installs [kc](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc
 
 * USE_kc: Enable this feature
 * DEBUG_kc: Debug this feature
+
+### <a id="krew"></a> krew
+
+Installs [Krew](https://krew.sigs.k8s.io/)
+
+#### Configuration
+
+* USE_krew: Enable this feature
+* DEBUG_krew: Debug this feature
+* Environment KREW_VERSION (optional): Valid Krew version to install (defaults to latest)
+* Environment KREW_PLUGINS (optional): A comma separated list of kubectl plugins to install via krew
 
 ### <a id="kubectlnodeshell"></a> Kubectlnodeshell
 
