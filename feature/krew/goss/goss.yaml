@@ -1,0 +1,11 @@
+command:
+    krew:
+        exec: "/home/cloudcontrol/.krew/bin/kubectl-krew version"
+        exit-status: 0
+        stdout:
+            - "/home/cloudcontrol/.krew"
+    krew-plugins:
+        exec: "/home/cloudcontrol/.krew/bin/kubectl-krew list"
+        exit-status: 0
+        stdout:
+            - "example"
