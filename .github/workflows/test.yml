@@ -107,7 +107,7 @@ jobs:
                     curl -sL "https://github.com/goss-org/goss/releases/download/${{ env.GOSSVERSION }}/goss-${GOSS_ARCH}" -o goss
                     chmod +x goss
                     go build cmd/tests/test-features.go
-                    ./test-features -f ${{ matrix.flavour }} -i test-image-${{ matrix.flavour }}-${{ matrix.arch}}:local -p ${{ matrix.arch }} -t ${PWD}/.testbed -g ${PWD}/goss -l debug
+                    ./test-features -c -f ${{ matrix.flavour }} -i test-image-${{ matrix.flavour }}-${{ matrix.arch }}:local -p ${{ matrix.arch }} -t ${PWD}/.testbed -g ${PWD}/goss -l debug
             -   name: Cleanup
                 run: |
                     rm -rf .testbed
