@@ -1,6 +1,6 @@
 command:
     azcopy:
-        exec: "/home/cloudcontrol/bin/azcopy --version"
+        exec: "/home/cloudcontrol/bin/azcopy --help"
         exit-status: 0
         stdout:
-            - azcopy version
+            - AzCopy

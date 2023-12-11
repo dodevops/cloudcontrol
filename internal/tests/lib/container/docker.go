@@ -72,7 +72,7 @@ func (d DockerAdapter) FindImage(image string, platform string) error {
 
 	if len(localImages) == 0 {
 		remoteImages, err := dockerCli.ImageSearch(context.Background(), image, types.ImageSearchOptions{Limit: 1})
-		if err != nil {
+		if err != nil && !strings.Contains(err.Error(), "404") {
 			panic(fmt.Sprintf("Can not search remote images: %s", err.Error()))
 		}
 		if len(remoteImages) == 0 {
@@ -137,6 +137,7 @@ func (d DockerAdapter) StopContainer(containerID string) error {
 }
 
 func (d DockerAdapter) RunCommand(containerID string, cmd []string) (string, error) {
+	logrus.Debugf("Running command %s on container %s", strings.Join(cmd, " "), containerID)
 	dockerCli := d.getClient()
 	var executeID string
 	if idResponse, err := dockerCli.ContainerExecCreate(context.Background(), containerID, types.ExecConfig{
