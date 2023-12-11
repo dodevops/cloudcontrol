@@ -138,8 +138,7 @@ func main() {
 	includeFeatures := parser.List("n", "include", &argparse.Options{Help: "Only include these features when testing"})
 	excludeFeatures := parser.List("e", "exclude", &argparse.Options{Help: "Exclude these features when testing"})
 	skipIntegrationTest := parser.Flag("s", "skip-integration", &argparse.Options{
-		Help:    "Skip integration test at the end",
-		Default: false,
+		Help: "Skip integration test at the end",
 	})
 	maxWait := parser.Int("w", "wait", &argparse.Options{
 		Help:    "Maximum number of seconds goss_wait should wait",
@@ -148,6 +147,12 @@ func main() {
 	logLevel := parser.String("l", "loglevel", &argparse.Options{
 		Help:    "Loglevel to use",
 		Default: "error",
+	})
+	failFast := parser.Flag("x", "failfast", &argparse.Options{
+		Help: "Whether to stop testing directly when one test failes",
+	})
+	cleanup := parser.Flag("c", "cleanup", &argparse.Options{
+		Help: "Clean up container in case of error",
 	})
 
 	err := parser.Parse(os.Args)
@@ -272,7 +277,7 @@ func main() {
 
 	for _, feature := range featuresToTest {
 		var featureTimer = time.Now()
-		if err := lib.TestFeature(feature, testBed, containerAdapter); err != nil {
+		if err := lib.TestFeature(feature, testBed, containerAdapter, *cleanup); err != nil {
 			logrus.Errorf(
 				"❌  %s (%s) ⏱  %ds :\n\n%s\n",
 				feature.Name,
@@ -285,6 +290,10 @@ func main() {
 				ErrorMessage:   err.Error(),
 				ElapsedSeconds: int(math.Round(time.Since(featureTimer).Seconds())),
 			})
+			if *failFast {
+				logrus.Error("Failfast activated, so failing directly.")
+				os.Exit(1)
+			}
 		} else {
 			logrus.Infof(
 				"✅  %s (%s) ⏱  %ds",
