@@ -4,7 +4,7 @@ on:
     - pull_request
 
 env:
-    GOSSVERSION: v0.3.21
+    GOSSVERSION: v0.4.4
 
 jobs:
     test:
