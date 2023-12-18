@@ -37,11 +37,11 @@ fi
 if [[ $(cat /home/cloudcontrol/.shell) == "fish" ]]
 then
   cat <<EOF >> ~/.config/fish/conf.d/krew.fish
-  set -gx PATH $PATH $HOME/.krew/bin
+  set -gx PATH \$PATH \$HOME/.krew/bin
 EOF
 else
   cat <<EOF >> /home/cloudcontrol/.bashrc
-  export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+  export PATH="\${KREW_ROOT:-\$HOME/.krew}/bin:\$PATH"
 EOF
 fi
 
