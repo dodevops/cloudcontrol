@@ -82,8 +82,12 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 				return fmt.Errorf("error chmodding temporary directory to 0777: %w", err)
 			}
 			defer func() {
-				if err := os.RemoveAll(testDir); err != nil {
-					panic(fmt.Errorf("can not remove temporary directory: %w", err))
+				if cleanup || !hasProblems {
+					if err := os.RemoveAll(testDir); err != nil {
+						panic(fmt.Errorf("can not remove temporary directory: %w", err))
+					}
+				} else {
+					logrus.Infof("Not removing temporary directory %s because cleanup wasn't enabled.", testDir)
 				}
 			}()
 			logrus.Debugf("Preparing test suite in %s", testDir)
@@ -237,12 +241,16 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 				containerId,
 				[]string{
 					"/goss/goss",
-					"-g",
+					"--gossfile",
 					"/goss/goss.yaml",
+					"--loglevel",
+					"DEBUG",
 					"validate",
-					"--color",
 					"--format",
 					"documentation",
+					"--format-options",
+					"verbose",
+					"--no-color",
 				},
 			); err != nil {
 				if mightFail {
@@ -480,12 +488,16 @@ func IntegrationTests(features []Feature, testBed TestBed, containerAdapter cont
 		containerId,
 		[]string{
 			"/goss/goss",
-			"-g",
+			"--gossfile",
 			"/goss/goss.yaml",
+			"--loglevel",
+			"DEBUG",
 			"validate",
-			"--color",
 			"--format",
 			"documentation",
+			"--format-options",
+			"verbose",
+			"--no-color",
 		},
 	); err != nil {
 		var runCommandError *container.RunCommandError
