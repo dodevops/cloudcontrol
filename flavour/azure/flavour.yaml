@@ -12,3 +12,4 @@ configuration:
     - "Environment AZ_USE_ARM_SPI: Uses the environment variables ARM_CLIENT_ID and ARM_CLIENT_SECRET for service principal auth [false]"
 platforms:
     - linux/amd64
+    - linux/arm64

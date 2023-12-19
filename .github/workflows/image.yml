@@ -22,7 +22,7 @@ jobs:
                     - name: aws
                       platforms: "linux/amd64,linux/arm64"
                     - name: azure
-                      platforms: "linux/amd64"
+                      platforms: "linux/amd64,linux/arm64"
                     - name: gcloud
                       platforms: "linux/amd64,linux/arm64"
                     - name: simple
