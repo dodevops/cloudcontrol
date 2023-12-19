@@ -5,6 +5,12 @@ tenantArg=()
 
 if [ "X${AZ_TENANTID}X" != "XX" ]
 then
+  echo "Warning: This configuration uses the DEPRECATED AZ_TENANTID environment variable. Please use ARM_TENANT_ID instead."
+  ARM_TENANT_ID=${AZ_TENANTID}
+fi
+
+if [ "X${ARM_TENANT_ID}X" != "XX" ]
+then
   tenantArg+=("--tenant" "${AZ_TENANTID}")
 fi
 
@@ -15,7 +21,7 @@ fi
 
 if ! az login "${tenantArg[@]}"
 then
-  echo "Can not login into Azure"
+  echo "Error: Can not login into Azure"
   exit 1
 fi
 
@@ -35,18 +41,23 @@ echo az login "${tenantArg[@]}" >> ~/bin/azure-relogin
 
 if [ "X${AZ_SUBSCRIPTION}X" == "XX" ]
 then
-  echo -n "* Subscription: "
-  read -r AZ_SUBSCRIPTION
-  echo
+  echo "Warning: This configuration uses the DEPRECATED AZ_SUBSCRIPTION environment variable. Please use ARM_SUBSCRIPTION_ID instead."
+  ARM_SUBSCRIPTION_ID=$AZ_SUBSCRIPTION
+fi
+
+if [ "X${ARM_SUBSCRIPTION_ID}X" == "XX" ]
+then
+  echo -n "Error: Please specify a subscription using the environment variable ARM_SUBSCRIPTION_ID"
+  exit 1
 fi
 
 echo "Setting subscription..."
-if ! az account set --subscription "${AZ_SUBSCRIPTION}"
+if ! az account set --subscription "${ARM_SUBSCRIPTION_ID}"
 then
-  echo "Can not set subscription"
+  echo "Error: Can not set subscription"
   exit 1
 fi
-echo az account set --subscription "${AZ_SUBSCRIPTION}" >> ~/bin/azure-relogin
+echo az account set --subscription "${ARM_SUBSCRIPTION_ID}" >> ~/bin/azure-relogin
 
 chmod +x ~/bin/azure-relogin
 
