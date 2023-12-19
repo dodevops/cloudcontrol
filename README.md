@@ -10,7 +10,7 @@ required and configured to manage modern cloud infrastructures.
 The toolbox comes in different "flavours" depending on what cloud you are working in.
 Currently supported cloud flavours are:
 * [AWS](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-aws) (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli)) [linux/amd64, linux/arm64]
-* [Azure](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli)) [linux/amd64]
+* [Azure](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli)) [linux/amd64, linux/arm64]
 * [Google Cloud](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-gcloud) (based on [google-cloud-cli](https://console.cloud.google.com/gcr/images/google.com:cloudsdktool/GLOBAL/google-cloud-cli)) [linux/amd64, linux/arm64]
 * [Simple](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-simple) (based on [alpine](https://hub.docker.com/_/alpine)) [linux/amd64, linux/arm64]
 * [Tanzu](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-tanzu) (based on [alpine](https://hub.docker.com/_/alpine)) [linux/amd64]
@@ -314,8 +314,10 @@ initialization process does.
 
 #### Configuration
 
-* Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container
-* Environment AZ_TENANTID: The Azure tenant id to log into (optional)
+* Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container (deprecated)
+* Environment ARM_SUBSCRIPTION_ID: The Azure subscription to use in this container
+* Environment AZ_TENANTID: The Azure tenant id to log into (optional, deprecated)
+* Environment ARM_TENANT_ID: The Azure tenant id to log into (optional)
 * Environment AZ_USE_ARM_SPI: Uses the environment variables ARM_CLIENT_ID and ARM_CLIENT_SECRET for service principal auth [false]
 
 ### <a id="gcloud"></a> gcloud
