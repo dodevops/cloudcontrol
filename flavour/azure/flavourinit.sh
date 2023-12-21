@@ -5,7 +5,7 @@ tenantArg=()
 
 if [ "X${AZ_TENANTID}X" != "XX" ]
 then
-  echo "Warning: This configuration uses the DEPRECATED AZ_TENANTID environment variable. Please use ARM_TENANT_ID instead."
+  echo "Warning: This configuration uses the DEPRECATED AZ_TENANTID environment variable. Please use ARM_TENANT_ID instead. Support for this will be removed in the next major version after 10/2024."
   ARM_TENANT_ID=${AZ_TENANTID}
 fi
 
@@ -41,7 +41,7 @@ echo az login "${tenantArg[@]}" >> ~/bin/azure-relogin
 
 if [ "X${AZ_SUBSCRIPTION}X" == "XX" ]
 then
-  echo "Warning: This configuration uses the DEPRECATED AZ_SUBSCRIPTION environment variable. Please use ARM_SUBSCRIPTION_ID instead."
+  echo "Warning: This configuration uses the DEPRECATED AZ_SUBSCRIPTION environment variable. Please use ARM_SUBSCRIPTION_ID instead. Support for this will be removed in the next major version after 10/2024."
   ARM_SUBSCRIPTION_ID=$AZ_SUBSCRIPTION
 fi
 
