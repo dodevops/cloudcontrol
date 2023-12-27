@@ -39,7 +39,7 @@ fi
 EOF
 echo az login "${tenantArg[@]}" >> ~/bin/azure-relogin
 
-if [ "X${AZ_SUBSCRIPTION}X" == "XX" ]
+if [ "X${AZ_SUBSCRIPTION}X" != "XX" ]
 then
   echo "Warning: This configuration uses the DEPRECATED AZ_SUBSCRIPTION environment variable. Please use ARM_SUBSCRIPTION_ID instead. Support for this will be removed in the next major version after 10/2024."
   ARM_SUBSCRIPTION_ID=$AZ_SUBSCRIPTION
