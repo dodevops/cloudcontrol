@@ -22,6 +22,7 @@ Following features and tools are supported:
 * ⚙️ Direnv
 * ⛵️ Helm
 * 🛠 JQ
+* 🐾 k9s
 * ⌨️ kc Quick Kubernetes Context switch
 * 🟦 krew
 * 🐚 Kubectlnodeshell
@@ -55,6 +56,7 @@ Following features and tools are supported:
     * [Direnv](#direnv)
     * [Helm](#helm)
     * [JQ](#jq)
+    * [k9s](#k9s)
     * [kc Quick Kubernetes Context switch](#kc)
     * [krew](#krew)
     * [Kubectlnodeshell](#kubectlnodeshell)
@@ -418,6 +420,16 @@ Installs the [JSON parser and processor jq](https://stedolan.github.io/jq/)
 
 * USE_jq: Enable this feature
 * DEBUG_jq: Debug this feature
+
+### <a id="k9s"></a> k9s
+
+Installs [k9s](https://k9scli.io/)
+
+#### Configuration
+
+* USE_k9s: Enable this feature
+* DEBUG_k9s: Debug this feature
+* Environment K9S_VERSION (optional): Valid k9s version to install (defaults to latest)
 
 ### <a id="kc"></a> kc Quick Kubernetes Context switch
 
