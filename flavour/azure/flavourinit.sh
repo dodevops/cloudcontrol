@@ -27,7 +27,7 @@ fi
 
 echo "#!/bin/sh" > ~/bin/azure-relogin
 cat <<EOF >>~/bin/azure-relogin
-AZ_ACCOUNT_SHOW_OUTPUT="$(az account show 2>&1)"
+AZ_ACCOUNT_SHOW_OUTPUT="\$(az account show 2>&1)"
 if [ $? -eq 0 ]; then
   echo "Azure login still valid, no relogin required"
   exit 0
