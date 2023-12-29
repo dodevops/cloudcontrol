@@ -43,7 +43,7 @@ jobs:
 
             # Set up QEMU to be able to build to multiple architectures
             -   name: Set up QEMU
-                uses: docker/setup-qemu-action@v1
+                uses: docker/setup-qemu-action@v3
 
             -   name: Setup Docker buildx
                 uses: docker/setup-buildx-action@v2.4.0
