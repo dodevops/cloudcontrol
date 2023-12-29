@@ -1,0 +1,6 @@
+command:
+    k9s:
+        exec: "/home/cloudcontrol/bin/k9s version"
+        exit-status: 0
+        stdout:
+            - "Version:"
