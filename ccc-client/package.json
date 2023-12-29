@@ -24,7 +24,7 @@
     "vite": "^4.2.0",
     "vite-plugin-vuetify": "^1.0.0",
     "vue-tsc": "^1.2.0",
-    "miragejs": "^0.1.47",
+    "miragejs": "^0.1.48",
     "lorem-ipsum": "^2.0.8"
   }
 }
