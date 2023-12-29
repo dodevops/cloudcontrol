@@ -19,7 +19,7 @@
     "@types/node": "^18.15.0",
     "@types/markdown-it": "^13.0.1",
     "@vitejs/plugin-vue": "^4.0.0",
-    "typescript": "^5.0.0",
+    "typescript": "^5.3.3",
     "unplugin-fonts": "^1.0.3",
     "vite": "^4.2.0",
     "vite-plugin-vuetify": "^1.0.0",
