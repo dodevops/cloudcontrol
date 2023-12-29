@@ -7,7 +7,7 @@ require (
 	github.com/Masterminds/sprig/v3 v3.2.3
 	github.com/akamensky/argparse v1.4.0
 	github.com/docker/docker v24.0.7+incompatible
-	github.com/opencontainers/image-spec v1.1.0-rc2.0.20221005185240-3a7f492d3f1b
+	github.com/opencontainers/image-spec v1.1.0-rc5
 	github.com/otiai10/copy v1.14.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/thoas/go-funk v0.9.3
