@@ -7,7 +7,30 @@ env:
     GOSSVERSION: v0.4.4
 
 jobs:
+    notify:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.pull_request.head.repo.fork }}
+        steps:
+            - name: Notifiy about skips on forks
+              run: |
+                  echo "::notice title=Skipping cloud tests::Because we're running from a fork, we'll skip cloud tests."
+    build-exclude:
+        runs-on: ubuntu-latest
+        outputs:
+            jobs: ${{ steps.build-exclude.outputs.jobs }}
+        steps:
+            - id: build-exclude
+              run: |
+                  cat <<EOT > tmp.js
+                  exclude=[{"flavour": "tanzu", "arch": "linux/arm64"}]
+                  if (${{ github.event.pull_request.head.repo.fork }}) {
+                    exclude = exclude.concat([{"flavour": "aws"}, {"flavour": "azure"}, {"flavour": "gcloud"}])
+                  }
+                  console.log(JSON.stringify(exclude))
+                  EOT
+                  echo "jobs=$(node tmp.js)" >> "$GITHUB_OUTPUT"
     test:
+        needs: build-exclude
         strategy:
             matrix:
                 flavour:
@@ -21,12 +44,7 @@ jobs:
                     - linux/amd64
                     # Commented until Github supports arm64 runners
                     #- linux/arm64
-                exclude:
-                    - flavour: "azure"
-                      arch: "linux/arm64"
-                    - flavour: "tanzu"
-                      arch: "linux/arm64"
-
+                exclude: ${{ fromJSON(needs.build-exclude.outputs.jobs) }}
 
         runs-on: ubuntu-latest
 
