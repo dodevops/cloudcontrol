@@ -14,6 +14,7 @@ import (
 	"github.com/thoas/go-funk"
 	"io"
 	"strings"
+	"time"
 )
 
 // generate a platform spec from a platform string.
@@ -199,6 +200,7 @@ func (d DockerAdapter) RunCommand(containerID string, cmd []string) (string, err
 				}
 				return fmt.Sprintf("Command output: %s\n\nContainer output: %s\n%s", commandLogbuf.String(), containerLogBuf.String(), err), nil
 			}
+			time.Sleep(2 * time.Second)
 		}
 	}
 }
