@@ -20,6 +20,7 @@ Following features and tools are supported:
 * 📷 AzCopy
 * 🪪 Certificates
 * ⚙️ Direnv
+* 🔥 Git
 * ⛵️ Helm
 * 🛠 JQ
 * 🐾 k9s
@@ -54,6 +55,7 @@ Following features and tools are supported:
     * [AzCopy](#azcopy)
     * [Certificates](#certificates)
     * [Direnv](#direnv)
+    * [Git](#git)
     * [Helm](#helm)
     * [JQ](#jq)
     * [k9s](#k9s)
@@ -401,6 +403,16 @@ Installs [Direnv](https://direnv.net/)
 
 * USE_direnv: Enable this feature
 * DEBUG_direnv: Debug this feature
+
+### <a id="git"></a> Git
+
+Installs [Git](https://git-scm.com/download/)
+
+#### Configuration
+
+* USE_git: Enable this feature
+* DEBUG_git: Debug this feature
+* Environment GIT_VERSION (optional): Valid Git version to install (e.g. 2.39.0)
 
 ### <a id="helm"></a> Helm
 
