@@ -1,0 +1,5 @@
+icon: "🔥"
+title: "Git"
+description: "Installs [Git](https://git-scm.com/download/)"
+configuration:
+    - "Environment GIT_VERSION (optional): Valid Git version to install (e.g. 2.39.0)"

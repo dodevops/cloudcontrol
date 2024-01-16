@@ -4,6 +4,8 @@ RUN yum install -y sudo shadow-utils unzip tar net-tools curl && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/yum *" > /etc/sudoers.d/cloudcontrol && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/curl *" >> /etc/sudoers.d/cloudcontrol && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/mv *" >> /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/rm *" >> /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/tar *" >> /etc/sudoers.d/cloudcontrol && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/bin/chmod *" >> /etc/sudoers.d/cloudcontrol && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/bin/cp *" >> /etc/sudoers.d/cloudcontrol && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/update-ca-trust" >> /etc/sudoers.d/cloudcontrol && \

@@ -19,7 +19,9 @@ Following features and tools are supported:
 * 🐟 Fish Shell
 * 📷 AzCopy
 * 🪪 Certificates
+*  Cilium CLI
 * ⚙️ Direnv
+* 🔥 Git
 * ⛵️ Helm
 * 🛠 JQ
 * 🐾 k9s
@@ -53,7 +55,9 @@ Following features and tools are supported:
     * [Fish Shell](#_fish)
     * [AzCopy](#azcopy)
     * [Certificates](#certificates)
+    * [Cilium CLI](#cilium)
     * [Direnv](#direnv)
+    * [Git](#git)
     * [Helm](#helm)
     * [JQ](#jq)
     * [k9s](#k9s)
@@ -393,6 +397,16 @@ Adds specified trusted certificate authorities into the container
   (optional). Defaults to `/certificates`. If something different than the default is used, the volume-target needs to be adapted to 
   the same directory
 
+### <a id="cilium"></a> Cilium CLI
+
+Installs [Cilium CLI](https://cilium.io)
+
+#### Configuration
+
+* USE_cilium: Enable this feature
+* DEBUG_cilium: Debug this feature
+* Environment CILIUM_CLI_VERSION (optional): Valid Cilium version to install (e.g. v0.13.2)
+
 ### <a id="direnv"></a> Direnv
 
 Installs [Direnv](https://direnv.net/)
@@ -401,6 +415,16 @@ Installs [Direnv](https://direnv.net/)
 
 * USE_direnv: Enable this feature
 * DEBUG_direnv: Debug this feature
+
+### <a id="git"></a> Git
+
+Installs [Git](https://git-scm.com/download/)
+
+#### Configuration
+
+* USE_git: Enable this feature
+* DEBUG_git: Debug this feature
+* Environment GIT_VERSION (optional): Valid Git version to install (e.g. 2.39.0)
 
 ### <a id="helm"></a> Helm
 
