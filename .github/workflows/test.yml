@@ -34,7 +34,8 @@ jobs:
         strategy:
             matrix:
                 flavour:
-                    - aws
+                    # Commented for pricing reasons
+                    #- aws
                     - azure
                     # Commented until gcloud playground exists
                     #- gcloud
