@@ -11,7 +11,7 @@ fi
 
 if [ "X${ARM_TENANT_ID}X" != "XX" ]
 then
-  tenantArg+=("--tenant" "${AZ_TENANTID}")
+  tenantArg+=("--tenant" "${ARM_TENANT_ID}")
 fi
 
 if ${AZ_USE_ARM_SPI:-false};
