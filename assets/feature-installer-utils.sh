@@ -60,3 +60,21 @@ function checkAndCleanVersion {
     echo "${VERSION}"
   fi
 }
+
+# Usage: downloadFromGithub USER REPO VERSION PACKAGE_PREFIX PACKAGE_SUFFIX TARGET
+# Downloads a release package from github using the common architecture names
+# The package will be downloaded from github.com/USER/REPO/releases/VERSION/download/PACKAGE to the given TARGET file
+# where PACKAGE consists of PACKAGE_PREFIXARCHITECTURE.PACKAGE_SUFFIX.
+# Example: PACKAGE_PREFIX=krew_linux_, PACKAGE_SUFFIX=tar.gz on an arm architecture will download krew_linux_arm64.tar.gz
+function downloadFromGithub {
+  USER=$1
+  REPO=$2
+  VERSION=$3
+  PACKAGE_PREFIX=$4
+  PACKAGE_SUFFIX=$5
+  TARGET=$6
+
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
+  PACKAGE="${PACKAGE_PREFIX}${ARCH}.${PACKAGE_SUFFIX}"
+  execHandle "Downloading ${USER}/${REPO}@${VERSION}" curl -f -s -L "https://github.com/${USER}/${REPO}/releases/${VERSION}/download/${PACKAGE}" --output "${TARGET}"
+}

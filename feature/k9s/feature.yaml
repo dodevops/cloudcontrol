@@ -1,0 +1,5 @@
+icon: "🐾"
+title: "k9s"
+description: "Installs [k9s](https://k9scli.io/)"
+configuration:
+    - "Environment K9S_VERSION (optional): Valid k9s version to install (defaults to latest)"

@@ -26,7 +26,7 @@ file:
 `
 
 // TestFeature tests a specific feature.
-func TestFeature(feature Feature, testBed TestBed, containerAdapter container.AdapterBase) error {
+func TestFeature(feature Feature, testBed TestBed, containerAdapter container.AdapterBase, cleanup bool) error {
 	var testSuites []string
 	if testSuitesGlob, err := filepath.Glob(filepath.Join(feature.FullPath, "goss*")); err != nil {
 		return fmt.Errorf("error searching for testsuites in %s: %w", feature.FullPath, err)
@@ -47,8 +47,11 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 		containerErr := func() error {
 			var testDir string
 
+			var hasProblems = false
 			var willFail = false
 			var failPattern = ".*"
+			var mightFail = false
+			var mightFailDescription = ""
 
 			if _, err := os.Stat(filepath.Join(testSuite, ".will-fail")); err == nil {
 				willFail = true
@@ -57,6 +60,16 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 					return fmt.Errorf("loading the contents of %s failed: %w", filepath.Join(testSuite, ".will-fail"), err)
 				} else {
 					failPattern = strings.TrimSuffix(string(tmp), "\n")
+				}
+			}
+
+			if _, err := os.Stat(filepath.Join(testSuite, ".might-fail")); err == nil {
+				mightFail = true
+				logrus.Debug("Found .might-fail file, test might fail.")
+				if tmp, err := os.ReadFile(filepath.Join(testSuite, ".might-fail")); err != nil {
+					return fmt.Errorf("loading the contents of %s failed: %w", filepath.Join(testSuite, ".might-fail"), err)
+				} else {
+					mightFailDescription = strings.TrimSuffix(string(tmp), "\n")
 				}
 			}
 
@@ -69,8 +82,12 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 				return fmt.Errorf("error chmodding temporary directory to 0777: %w", err)
 			}
 			defer func() {
-				if err := os.RemoveAll(testDir); err != nil {
-					panic(fmt.Errorf("can not remove temporary directory: %w", err))
+				if cleanup || !hasProblems {
+					if err := os.RemoveAll(testDir); err != nil {
+						panic(fmt.Errorf("can not remove temporary directory: %w", err))
+					}
+				} else {
+					logrus.Infof("Not removing temporary directory %s because cleanup wasn't enabled.", testDir)
 				}
 			}()
 			logrus.Debugf("Preparing test suite in %s", testDir)
@@ -87,7 +104,7 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 			if _, err := fileutils.CopyFile(
 				filepath.Join(testSuite, "goss.yaml"),
 				filepath.Join(testDir, "goss.yaml"),
-			); err != nil && !willFail {
+			); err != nil && !willFail && !mightFail {
 				return fmt.Errorf("can not copy goss.yaml: %w", err)
 			}
 
@@ -144,15 +161,24 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 				binds,
 				testBed.Platform,
 			); err != nil {
+				hasProblems = true
 				return fmt.Errorf("error starting container: %w", err)
 			} else {
+				logrus.Debugf("Started container %s", startedContainerId)
 				containerId = startedContainerId
 			}
 
 			// deferring the removal of the container
 			defer func() {
-				if err := containerAdapter.StopContainer(containerId); err != nil {
-					panic(fmt.Errorf("can not stop goss container: %w", err))
+				if cleanup || !hasProblems {
+					logrus.Debugf("Stopping container %s", containerId)
+					if err := containerAdapter.StopContainer(containerId); err != nil {
+						panic(fmt.Errorf("can not stop goss container: %w", err))
+					} else {
+						logrus.Debugf("Stopped container with id %s", containerId)
+					}
+				} else {
+					logrus.Debugf("Not stopping container because cleanup was disabled and problems exist.")
 				}
 			}()
 
@@ -168,11 +194,14 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 				var runCommandError *container.RunCommandError
 				switch {
 				case errors.As(err, &runCommandError):
-					if !willFail {
+					if mightFail {
+						logrus.Warnf("Waiting for Goss in %s failed with %s, but it might fail because: \n%s", testSuite, err.Error(), mightFailDescription)
+					} else if !willFail {
+						hasProblems = true
 						return &GossError{
 							returnCode: runCommandError.ReturnCode,
 							logOutput: fmt.Sprintf(
-								"Command output:\n%s\n\nContainer output:\n%s\n&s",
+								"Command output:\n%s\n\nContainer output:\n%s\n%s",
 								runCommandError.CommandOutput,
 								runCommandError.ContainerOutput,
 								runCommandError.Error(),
@@ -182,6 +211,7 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 						failPattern,
 						[]byte(fmt.Sprintf("%s%s", runCommandError.CommandOutput, runCommandError.ContainerOutput)),
 					); err != nil || !found {
+						hasProblems = true
 						return &GossError{
 							returnCode: 0,
 							logOutput: fmt.Sprintf(
@@ -194,9 +224,12 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 						}
 					}
 				default:
-					return err
+					if !willFail && !mightFail {
+						return err
+					}
 				}
 			} else if err == nil && willFail {
+				hasProblems = true
 				return &GossError{
 					returnCode: 0,
 					logOutput:  fmt.Sprintf("Container was created successfully when it shouldn't have been: %s", waitOutput),
@@ -208,15 +241,22 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 				containerId,
 				[]string{
 					"/goss/goss",
-					"-g",
+					"--gossfile",
 					"/goss/goss.yaml",
+					"--loglevel",
+					"DEBUG",
 					"validate",
-					"--color",
 					"--format",
 					"documentation",
+					"--format-options",
+					"verbose",
+					"--no-color",
 				},
 			); err != nil {
-				if !willFail {
+				if mightFail {
+					logrus.Warnf("Testing %s failed with %s, but it might fail because: \n%s", testSuite, err.Error(), mightFailDescription)
+				} else if !willFail {
+					hasProblems = true
 					var runCommandError *container.RunCommandError
 					switch {
 					case errors.As(err, &runCommandError):
@@ -229,10 +269,13 @@ func TestFeature(feature Feature, testBed TestBed, containerAdapter container.Ad
 							),
 						}
 					default:
-						return err
+						if !willFail && !mightFail {
+							return err
+						}
 					}
 				}
 			} else if err == nil && willFail {
+				hasProblems = true
 				return &GossError{
 					returnCode: 0,
 					logOutput:  "Container was created successfully when it shouldn't have been.",
@@ -291,6 +334,14 @@ func IntegrationTests(features []Feature, testBed TestBed, containerAdapter cont
 				if _, err := os.Stat(filepath.Join(testSuite, ".will-fail")); err == nil {
 					logrus.Infof(
 						"Test %s for feature %s is ignored for integration testing, because it will fail",
+						filepath.Base(testSuite),
+						feature.Name,
+					)
+					continue
+				}
+				if _, err := os.Stat(filepath.Join(testSuite, ".might-fail")); err == nil {
+					logrus.Infof(
+						"Test %s for feature %s is ignored for integration testing, because it might fail",
 						filepath.Base(testSuite),
 						feature.Name,
 					)
@@ -437,12 +488,16 @@ func IntegrationTests(features []Feature, testBed TestBed, containerAdapter cont
 		containerId,
 		[]string{
 			"/goss/goss",
-			"-g",
+			"--gossfile",
 			"/goss/goss.yaml",
+			"--loglevel",
+			"DEBUG",
 			"validate",
-			"--color",
 			"--format",
 			"documentation",
+			"--format-options",
+			"verbose",
+			"--no-color",
 		},
 	); err != nil {
 		var runCommandError *container.RunCommandError

@@ -10,7 +10,7 @@ required and configured to manage modern cloud infrastructures.
 The toolbox comes in different "flavours" depending on what cloud you are working in.
 Currently supported cloud flavours are:
 * [AWS](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-aws) (based on [amazon/aws-cli](https://hub.docker.com/r/amazon/aws-cli)) [linux/amd64, linux/arm64]
-* [Azure](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli)) [linux/amd64]
+* [Azure](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli)) [linux/amd64, linux/arm64]
 * [Google Cloud](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-gcloud) (based on [google-cloud-cli](https://console.cloud.google.com/gcr/images/google.com:cloudsdktool/GLOBAL/google-cloud-cli)) [linux/amd64, linux/arm64]
 * [Simple](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-simple) (based on [alpine](https://hub.docker.com/_/alpine)) [linux/amd64, linux/arm64]
 * [Tanzu](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-tanzu) (based on [alpine](https://hub.docker.com/_/alpine)) [linux/amd64]
@@ -18,12 +18,13 @@ Currently supported cloud flavours are:
 Following features and tools are supported:
 * 🐟 Fish Shell
 * 📷 AzCopy
-* 🔐 Bitwarden
 * 🪪 Certificates
 * ⚙️ Direnv
 * ⛵️ Helm
 * 🛠 JQ
+* 🐾 k9s
 * ⌨️ kc Quick Kubernetes Context switch
+* 🟦 krew
 * 🐚 Kubectlnodeshell
 * 🐳 Kubernetes
 * 📦 Packages
@@ -51,12 +52,13 @@ Following features and tools are supported:
 * [Features](#features)
     * [Fish Shell](#_fish)
     * [AzCopy](#azcopy)
-    * [Bitwarden](#bitwarden)
     * [Certificates](#certificates)
     * [Direnv](#direnv)
     * [Helm](#helm)
     * [JQ](#jq)
+    * [k9s](#k9s)
     * [kc Quick Kubernetes Context switch](#kc)
+    * [krew](#krew)
     * [Kubectlnodeshell](#kubectlnodeshell)
     * [Kubernetes](#kubernetes)
     * [Packages](#packages)
@@ -307,12 +309,17 @@ To start a new session in the CloudControl context, run `createSession <token>` 
 
 Can be used to connect to infrastructure in the Azure cloud. Because we're using a container,
 a device login will happen, requiring the user to go to a website, enter a code and login.
-This only happens once during initialization phase.
+
+The azure login tokens usually expire after some time. You can run the `azure-relogin` script
+(located in ~/bin, thus available without path) to re-execute the same login commands as the 
+initialization process does.
 
 #### Configuration
 
-* Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container
-* Environment AZ_TENANTID: The Azure tenant id to log into (optional)
+* Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container (deprecated)
+* Environment ARM_SUBSCRIPTION_ID: The Azure subscription to use in this container
+* Environment AZ_TENANTID: The Azure tenant id to log into (optional, deprecated)
+* Environment ARM_TENANT_ID: The Azure tenant id to log into (optional)
 * Environment AZ_USE_ARM_SPI: Uses the environment variables ARM_CLIENT_ID and ARM_CLIENT_SECRET for service principal auth [false]
 
 ### <a id="gcloud"></a> gcloud
@@ -368,15 +375,6 @@ Installs [AzCopy](https://github.com/Azure/azure-storage-azcopy)
 * USE_azcopy: Enable this feature
 * DEBUG_azcopy: Debug this feature
 
-### <a id="bitwarden"></a> Bitwarden
-
-Installs the [Bitwarden CLI](https://bitwarden.com/help/cli/)
-
-#### Configuration
-
-* USE_bitwarden: Enable this feature
-* DEBUG_bitwarden: Debug this feature
-
 ### <a id="certificates"></a> Certificates
 
 Adds specified trusted certificate authorities into the container
@@ -423,6 +421,16 @@ Installs the [JSON parser and processor jq](https://stedolan.github.io/jq/)
 * USE_jq: Enable this feature
 * DEBUG_jq: Debug this feature
 
+### <a id="k9s"></a> k9s
+
+Installs [k9s](https://k9scli.io/)
+
+#### Configuration
+
+* USE_k9s: Enable this feature
+* DEBUG_k9s: Debug this feature
+* Environment K9S_VERSION (optional): Valid k9s version to install (defaults to latest)
+
 ### <a id="kc"></a> kc Quick Kubernetes Context switch
 
 Installs [kc](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh), a quick context switcher for kubernetes.
@@ -432,6 +440,17 @@ Installs [kc](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc
 
 * USE_kc: Enable this feature
 * DEBUG_kc: Debug this feature
+
+### <a id="krew"></a> krew
+
+Installs [Krew](https://krew.sigs.k8s.io/)
+
+#### Configuration
+
+* USE_krew: Enable this feature
+* DEBUG_krew: Debug this feature
+* Environment KREW_VERSION (optional): Valid Krew version to install (defaults to latest)
+* Environment KREW_PLUGINS (optional): A comma separated list of kubectl plugins to install via krew
 
 ### <a id="kubectlnodeshell"></a> Kubectlnodeshell
 
@@ -712,20 +731,19 @@ To build all flavours with the same tag, use
 ## Testing
 
 To run the test suite for a specific flavour, you need to create a local directory that holds flavour-specific data
-(e.g. keys for authentication) and optionally an .env-file with flavour-specific environment variables.
+(e.g. keys for authentication) and optionally an .env-file with flavour-specific environment variables. This is called
+ a "testbed" directory.
 
 First, you need to compile the test runner:
 
-    cd tests
-    docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o test-features
+    docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o test-features cmd/tests/test-features
 
 After that, download the latest goss binary for the target architecture you will test (linux/amd64 or linux/arm64) from
 the [Goss site](https://github.com/goss-org/goss) and put it somewhere local.
 
 Once that is done, run the tests like following:
 
-    cd tests
-    ./test-features -f [flavour] -i [image:tag] -t [path to flavour-data] -p [test architecture, e.g. linux/amd64] -g [path to the goss binary]
+    ./test-features -f [flavour] -i [image:tag] -t [path to testbed directory] -p [test architecture, e.g. linux/amd64] -g [path to the goss binary]
 
 This will run the tests of all features that supply a test suite one by one and, if all succeed, will test all
 features together for integration testing. Check out `test-features --help` for other options.
@@ -739,12 +757,19 @@ When the testrunner encounters such file it will check if CloudControl fails to 
 
 You can add a regular expression pattern into `.will-fail` to test if the container or command output matches it.
 
+### Unstable tests
+
+As we're dealing with a lot of moving targets in the features, sometimes a test might not be reliable. For these
+situations we support a .might-fail file. Just add it as a text file into the test suite subdirectory and put some text
+into it describing the problem. Failed test won't fail the test suite then but instead the description will be shown.
+
 ### Test debugging
 
-To check why a test failed, run the test-runner using the -x bash parameter to see the different commands it issues.
+To check why a test failed, use the -l parameter to enable debug logging. Additionally, you can use the -n parameter
+to specify the specific feature to test and use the -x parameter to stop testing if one test fails.
 
-Then, take the failing command and instead of `dgoss run` execute `docker run` with the same arguments to analyze the
-tests locally.
+When a test fails, the test container will not be removed automatically (unless you specified the -c parameter), so
+you can inspect the failing container as well.
 
 ## Building documentation ##
 
@@ -774,7 +799,3 @@ flowchart TD
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
 ```mermaid
-github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
-```mermaid
-maid
-

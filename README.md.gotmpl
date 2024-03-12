@@ -384,20 +384,19 @@ To build all flavours with the same tag, use
 ## Testing
 
 To run the test suite for a specific flavour, you need to create a local directory that holds flavour-specific data
-(e.g. keys for authentication) and optionally an .env-file with flavour-specific environment variables.
+(e.g. keys for authentication) and optionally an .env-file with flavour-specific environment variables. This is called
+ a "testbed" directory.
 
 First, you need to compile the test runner:
 
-    cd tests
-    docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o test-features
+    docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build -o test-features cmd/tests/test-features
 
 After that, download the latest goss binary for the target architecture you will test (linux/amd64 or linux/arm64) from
 the [Goss site](https://github.com/goss-org/goss) and put it somewhere local.
 
 Once that is done, run the tests like following:
 
-    cd tests
-    ./test-features -f [flavour] -i [image:tag] -t [path to flavour-data] -p [test architecture, e.g. linux/amd64] -g [path to the goss binary]
+    ./test-features -f [flavour] -i [image:tag] -t [path to testbed directory] -p [test architecture, e.g. linux/amd64] -g [path to the goss binary]
 
 This will run the tests of all features that supply a test suite one by one and, if all succeed, will test all
 features together for integration testing. Check out `test-features --help` for other options.
@@ -411,12 +410,19 @@ When the testrunner encounters such file it will check if CloudControl fails to 
 
 You can add a regular expression pattern into `.will-fail` to test if the container or command output matches it.
 
+### Unstable tests
+
+As we're dealing with a lot of moving targets in the features, sometimes a test might not be reliable. For these
+situations we support a .might-fail file. Just add it as a text file into the test suite subdirectory and put some text
+into it describing the problem. Failed test won't fail the test suite then but instead the description will be shown.
+
 ### Test debugging
 
-To check why a test failed, run the test-runner using the -x bash parameter to see the different commands it issues.
+To check why a test failed, use the -l parameter to enable debug logging. Additionally, you can use the -n parameter
+to specify the specific feature to test and use the -x parameter to stop testing if one test fails.
 
-Then, take the failing command and instead of `dgoss run` execute `docker run` with the same arguments to analyze the
-tests locally.
+When a test fails, the test container will not be removed automatically (unless you specified the -c parameter), so
+you can inspect the failing container as well.
 
 ## Building documentation ##
 

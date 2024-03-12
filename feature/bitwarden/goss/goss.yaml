@@ -1,5 +1,0 @@
-command:
-    bw:
-        exec: "/home/cloudcontrol/bin/bw --version"
-        exit-status: 0
-        timeout: 30000

@@ -21,6 +21,7 @@ EOF
   fi
 
   echo "#!/bin/sh" > ~/bin/k8s-relogin
+  echo "~/bin/azure-relogin" >> ~/bin/k8s-relogin
 
   AZ_DO_KUBELOGIN_CONVERT="${AZ_USE_ARM_SPI:-false}"
   for CLUSTER in $(echo "${AZ_K8S_CLUSTERS}" | tr "," "\n"); do
