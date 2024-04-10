@@ -1,0 +1,16 @@
+index:io.artifacthub.package.readme-url=https://raw.githubusercontent.com/dodevops/cloudcontrol/develop/README.md
+index:org.opencontainers.image.created={{BUILD_DATE}}
+index:org.opencontainers.image.description="The cloud engineer's toolbox - {{FLAVOUR}} flavour"
+index:org.opencontainers.image.documentation=https://github.com/dodevops/cloudcontrol
+index:org.opencontainers.image.source=https://github.com/dodevops/cloudcontrol
+index:org.opencontainers.image.title="cloudcontrol-{{FLAVOUR}}"
+index:org.opencontainers.image.url=https://github.com/dodevops/cloudcontrol
+index:org.opencontainers.image.vendor="DO! DevOps"
+manifest:io.artifacthub.package.readme-url=https://raw.githubusercontent.com/dodevops/cloudcontrol/develop/README.md
+manifest:org.opencontainers.image.created={{BUILD_DATE}}
+manifest:org.opencontainers.image.description="The cloud engineer's toolbox - {{FLAVOUR}} flavour"
+manifest:org.opencontainers.image.documentation=https://github.com/dodevops/cloudcontrol
+manifest:org.opencontainers.image.source=https://github.com/dodevops/cloudcontrol
+manifest:org.opencontainers.image.title="cloudcontrol-{{FLAVOUR}}"
+manifest:org.opencontainers.image.url=https://github.com/dodevops/cloudcontrol
+manifest:org.opencontainers.image.vendor="DO! DevOps"
