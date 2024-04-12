@@ -10,7 +10,7 @@ fi
 
 CLI_ARCH=$(getPlatform)
 
-sudo curl -# -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
-sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
-sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
+sudo curl -sL --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum} && \
+sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum && \
+sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin && \
 sudo rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
