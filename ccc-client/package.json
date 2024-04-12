@@ -1,0 +1,30 @@
+{
+  "name": "ccc-client",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.5.0",
+    "@mdi/font": "7.0.96",
+    "roboto-fontface": "*",
+    "vue": "^3.2.0",
+    "vuetify": "^3.3.17",
+    "vue-markdown-render": "^2.0.1"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.21.4",
+    "@types/node": "^18.15.0",
+    "@types/markdown-it": "^13.0.1",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "typescript": "^5.0.0",
+    "unplugin-fonts": "^1.0.3",
+    "vite": "^4.5.2",
+    "vite-plugin-vuetify": "^1.0.0",
+    "vue-tsc": "^1.2.0",
+    "miragejs": "^0.1.47",
+    "lorem-ipsum": "^2.0.8"
+  }
+}

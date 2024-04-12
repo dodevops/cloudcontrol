@@ -21,6 +21,7 @@ EOF
   fi
 
   echo "#!/bin/sh" > ~/bin/k8s-relogin
+  echo "~/bin/azure-relogin" >> ~/bin/k8s-relogin
 
   AZ_DO_KUBELOGIN_CONVERT="${AZ_USE_ARM_SPI:-false}"
   for CLUSTER in $(echo "${AZ_K8S_CLUSTERS}" | tr "," "\n"); do
@@ -192,8 +193,8 @@ then
   do
     ZONE=$(echo "${ZONEDCLUSTER}" | cut -d ":" -f 1)
     CLUSTER=$(echo "${ZONEDCLUSTER}" | cut -d ":" -f 2)
-    execHandle "Authenticating against cluster ${CLUSTER} in zone ${ZONE}" gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}" --project "${GCLOUD_PROJECTID}"
-    echo gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}" --project "${GCLOUD_PROJECTID}" >> ~/bin/k8s-relogin
+    execHandle "Authenticating against cluster ${CLUSTER} in zone ${ZONE}" gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}"
+    echo gcloud container clusters get-credentials "${CLUSTER}" --zone "${ZONE}" >> ~/bin/k8s-relogin
     chmod +x ~/bin/k8s-relogin
   done
 fi

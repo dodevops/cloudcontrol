@@ -10,4 +10,5 @@ type YamlDescriptor struct {
 	Icon          string
 	Configuration []string
 	Test          TestConfiguration
+	Platforms     []string
 }

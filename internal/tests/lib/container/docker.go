@@ -14,6 +14,7 @@ import (
 	"github.com/thoas/go-funk"
 	"io"
 	"strings"
+	"time"
 )
 
 // generate a platform spec from a platform string.
@@ -72,7 +73,7 @@ func (d DockerAdapter) FindImage(image string, platform string) error {
 
 	if len(localImages) == 0 {
 		remoteImages, err := dockerCli.ImageSearch(context.Background(), image, types.ImageSearchOptions{Limit: 1})
-		if err != nil {
+		if err != nil && !strings.Contains(err.Error(), "404") {
 			panic(fmt.Sprintf("Can not search remote images: %s", err.Error()))
 		}
 		if len(remoteImages) == 0 {
@@ -137,6 +138,7 @@ func (d DockerAdapter) StopContainer(containerID string) error {
 }
 
 func (d DockerAdapter) RunCommand(containerID string, cmd []string) (string, error) {
+	logrus.Debugf("Running command %s on container %s", strings.Join(cmd, " "), containerID)
 	dockerCli := d.getClient()
 	var executeID string
 	if idResponse, err := dockerCli.ContainerExecCreate(context.Background(), containerID, types.ExecConfig{
@@ -188,7 +190,7 @@ func (d DockerAdapter) RunCommand(containerID string, cmd []string) (string, err
 				if containerInspect, err := dockerCli.ContainerInspect(context.Background(), containerID); err != nil {
 					return "", fmt.Errorf("can not inspect container after exec: %w", err)
 				} else {
-					if !containerInspect.State.Running {
+					if !containerInspect.State.Running || containerInspect.State.Restarting || containerInspect.State.Dead {
 						return "", &RunCommandError{
 							ReturnCode:      0,
 							CommandOutput:   fmt.Sprintf("container was stopped after exec: %s", commandLogbuf.String()),
@@ -198,6 +200,7 @@ func (d DockerAdapter) RunCommand(containerID string, cmd []string) (string, err
 				}
 				return fmt.Sprintf("Command output: %s\n\nContainer output: %s\n%s", commandLogbuf.String(), containerLogBuf.String(), err), nil
 			}
+			time.Sleep(2 * time.Second)
 		}
 	}
 }

@@ -327,7 +327,24 @@ func main() {
 		if err := file.Close(); err != nil {
 			fatal(err)
 		}
+	})
 
+	api.POST("/googleAuth", func(c *gin.Context) {
+		var json Mfa
+		if err := c.ShouldBindJSON(&json); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+		file, err := os.Create("/tmp/gcloud_auth")
+		if err != nil {
+			fatal(err)
+		}
+		if _, err := file.WriteString(fmt.Sprintf("%s\n", json.Code)); err != nil {
+			fatal(err)
+		}
+		if err := file.Close(); err != nil {
+			fatal(err)
+		}
 	})
 
 	if err := router.Run(fmt.Sprintf(":%s", port)); err != nil {

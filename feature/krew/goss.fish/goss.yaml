@@ -1,0 +1,17 @@
+command:
+    krew:
+        exec: "/home/cloudcontrol/.krew/bin/kubectl-krew version"
+        exit-status: 0
+        stdout:
+            - "/home/cloudcontrol/.krew"
+    krew-plugins:
+        exec: "/home/cloudcontrol/.krew/bin/kubectl-krew list"
+        exit-status: 0
+        stdout:
+            - "example"
+    path-includes-home:
+        exec: "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/cloudcontrol/bin && fish -c 'echo $PATH'"
+        exit-status: 0
+        stdout:
+            - "/home/cloudcontrol/bin"
+            - "/home/cloudcontrol/.krew/bin"

@@ -1,7 +1,8 @@
 version: "3"
 services:
     cli:
-        image: "dodevops/cloudcontrol-azure:latest"
+        image: "ghcr.io/dodevops/cloudcontrol-azure:latest"
+        platform: "linux/amd64"
         ports:
             - "8080" # CloudControlCenter port
             - "8081" # Port that can be used for port forwardings

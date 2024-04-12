@@ -1,9 +1,17 @@
-title: "![Docker Image Version (latest semver)](https://img.shields.io/docker/v/dodevops/cloudcontrol-azure?sort=semver) [Azure](https://hub.docker.com/r/dodevops/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))"
+title: "[Azure](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-azure) (based on [mcr.microsoft.com/azure-cli](https://hub.docker.com/_/microsoft-azure-cli))"
 description: |
     Can be used to connect to infrastructure in the Azure cloud. Because we're using a container,
     a device login will happen, requiring the user to go to a website, enter a code and login.
-    This only happens once during initialization phase.
+    
+    The azure login tokens usually expire after some time. You can run the `azure-relogin` script
+    (located in ~/bin, thus available without path) to re-execute the same login commands as the 
+    initialization process does.
 configuration:
-    - "Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container"
-    - "Environment AZ_TENANTID: The Azure tenant id to log into (optional)"
+    - "Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container (deprecated)"
+    - "Environment ARM_SUBSCRIPTION_ID: The Azure subscription to use in this container"
+    - "Environment AZ_TENANTID: The Azure tenant id to log into (optional, deprecated)"
+    - "Environment ARM_TENANT_ID: The Azure tenant id to log into (optional)"
     - "Environment AZ_USE_ARM_SPI: Uses the environment variables ARM_CLIENT_ID and ARM_CLIENT_SECRET for service principal auth [false]"
+platforms:
+    - linux/amd64
+    - linux/arm64
