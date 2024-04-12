@@ -397,7 +397,7 @@ Installs [Cilium CLI](https://cilium.io)
 
 * USE_cilium: Enable this feature
 * DEBUG_cilium: Debug this feature
-* Environment CILIUM_CLI_VERSION (optional): Valid Cilium version to install (e.g. v0.13.2)
+* Environment CILIUM_CLI_VERSION (optional): Valid Cilium version to install (e.g. v0.13.2). Leave blank to install the most recent version.
 
 ### <a id="direnv"></a> Direnv
 
