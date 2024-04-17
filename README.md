@@ -16,6 +16,7 @@ Currently supported cloud flavours are:
 * [Tanzu](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-tanzu) (based on [alpine](https://hub.docker.com/_/alpine)) [linux/amd64]
 
 Following features and tools are supported:
+* ⚙️ Direnv
 * 🐟 Fish Shell
 * 📷 AzCopy
 * 🪪 Certificates
@@ -51,6 +52,7 @@ Following features and tools are supported:
     * [simple](#simple)
     * [tanzu](#tanzu)
 * [Features](#features)
+    * [Direnv](#.template)
     * [Fish Shell](#_fish)
     * [AzCopy](#azcopy)
     * [Certificates](#certificates)
@@ -359,6 +361,15 @@ The kubernetes login tokens usually expire after a few hours already. You can ru
 does.
 
 ## Features
+### <a id=".template"></a> Direnv
+
+Installs [Direnv](https://direnv.net/)
+
+#### Configuration
+
+* USE_.template: Enable this feature
+* DEBUG_.template: Debug this feature
+
 ### <a id="_fish"></a> Fish Shell
 
 Installs and configures the [Fish Shell](https://fishshell.com/) with configured [Spacefish theme](https://spacefish.matchai.me/)
@@ -643,13 +654,23 @@ Installs the [YAML parser and processor yq](https://github.com/mikefarah/yq)
 
 ## Development
 
-*CloudControl* supports a decoupled development of features and flavours. If you're missing something, just fork this
-repository, create a subfolder for your new feature under "features" and add these files:
+*CloudControl* supports a decoupled development of features and flavours.
+
+### Features
+
+If you're missing a feature, just fork this repository, copy the feature template from features/.template into a
+new subfolder, check out the comments in the example files, and modify them to your needs.
+
+These files make up a feature:
 
 * `feature.yaml`: A descriptor for your feature with a title, a description and configuration notes
 * `install.sh`: A shell script that is run by CloudControlCenter and should install everything you need
   for your new feature
 * `motd.sh`: (optional) If you want to show some information to the users upon login, put them here.
+
+And an optional, but recommended `.goss` folder for [integration testing](#integration-testing).
+
+### Flavours
 
 If you need another flavour (aka cloud provider), add a new subdirectory under "flavour" and add a flavour.yaml describing
 your flavour the same way as a feature. For the rest of the files, please check out existing flavours for details. Please,
