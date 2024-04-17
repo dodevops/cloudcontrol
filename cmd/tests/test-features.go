@@ -77,7 +77,7 @@ func getFeatures(flavour string) []lib.Feature {
 			funk.FilterString(
 				featuresGlob,
 				func(value string) bool {
-					if correctPathRegexp.Match([]byte(filepath.Dir(value))) {
+					if correctPathRegexp.Match([]byte(value)) {
 						if yamlFile, err := os.ReadFile(filepath.Join(value, "feature.yaml")); err != nil {
 							return false
 						} else {
