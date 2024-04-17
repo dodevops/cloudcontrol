@@ -1,0 +1,18 @@
+# This is the metadata manifest for a feature. Configure it for the feature to be included in CloudControl
+# In your new feature, please remove all descriptive comments from the template.
+
+# Please use an emoji character as a meaningful logo for your feature
+icon: "⚙️"
+
+# Set the title for this feature
+title: "Direnv"
+
+# Set the description of the feature in Markdown. Be sure to include links to websites of the software the feature
+# installs or configures
+description: "Installs [Direnv](https://direnv.net/)"
+
+# Use the configuration key to list additional configuration options that you're providing in your feature
+configuration:
+    #- |
+    #    Environment EXAMPLE_ENVIRONMENT: This environment variable is used in the feature to do xyz (optional)
+    #    Defaults to `abc`

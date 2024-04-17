@@ -1,4 +1,31 @@
-# Execute a command and if it fails, return its output and exit
+# Set some informative variables
+
+# The flavour we're running on
+FLAVOUR="$(cat /home/cloudcontrol/flavour)"
+export FLAVOUR
+
+# The path to install software binaries to
+BINPATH="/home/cloudcontrol/bin"
+export BINPATH
+
+TEMPDIR=""
+export TEMPDIR
+
+# Prepare feature installation. Will create a temporary directory and change to it
+function prepare {
+  TEMPDIR=$(mktemp -d)
+  cd "${TEMPDIR}" || exit
+}
+
+# Cleanup the previously generated temporary directory
+function cleanup {
+  cd - &>/dev/null || exit
+  rm -rf "${TEMPDIR}"
+}
+
+# Usage: execHandle MESSAGE COMMAND...
+#
+# Output MESSAGE and then execute COMMAND. If it fails, return its output and exit
 function execHandle {
   TITLE=$1
   shift
@@ -38,6 +65,7 @@ function waitForMfaCode {
   echo "[VALID_CODE] Valid code entered. Thank you."
 }
 
+# Get the hardware platform we're on and translate it to the usual platform names used in most software
 function getPlatform {
   if [ "$(uname -m)" == 'aarch64' ]
   then
@@ -50,18 +78,32 @@ function getPlatform {
   fi
 }
 
+# Usage: checkAndCleanVersion VERSION
+#
+# Includes checks for version numbers and removes the "v" prefix from it to have a homogeneous version scheme
+# throughout CloudControl.
 function checkAndCleanVersion {
   VERSION=$1
   if [ "${VERSION:0:1}" == "v" ]
   then
-    echo "[DEPRECATION WARNING] Versions with a \"v\" prefix are deprecated and will be removed in CloudControl 4.0. Please only use versions without the \"v\" prefix. (Got \"${VERSION}\")" >&2
+    echo "[DEPRECATION WARNING] Versions with a \"v\" prefix are deprecated and will be removed in CloudControl 6.0.0 Please only use versions without the \"v\" prefix. (Got \"${VERSION}\")" >&2
     echo "${VERSION/#v/}"
   else
     echo "${VERSION}"
   fi
 }
 
+# Usage: download URL FILENAME
+#
+# Downloads the given URL into the provided FILENAME
+function download {
+  URL=$1
+  FILENAME=$2
+  execHandle "Downloading ${FILENAME} from ${URL}" curl -f -s -L "${URL}" -o "${FILENAME}"
+}
+
 # Usage: downloadFromGithub USER REPO VERSION PACKAGE_PREFIX PACKAGE_SUFFIX TARGET
+#
 # Downloads a release package from github using the common architecture names
 # The package will be downloaded from github.com/USER/REPO/releases/VERSION/download/PACKAGE to the given TARGET file
 # where PACKAGE consists of PACKAGE_PREFIXARCHITECTURE.PACKAGE_SUFFIX.

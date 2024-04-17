@@ -1,0 +1,5 @@
+command:
+    test:
+        # Run ls / after installing the feature and if that returns successfully, the test is successful
+        exec: "ls /"
+        exit-status: 0

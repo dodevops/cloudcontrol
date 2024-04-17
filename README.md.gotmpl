@@ -283,13 +283,23 @@ environment variable in the docker-compose file. Then you can debug with the run
 
 ## Development
 
-*CloudControl* supports a decoupled development of features and flavours. If you're missing something, just fork this
-repository, create a subfolder for your new feature under "features" and add these files:
+*CloudControl* supports a decoupled development of features and flavours.
+
+### Features
+
+If you're missing a feature, just fork this repository, copy the feature template from features/.template into a
+new subfolder, check out the comments in the example files, and modify them to your needs.
+
+These files make up a feature:
 
 * `feature.yaml`: A descriptor for your feature with a title, a description and configuration notes
 * `install.sh`: A shell script that is run by CloudControlCenter and should install everything you need
   for your new feature
 * `motd.sh`: (optional) If you want to show some information to the users upon login, put them here.
+
+And an optional, but recommended `.goss` folder for [integration testing](#integration-testing).
+
+### Flavours
 
 If you need another flavour (aka cloud provider), add a new subdirectory under "flavour" and add a flavour.yaml describing
 your flavour the same way as a feature. For the rest of the files, please check out existing flavours for details. Please,
