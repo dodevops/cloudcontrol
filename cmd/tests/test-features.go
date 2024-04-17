@@ -77,7 +77,7 @@ func getFeatures(flavour string) []lib.Feature {
 			funk.FilterString(
 				featuresGlob,
 				func(value string) bool {
-					if correctPathRegexp.Match([]byte(value)) {
+					if correctPathRegexp.Match([]byte(filepath.Base(value))) {
 						if yamlFile, err := os.ReadFile(filepath.Join(value, "feature.yaml")); err != nil {
 							return false
 						} else {
@@ -225,8 +225,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	features := getFeatures(*flavour)
+
 	for _, includeFeature := range *includeFeatures {
-		if !funk.Contains(getFeatures(*flavour), func(feature lib.Feature) bool {
+		if !funk.Contains(features, func(feature lib.Feature) bool {
 			return feature.Name == includeFeature
 		}) {
 			logrus.Errorf("%s is not a known feature", includeFeature)
@@ -236,7 +238,7 @@ func main() {
 	}
 
 	for _, excludeFeature := range *excludeFeatures {
-		if !funk.Contains(getFeatures(*flavour), func(feature lib.Feature) bool {
+		if !funk.Contains(features, func(feature lib.Feature) bool {
 			return feature.Name == excludeFeature
 		}) {
 			logrus.Errorf("%s is not a known feature", excludeFeature)
