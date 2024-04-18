@@ -23,6 +23,9 @@ func fetchDocData(basePath string, filenamePattern string) (map[string]internal.
 		return docDatas, err
 	} else {
 		for _, dir := range subDirs {
+			if filepath.Base(dir) == ".template" {
+				continue
+			}
 			if _, err := os.Stat(filepath.Join(dir, filenamePattern)); err == nil {
 				if yamlFile, err := os.ReadFile(filepath.Join(dir, filenamePattern)); err != nil {
 					return docDatas, err
