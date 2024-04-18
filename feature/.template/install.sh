@@ -5,7 +5,7 @@
 
 . /feature-installer-utils.sh
 
-# Create a temporary directory to work in
+# Prepare a workspace for installing the feature
 prepare
 
 if [ "X${FLAVOUR}X" == "XsimpleX" ]

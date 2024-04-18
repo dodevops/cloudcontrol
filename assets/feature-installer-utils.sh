@@ -5,11 +5,9 @@ FLAVOUR="$(cat /home/cloudcontrol/flavour)"
 export FLAVOUR
 
 # The path to install software binaries to
-BINPATH="/home/cloudcontrol/bin"
-export BINPATH
+export BINPATH="/home/cloudcontrol/bin"
 
-TEMPDIR=""
-export TEMPDIR
+export TEMPDIR=""
 
 # Prepare feature installation. Will create a temporary directory and change to it
 function prepare {
