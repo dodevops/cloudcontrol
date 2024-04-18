@@ -16,7 +16,6 @@ Currently supported cloud flavours are:
 * [Tanzu](https://github.com/dodevops/cloudcontrol/pkgs/container/cloudcontrol-tanzu) (based on [alpine](https://hub.docker.com/_/alpine)) [linux/amd64]
 
 Following features and tools are supported:
-* ⚙️ Direnv
 * 🐟 Fish Shell
 * 📷 AzCopy
 * 🪪 Certificates
@@ -52,7 +51,6 @@ Following features and tools are supported:
     * [simple](#simple)
     * [tanzu](#tanzu)
 * [Features](#features)
-    * [Direnv](#.template)
     * [Fish Shell](#_fish)
     * [AzCopy](#azcopy)
     * [Certificates](#certificates)
@@ -361,15 +359,6 @@ The kubernetes login tokens usually expire after a few hours already. You can ru
 does.
 
 ## Features
-### <a id=".template"></a> Direnv
-
-Installs [Direnv](https://direnv.net/)
-
-#### Configuration
-
-* USE_.template: Enable this feature
-* DEBUG_.template: Debug this feature
-
 ### <a id="_fish"></a> Fish Shell
 
 Installs and configures the [Fish Shell](https://fishshell.com/) with configured [Spacefish theme](https://spacefish.matchai.me/)
@@ -832,4 +821,8 @@ flowchart TD
     click E "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/check_commits.yml" "Check workflow"
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
+```mermaid
+vops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
+    click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
+```mermaid
 ```mermaid

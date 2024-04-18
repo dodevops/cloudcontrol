@@ -2,14 +2,14 @@
 # In your new feature, please remove all descriptive comments from the template.
 
 # Please use an emoji character as a meaningful logo for your feature
-icon: "⚙️"
+icon: "🫥"
 
 # Set the title for this feature
-title: "Direnv"
+title: "Template"
 
 # Set the description of the feature in Markdown. Be sure to include links to websites of the software the feature
 # installs or configures
-description: "Installs [Direnv](https://direnv.net/)"
+description: "Does some awesome stuff"
 
 # Use the configuration key to list additional configuration options that you're providing in your feature
 configuration:
