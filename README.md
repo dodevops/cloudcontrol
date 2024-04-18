@@ -657,7 +657,7 @@ These files make up a feature:
   for your new feature
 * `motd.sh`: (optional) If you want to show some information to the users upon login, put them here.
 
-And an optional, but recommended `.goss` folder for [integration testing](#integration-testing).
+And optional, but recommended [integration tests](integration-testing) in a `.goss` folder.
 
 ### Flavours
 
@@ -822,6 +822,7 @@ flowchart TD
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
 ```mermaid
+maid
 vops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
 ```mermaid
