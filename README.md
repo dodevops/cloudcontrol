@@ -30,6 +30,7 @@ Following features and tools are supported:
 * 📦 Packages
 * 📦 Packer
 * 👟 Run
+* 🔑 sops
 * 📜 Stern
 * 🌏 Terraform
 * 🐗 Terragrunt
@@ -64,6 +65,7 @@ Following features and tools are supported:
     * [Packages](#packages)
     * [Packer](#packer)
     * [Run](#run)
+    * [sops](#sops)
     * [Stern](#stern)
     * [Terraform](#terraform)
     * [Terragrunt](#terragrunt)
@@ -539,6 +541,17 @@ Runs commands inside the shell when entering the cloud control container
 * USE_run: Enable this feature
 * DEBUG_run: Debug this feature
 * Environment RUN_COMMANDS: Valid shell commands to run
+
+### <a id="sops"></a> sops
+
+Installs [sops](https://github.com/getsops/sops)
+
+#### Configuration
+
+* USE_sops: Enable this feature
+* DEBUG_sops: Debug this feature
+* Environment SOPS_VERSION (required): Valid sops version (e.g. 3.8.1)
+* Environment specific for the key you use, see [sops documentation](https://github.com/getsops/sops?tab=readme-ov-file#22encrypting-using-age)
 
 ### <a id="stern"></a> Stern
 
