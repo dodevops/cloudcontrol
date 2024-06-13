@@ -775,7 +775,7 @@ you can inspect the failing container as well.
 
 To rebuild this documentation, first compile the documentation maker:
 
-    docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go run cmd/doc/mkdoc
+    docker run --rm -e GOOS=[os, e.g. darwin, linux, windows] -e GOARCH=[architecture, e.g. arm64, amd64] -v "$PWD":/usr/src/myapp -w /usr/src/myapp golang:1.19-alpine go build cmd/doc/mkdoc.go
 
 Then run it to rebuild README.md based on README.md.gotmpl:
 
