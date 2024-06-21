@@ -1,0 +1,6 @@
+command:
+  sops:
+    exec: "/home/cloudcontrol/bin/sops --version"
+    exit-status: 0
+    stdout:
+      - "sops"
