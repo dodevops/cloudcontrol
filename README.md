@@ -809,8 +809,3 @@ flowchart TD
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
 ```mermaid
-maid
-vops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
-    click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
-```mermaid
-```mermaid
