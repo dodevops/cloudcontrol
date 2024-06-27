@@ -19,6 +19,7 @@ Following features and tools are supported:
 * 🐟 Fish Shell
 * 📷 AzCopy
 * 🪪 Certificates
+* 📨 cmctl
 * ⚙️ Direnv
 * ⛵️ Helm
 * 🛠 JQ
@@ -54,6 +55,7 @@ Following features and tools are supported:
     * [Fish Shell](#_fish)
     * [AzCopy](#azcopy)
     * [Certificates](#certificates)
+    * [cmctl](#cmctl)
     * [Direnv](#direnv)
     * [Helm](#helm)
     * [JQ](#jq)
@@ -394,6 +396,17 @@ Adds specified trusted certificate authorities into the container
 * Environment CERTIFICATES_PATH: The container path to the volume mount that holds trusted certificate authorities as .pem files 
   (optional). Defaults to `/certificates`. If something different than the default is used, the volume-target needs to be adapted to 
   the same directory
+
+### <a id="cmctl"></a> cmctl
+
+Installs the cert-manager Command Line Tool
+
+#### Configuration
+
+* USE_cmctl: Enable this feature
+* DEBUG_cmctl: Debug this feature
+* Environment CMCTL_VERSION: Version of cmctl to install (optional)
+  Defaults to `latest`
 
 ### <a id="direnv"></a> Direnv
 
