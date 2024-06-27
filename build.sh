@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # CloudControl build script
 # Usage:
 #
@@ -27,8 +29,8 @@ for FLAVOUR in ${FLAVOURS}
 do
   cat build/Dockerfile.prefix > Dockerfile
   cat "flavour/${FLAVOUR}/Dockerfile.flavour" >> Dockerfile
-  cat build/Dockerfile.suffix.mo | docker run --rm -i -e FLAVOUR=${FLAVOUR} -e BUILD_DATE=$(date -Iseconds) metal3d/mo >> Dockerfile
-  docker build --pull . -t "ghcr.io/dodevops/cloudcontrol-${FLAVOUR}:${TAG}"
+  cat build/Dockerfile.suffix.mo | docker run --rm -i -e FLAVOUR=${FLAVOUR} -e BUILD_DATE=$(date -Iseconds) ghcr.io/tests-always-included/mo:3.0.5 >> Dockerfile
+  docker build --pull . --no-cache -t "ghcr.io/dodevops/cloudcontrol-${FLAVOUR}:${TAG}"
 done
 
 if [ -e Dockerfile.sav ] ; then
