@@ -1,0 +1,6 @@
+command:
+    cmctl:
+        exec: "/home/cloudcontrol/bin/cmctl version --client"
+        stdout:
+            - "Client Version"
+        exit-status: 0
