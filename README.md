@@ -522,7 +522,7 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
   
   This generates the script `k8s-relogin` which allows you to recreate the Kubernetes credentials.
 * (gcloud flavor)
-  * Environment GCLOUD_K8S_CLUSTERS: A comma separated list of zone:cluster-name
+  * Environment GCLOUD_K8S_CLUSTERS: A comma separated list of zone[@project]:cluster-name
   * Environment K8S_USE_GCLOUD_AUTH: Whether to use the new GKE_GCLOUD_AUTH plugin [true]
 
 ### <a id="packages"></a> Packages
