@@ -48,8 +48,8 @@
           <vue-markdown :source="stepDescription"></vue-markdown>
         </v-card-text>
       </v-card>
-      <v-card id="console" theme="dark" outlined rounded="0" height="30em" max-height="30em"
-              style="font-family: monospace; overflow-y: scroll">
+      <v-card id="console" theme="dark" outlined rounded="0" height="30em" max-height="30em" max-width="100em"
+              style="font-family: monospace; overflow: scroll">
         <v-card-text v-html="consoleOutput"></v-card-text>
       </v-card>
       <v-progress-linear color="primary" :model-value="(currentStep - 1) / steps.length * 100"/>
@@ -166,7 +166,7 @@ export default defineComponent({
         }
       }
 
-      const googleOauthRegexp = new RegExp('Go to the following link in your browser:\r<br/>\r<br/> +(.+)');
+      const googleOauthRegexp = new RegExp('Go to the following link in your browser, and complete the sign-in prompts:\r<br/>\r<br/> +(.+)');
       if (googleOauthRegexp.test(output)) {
         const matches = googleOauthRegexp.exec(output);
         if (matches) {
