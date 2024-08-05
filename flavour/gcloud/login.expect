@@ -12,7 +12,7 @@ proc wait_for_auth_code {} {
 
 set timeout 90000
 spawn gcloud auth login --no-launch-browser
-expect "Enter authorization code"
+expect "Once finished, enter the verification code provided in your browser:"
 set auth_code [wait_for_auth_code]
 send $auth_code
 expect eof
