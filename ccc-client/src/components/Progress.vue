@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card max-width="100em">
     <template v-slot:loader>
       <v-progress-linear
           color="primary"
@@ -48,14 +48,14 @@
           <vue-markdown :source="stepDescription"></vue-markdown>
         </v-card-text>
       </v-card>
-      <v-card id="console" theme="dark" outlined rounded="0" height="30em" max-height="30em" max-width="100em"
+      <v-card id="console" theme="dark" outlined rounded="0" height="30em" max-height="30em"
               style="font-family: monospace; overflow: scroll">
         <v-card-text v-html="consoleOutput"></v-card-text>
       </v-card>
       <v-progress-linear color="primary" :model-value="(currentStep - 1) / steps.length * 100"/>
       <v-timeline direction="horizontal" side="end">
         <v-timeline-item size="small" v-for="(stepName, step) in steps" :ref="`${step + 1}-step`"
-                         :icon="currentStep - 1 > step ? 'mdi-check' : ''" fill-dot dot-color="primary">{{ stepName }}
+                         :icon="currentStep - 1 > step ? 'mdi-check' : ''" fill-dot dot-color="primary">{{ getStepTitle(stepName) }}
         </v-timeline-item>
       </v-timeline>
     </v-card-text>
@@ -82,6 +82,7 @@ let getStepInterval: NodeJS.Timer | null = null;
 let consoleOutput: string = '';
 let currentStep: number = 1;
 let steps: string[] = [];
+let features: any = [];
 
 export default defineComponent({
   components: {
@@ -90,6 +91,7 @@ export default defineComponent({
   data() {
     return {
       steps,
+      features,
       currentStep,
       consoleOutput,
       getStepInterval,
@@ -106,16 +108,19 @@ export default defineComponent({
       logoUrl,
     };
   },
-  mounted() {
-    axios.default.get('/api/steps')
-        .then(
-            (backendSteps) => {
-              this.steps = backendSteps.data.steps;
-            },
-        );
+  async mounted() {
+    this.steps = (await axios.default.get('/api/steps')).data.steps
+    this.features = (await axios.default.get('/api/features')).data
+
     this.getStepInterval = setInterval(this.getCurrentStep.bind(this), 3000) as NodeJS.Timer;
   },
   methods: {
+    getStepTitle(stepName: string) {
+      if (stepName == 'flavour') {
+        return 'Flavour'
+      }
+      return this.features[stepName].Title
+    },
     async doOAuth() {
       if (this.oAuthCode !== '') {
         await navigator.clipboard.writeText(this.oAuthCode);
