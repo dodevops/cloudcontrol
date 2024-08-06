@@ -1,0 +1,6 @@
+command:
+    test:
+        exec: "/home/cloudcontrol/bin/tanzu-cli version"
+        stdout:
+            - "version: v1.4.0"
+        exit-status: 0
