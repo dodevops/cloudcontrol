@@ -115,6 +115,7 @@ function downloadFromGithub {
   TARGET=$6
 
   ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')"
-  PACKAGE="${PACKAGE_PREFIX}${ARCH}.${PACKAGE_SUFFIX}"
-  execHandle "Downloading ${USER}/${REPO}@${VERSION}" curl -f -s -L "https://github.com/${USER}/${REPO}/releases/${VERSION}/download/${PACKAGE}" --output "${TARGET}"
+  PACKAGE="${PACKAGE_PREFIX}${ARCH}${PACKAGE_SUFFIX}"
+
+  execHandle "Downloading ${USER}/${REPO}@${VERSION}" curl -f -s -L "https://github.com/${USER}/${REPO}/releases/download/${VERSION}/${PACKAGE}" --output "${TARGET}"
 }

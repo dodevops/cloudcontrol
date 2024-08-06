@@ -33,6 +33,7 @@ Following features and tools are supported:
 * 👟 Run
 * 🔑 sops
 * 📜 Stern
+* ⎔ Tanzu CLI
 * 🌏 Terraform
 * 🐗 Terragrunt
 * 🕰 Timezone configuration
@@ -69,6 +70,7 @@ Following features and tools are supported:
     * [Run](#run)
     * [sops](#sops)
     * [Stern](#stern)
+    * [Tanzu CLI](#tanzucli)
     * [Terraform](#terraform)
     * [Terragrunt](#terragrunt)
     * [Timezone configuration](#timezone)
@@ -576,6 +578,16 @@ Installs [stern](https://github.com/stern/stern), a multi pod and container log 
 * USE_stern: Enable this feature
 * DEBUG_stern: Debug this feature
 * Environment STERN_VERSION (required): Valid Stern version (e.g. 1.21.0)
+
+### <a id="tanzucli"></a> Tanzu CLI
+
+Installs the [Tanzu CLI](https://github.com/vmware-tanzu/tanzu-cli)
+
+#### Configuration
+
+* USE_tanzucli: Enable this feature
+* DEBUG_tanzucli: Debug this feature
+* Environment TANZU_CLI_VERSION: Tanzu CLI version to install (required)
 
 ### <a id="terraform"></a> Terraform
 

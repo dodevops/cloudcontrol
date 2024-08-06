@@ -1,0 +1,9 @@
+icon: "⎔"
+
+title: "Tanzu CLI"
+
+description: "Installs the [Tanzu CLI](https://github.com/vmware-tanzu/tanzu-cli)"
+
+configuration:
+    - |
+        Environment TANZU_CLI_VERSION: Tanzu CLI version to install (required)
