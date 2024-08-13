@@ -11,4 +11,5 @@ type YamlDescriptor struct {
 	Configuration []string
 	Test          TestConfiguration
 	Platforms     []string
+	Deprecation   string
 }

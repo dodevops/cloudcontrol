@@ -18,7 +18,7 @@ Currently supported cloud flavours are:
 Following features and tools are supported:
 
 {{- range .Features}}
-* {{ if .Icon }}{{.Icon}}{{ end }} {{ .Title -}}
+* {{ if .Icon }}{{.Icon}}{{ end }} {{ .Title -}}{{- if .Deprecation }} ⚠️ Deprecated: {{ .Deprecation }}{{- end -}}
 {{ end }}
 
 ## Table of contents
@@ -268,13 +268,13 @@ environment variable in the docker-compose file. Then you can debug with the run
 ## Features
 
 {{- range $name, $feature := .Features }}
-### <a id="{{ $name }}"></a> {{ $feature.Title }}
+### <a id="{{ $name }}"></a> {{ $feature.Title }}{{- if $feature.Deprecation }} ⚠️ Deprecated: {{ $feature.Deprecation }}{{- end }}
 
 {{ $feature.Description }}
 
 #### Configuration
 
-* USE_{{ trimPrefix "_" $name }}: Enable this feature
+* USE_{{ trimPrefix "_" $name }}: Enable this feature (it's recommended to use the FEATURES variable instead)
 * DEBUG_{{ trimPrefix "_" $name }}: Debug this feature
 {{- range $feature.Configuration }}
 * {{ indent 2 . | trim }}
