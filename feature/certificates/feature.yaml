@@ -14,3 +14,4 @@ configuration:
         Environment CERTIFICATES_PATH: The container path to the volume mount that holds trusted certificate authorities as .pem files 
         (optional). Defaults to `/certificates`. If something different than the default is used, the volume-target needs to be adapted to 
         the same directory
+deprecation: "Please use the ca-certificates feature instead."
