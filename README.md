@@ -466,7 +466,7 @@ Installs [k9s](https://k9scli.io/)
 
 * USE_k9s: Enable this feature (it's recommended to use the FEATURES variable instead)
 * DEBUG_k9s: Debug this feature
-* Environment K9S_VERSION (optional): Valid k9s version to install (defaults to latest)
+* Environment K9S_VERSION (required): Valid k9s version to install
 
 ### <a id="kc"></a> kc Quick Kubernetes Context switch
 
@@ -866,6 +866,8 @@ flowchart TD
     click E "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/check_commits.yml" "Check workflow"
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
+```mermaid
+workflow"
 ```mermaid
 ase workflow"
 ```mermaid
