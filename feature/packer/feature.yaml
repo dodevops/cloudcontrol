@@ -1,5 +1,4 @@
 icon: "📦"
 title: "Packer"
 description: "Installs [Packer](https://packer.io)"
-configuration:
-    - "Environment PACKER_VERSION (required): Valid Packer version to install (e.g. 1.5.4)"
+requiresVersion: true

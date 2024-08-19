@@ -1,5 +1,4 @@
 icon: "⛵️"
 title: "Helm"
 description: "Installs [Helm](https://helm.sh)"
-configuration:
-    - "Environment HELM_VERSION (required): Valid Helm version to install (e.g. 1.5.4)"
+requiresVersion: true

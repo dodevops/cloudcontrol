@@ -1,5 +1,4 @@
 icon: "🐾"
 title: "k9s"
 description: "Installs [k9s](https://k9scli.io/)"
-configuration:
-    - "Environment K9S_VERSION (required): Valid k9s version to install"
+requiresVersion: true

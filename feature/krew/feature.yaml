@@ -2,5 +2,5 @@ icon: "🟦"
 title: "krew"
 description: "Installs [Krew](https://krew.sigs.k8s.io/)"
 configuration:
-    - "Environment KREW_VERSION (optional): Valid Krew version to install (defaults to latest)"
     - "Environment KREW_PLUGINS (optional): A comma separated list of kubectl plugins to install via krew"
+requiresVersion: true

@@ -2,5 +2,5 @@ icon: "🔑"
 title: "sops"
 description: "Installs [sops](https://github.com/getsops/sops)"
 configuration:
-  - "Environment SOPS_VERSION (required): Valid sops version (e.g. 3.8.1)"
   - "Environment specific for the key you use, see [sops documentation](https://github.com/getsops/sops?tab=readme-ov-file#22encrypting-using-age)"
+requiresVersion: true

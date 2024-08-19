@@ -1,7 +1,4 @@
 icon: "📨"
 title: "cmctl"
 description: "Installs the cert-manager Command Line Tool"
-configuration:
-    - |
-        Environment CMCTL_VERSION: Version of cmctl to install (optional)
-        Defaults to `latest`
+requiresVersion: true
