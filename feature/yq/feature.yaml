@@ -1,5 +1,4 @@
 icon: "🛠"
 title: "YQ"
 description: "Installs the [YAML parser and processor yq](https://github.com/mikefarah/yq)"
-configuration:
-    - "Environment YQ_VERSION (required): Valid YQ version to install (e.g. 4.5.0)"
+requiresVersion: true

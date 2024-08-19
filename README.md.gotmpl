@@ -71,7 +71,7 @@ This would install the version 3.5.1 of Helm and version 1.1.9 of terraform. (Ku
 version of kubectl, e.g. using az aks install-cli)
 
 **Note**: Please see the feature documentation below if a feature supports specifying a version string. All version
-strings need to be provided in semver format (f.e. 1.2.3), the feature installers will take care about prefixes for
+strings need to be provided in semver format (i.e. 1.2.3), the feature installers will take care about prefixes for
 download URLs, if required.
 
 ## Using Kubernetes (Preview)
@@ -274,7 +274,10 @@ environment variable in the docker-compose file. Then you can debug with the run
 
 #### Configuration
 
-* USE_{{ trimPrefix "_" $name }}: Enable this feature (it's recommended to use the FEATURES variable instead)
+* USE_{{ trimPrefix "_" $name }}: Enable this feature (or use the FEATURES variable instead)
+{{- if $feature.RequiresVersion }}
+* {{ $name | upper }}_VERSION: Version to install (or use the FEATURES variable instead)
+{{- end }}
 * DEBUG_{{ trimPrefix "_" $name }}: Debug this feature
 {{- range $feature.Configuration }}
 * {{ indent 2 . | trim }}
@@ -320,9 +323,9 @@ to set for the specific environment variable. If a configuration option is requi
 environment declaration using `(required)` after its name and check if the variable is set in your installation script
 and break accordingly if not.
 
-If your feature needs a version specification, the recommended way is to use the environment variable
-`[FEATURE NAME]_VERSION`. This variable is also filled if the *CloudControl* user uses the FEATURES-variable approach
-to enable features.
+If your feature needs a version specification, set "requiresVersion" to true in the feature descriptor. This will
+enable the use of an environment variable `[FEATURE NAME]_VERSION`. This variable is also filled if the *CloudControl*
+user uses the FEATURES-variable approach to enable features.
 
 ### Installer utilities
 
