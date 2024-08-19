@@ -276,7 +276,7 @@ environment variable in the docker-compose file. Then you can debug with the run
 
 * USE_{{ trimPrefix "_" $name }}: Enable this feature (or use the FEATURES variable instead)
 {{- if $feature.RequiresVersion }}
-* {{ $name | upper }}_VERSION: Version to install (or use the FEATURES variable instead)
+* {{ $name | upper }}_VERSION (required): Version to install (or use the FEATURES variable instead)
 {{- end }}
 * DEBUG_{{ trimPrefix "_" $name }}: Debug this feature
 {{- range $feature.Configuration }}
