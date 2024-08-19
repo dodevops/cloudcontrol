@@ -426,7 +426,7 @@ Installs the cert-manager Command Line Tool
 #### Configuration
 
 * USE_cmctl: Enable this feature (or use the FEATURES variable instead)
-* CMCTL_VERSION: Version to install (or use the FEATURES variable instead)
+* CMCTL_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_cmctl: Debug this feature
 
 ### <a id="direnv"></a> Direnv
@@ -445,7 +445,7 @@ Installs [Helm](https://helm.sh)
 #### Configuration
 
 * USE_helm: Enable this feature (or use the FEATURES variable instead)
-* HELM_VERSION: Version to install (or use the FEATURES variable instead)
+* HELM_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_helm: Debug this feature
 
 ### <a id="jq"></a> JQ
@@ -464,7 +464,7 @@ Installs [k9s](https://k9scli.io/)
 #### Configuration
 
 * USE_k9s: Enable this feature (or use the FEATURES variable instead)
-* K9S_VERSION: Version to install (or use the FEATURES variable instead)
+* K9S_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_k9s: Debug this feature
 
 ### <a id="kc"></a> kc Quick Kubernetes Context switch
@@ -484,7 +484,7 @@ Installs [Krew](https://krew.sigs.k8s.io/)
 #### Configuration
 
 * USE_krew: Enable this feature (or use the FEATURES variable instead)
-* KREW_VERSION: Version to install (or use the FEATURES variable instead)
+* KREW_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_krew: Debug this feature
 * Environment KREW_PLUGINS (optional): A comma separated list of kubectl plugins to install via krew
 
@@ -563,7 +563,7 @@ Installs [Packer](https://packer.io)
 #### Configuration
 
 * USE_packer: Enable this feature (or use the FEATURES variable instead)
-* PACKER_VERSION: Version to install (or use the FEATURES variable instead)
+* PACKER_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_packer: Debug this feature
 
 ### <a id="run"></a> Run
@@ -583,7 +583,7 @@ Installs [sops](https://github.com/getsops/sops)
 #### Configuration
 
 * USE_sops: Enable this feature (or use the FEATURES variable instead)
-* SOPS_VERSION: Version to install (or use the FEATURES variable instead)
+* SOPS_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_sops: Debug this feature
 * Environment specific for the key you use, see [sops documentation](https://github.com/getsops/sops?tab=readme-ov-file#22encrypting-using-age)
 
@@ -595,7 +595,7 @@ Installs [stern](https://github.com/stern/stern), a multi pod and container log 
 #### Configuration
 
 * USE_stern: Enable this feature (or use the FEATURES variable instead)
-* STERN_VERSION: Version to install (or use the FEATURES variable instead)
+* STERN_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_stern: Debug this feature
 
 ### <a id="tanzucli"></a> Tanzu CLI
@@ -605,7 +605,7 @@ Installs the [Tanzu CLI](https://github.com/vmware-tanzu/tanzu-cli)
 #### Configuration
 
 * USE_tanzucli: Enable this feature (or use the FEATURES variable instead)
-* TANZUCLI_VERSION: Version to install (or use the FEATURES variable instead)
+* TANZUCLI_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_tanzucli: Debug this feature
 
 ### <a id="terraform"></a> Terraform
@@ -615,7 +615,7 @@ Installs and configures [Terraform](https://terraform.io)
 #### Configuration
 
 * USE_terraform: Enable this feature (or use the FEATURES variable instead)
-* TERRAFORM_VERSION: Version to install (or use the FEATURES variable instead)
+* TERRAFORM_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_terraform: Debug this feature
 * Add a volume mount to the `volumes:` section of docker compose like this:
        (...)
@@ -642,7 +642,7 @@ Installs [Terragrunt](https://github.com/gruntwork-io/terragrunt)
 #### Configuration
 
 * USE_terragrunt: Enable this feature (or use the FEATURES variable instead)
-* TERRAGRUNT_VERSION: Version to install (or use the FEATURES variable instead)
+* TERRAGRUNT_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_terragrunt: Debug this feature
 
 ### <a id="timezone"></a> Timezone configuration
@@ -662,7 +662,7 @@ Installs the [Velero](https://velero.io) kubernetes backup CLI
 #### Configuration
 
 * USE_velero: Enable this feature (or use the FEATURES variable instead)
-* VELERO_VERSION: Version to install (or use the FEATURES variable instead)
+* VELERO_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_velero: Debug this feature
 
 ### <a id="vim"></a> Vim
@@ -681,7 +681,7 @@ Installs the [YAML parser and processor yq](https://github.com/mikefarah/yq)
 #### Configuration
 
 * USE_yq: Enable this feature (or use the FEATURES variable instead)
-* YQ_VERSION: Version to install (or use the FEATURES variable instead)
+* YQ_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_yq: Debug this feature
 
 
@@ -866,8 +866,7 @@ flowchart TD
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
 ```mermaid
- C "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/image.yml" "Image workflow"
-    click E "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/check_commits.yml" "Check workflow"
+com/dodevops/cloudcontrol/blob/develop/.github/workflows/check_commits.yml" "Check workflow"
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
 ```mermaid
