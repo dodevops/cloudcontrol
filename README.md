@@ -724,9 +724,9 @@ to set for the specific environment variable. If a configuration option is requi
 environment declaration using `(required)` after its name and check if the variable is set in your installation script
 and break accordingly if not.
 
-If your feature needs a version specification, the recommended way is to use the environment variable
-`[FEATURE NAME]_VERSION`. This variable is also filled if the *CloudControl* user uses the FEATURES-variable approach
-to enable features.
+If your feature needs a version specification, set "requiresVersion" to true in the feature descriptor. This will
+enable the use of an environment variable `[FEATURE NAME]_VERSION`. This variable is also filled if the *CloudControl*
+user uses the FEATURES-variable approach to enable features.
 
 ### Installer utilities
 
@@ -866,10 +866,7 @@ flowchart TD
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
 ```mermaid
-"
-```mermaid
-flows/docs.yml" "Docs workflow"
-    click C "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/image.yml" "Image workflow"
+ C "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/image.yml" "Image workflow"
     click E "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/check_commits.yml" "Check workflow"
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
