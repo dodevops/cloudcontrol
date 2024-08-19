@@ -2,5 +2,4 @@ icon: "📜"
 title: "Stern"
 description: |
     Installs [stern](https://github.com/stern/stern), a multi pod and container log tailing for Kubernetes
-configuration:
-    - "Environment STERN_VERSION (required): Valid Stern version (e.g. 1.21.0)"
+requiresVersion: true

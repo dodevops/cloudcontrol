@@ -16,3 +16,6 @@ configuration:
     #- |
     #    Environment EXAMPLE_ENVIRONMENT: This environment variable is used in the feature to do xyz (optional)
     #    Defaults to `abc`
+
+# If your feature requires a version (exposed as <FEATURE>_VERSION to your installer script), set this to true
+requiresVersion: false
