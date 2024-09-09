@@ -1,3 +1,33 @@
+## [7.1.0](https://github.com/dodevops/cloudcontrol/compare/v7.0.0...v7.1.0) (2024-09-09)
+
+
+### Features
+
+* Added CA-Certificates ([ed6f173](https://github.com/dodevops/cloudcontrol/commit/ed6f1733077c71bbbd577678675579c17863879a)), closes [#133](https://github.com/dodevops/cloudcontrol/issues/133)
+* Optimizes feature version configuration ([399b4af](https://github.com/dodevops/cloudcontrol/commit/399b4affbec0ae15d66697c2e94e19841a731ed0))
+* Support for Tanzucli ([f7dd396](https://github.com/dodevops/cloudcontrol/commit/f7dd396b8d695b7d5d83da7dd1a91f186d78d4cc))
+* Support multiple project gks ([703d04f](https://github.com/dodevops/cloudcontrol/commit/703d04f920dd064c0c93819c2e958ef345661ed4))
+* Timeline items now use the feature title instead of the key ([67f81e2](https://github.com/dodevops/cloudcontrol/commit/67f81e2104e8c2f28065b09ee4ff190352b0cb5e)), closes [#135](https://github.com/dodevops/cloudcontrol/issues/135)
+
+
+### Bug Fixes
+
+* Doc change from review ([9e46cca](https://github.com/dodevops/cloudcontrol/commit/9e46cca4996cb30ef87aa635de74670f13453c50))
+* Fixes gcloud interactive login ([5f0a1e7](https://github.com/dodevops/cloudcontrol/commit/5f0a1e7aa620e0e01f1452fdd7c080495edf06cb))
+* Fixes k9s ([0d04e0f](https://github.com/dodevops/cloudcontrol/commit/0d04e0fff54f3220ff851e52a2590330fe08f711))
+* Set the Azure image version tag ([892037e](https://github.com/dodevops/cloudcontrol/commit/892037eeffbc5eb10a5bfe547c928095752764b1))
+
+
+### Documentation
+
+* Automatic docs update ([b063dd6](https://github.com/dodevops/cloudcontrol/commit/b063dd6fa01beba9c01cf8aca688150874948512))
+* Automatic docs update ([35288b2](https://github.com/dodevops/cloudcontrol/commit/35288b245ecfe61316ea17aa862d658cc748a746))
+* Automatic docs update ([59d3b62](https://github.com/dodevops/cloudcontrol/commit/59d3b62e6b0c528ed2d1e5f5be96bde8ecba698c))
+* Automatic docs update ([e4e0444](https://github.com/dodevops/cloudcontrol/commit/e4e0444ef9e5e0b79b48a01645fcfadcc0a11c8d))
+* Automatic docs update ([a742f79](https://github.com/dodevops/cloudcontrol/commit/a742f79d230d8fae1407c4be66865132bbcfa989))
+
+
+
 ## [7.0.0](https://github.com/dodevops/cloudcontrol/compare/v6.0.0...v7.0.0) (2024-06-27)
 
 
