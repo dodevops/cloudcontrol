@@ -2,3 +2,21 @@ icon: "⌨️"
 title: "kc Quick Kubernetes Context switch"
 description: |
     Installs [kc](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh), a quick context switcher for kubernetes.
+deprecation: |
+    The `kc` feature will be deprecated in one of the next major CloudControl versions. As an alternative, configure
+    the `krew` feature and use the cs plugin:
+    ```
+    - USE_krew=yes
+    - KREW_VERSION=<current version of krew>
+    - KREW_PLUGINS=cs
+    ```
+    
+    To make the transition as easy as possible, you can also configure the `run` feature and set an alias to 
+    `kubectl cs`:
+    
+    ```
+    - USE_run=yes
+    - RUN_COMMANDS="alias kc='kubectl cs'"
+    ```
+    
+    See [https://github.com/dodevops/kc](the kc website) for details.
