@@ -1,7 +1,6 @@
-package main
-
 // CloudControl feature test runnner
 // Using Goss https://github.com/goss-org/goss
+package main
 
 import (
 	"bytes"
