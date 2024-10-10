@@ -119,3 +119,10 @@ function downloadFromGithub {
 
   execHandle "Downloading ${USER}/${REPO}@${VERSION}" curl -f -s -L "https://github.com/${USER}/${REPO}/releases/download/${VERSION}/${PACKAGE}" --output "${TARGET}"
 }
+
+# Usage: deprecate PART HINT
+#
+# Logs that a certain PART of CloudControl is deprecated, so that the HINT about it can be shown to the user when they log in
+function deprecate {
+  echo -e "${1}\n\n${2}\n\n---" >> /home/cloudcontrol/.deprecation
+}

@@ -5,15 +5,20 @@ COPY assets/feature-installer-utils.sh /
 
 # CCC
 
-COPY --from=cccBuild /build/ccc /usr/local/ccc/ccc
+COPY --from=go-build /build/ccc /usr/local/ccc/ccc
 RUN chmod +x /usr/local/ccc/ccc
 
-COPY --from=cccClientBuild /build/dist /usr/local/ccc/client
+COPY --from=ccc-client-build /build/dist /usr/local/ccc/client
 
 # Cloud control
 
 COPY assets/cloudcontrol.sh /usr/local/bin/cloudcontrol
 RUN chmod +x /usr/local/bin/cloudcontrol
+
+# Markdown
+
+COPY --from=go-build /build/markdown /home/cloudcontrol/bin/markdown
+RUN chmod +x /home/cloudcontrol/bin/markdown
 
 # Chown
 
