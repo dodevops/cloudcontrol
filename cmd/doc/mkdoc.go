@@ -1,6 +1,6 @@
+// Create the README.md file based on README.md.gotmpl and the yaml data in the flavour and feature directories
 package main
 
-// Create the README.md file based on README.md.gotmpl and the yaml data in the flavour and feature directories
 import (
 	"cloudcontroltools/internal"
 	"fmt"

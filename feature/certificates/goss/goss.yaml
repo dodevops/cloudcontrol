@@ -16,3 +16,7 @@ file:
         contains:
             - uc2j3cICeXo1cOybQ1iWAjEA3Ooawl8eQyR4wrjCofUE8h44p0j7Yl/kBlJZT8+9
     {{end}}
+    /home/cloudcontrol/.deprecation:
+        exists: true
+        contains:
+            - Please use the ca-certificates feature instead.
