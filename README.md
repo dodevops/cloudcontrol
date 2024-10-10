@@ -25,7 +25,23 @@ Following features and tools are supported:
 * ⛵️ Helm
 * 🛠 JQ
 * 🐾 k9s
-* ⌨️ kc Quick Kubernetes Context switch
+* ⌨️ kc Quick Kubernetes Context switch ⚠️ Deprecated: The `kc` feature will be deprecated in one of the next major CloudControl versions. As an alternative, configure
+the `krew` feature and use the cs plugin:
+```
+- USE_krew=yes
+- KREW_VERSION=<current version of krew>
+- KREW_PLUGINS=cs
+```
+
+To make the transition as easy as possible, you can also configure the `run` feature and set an alias to 
+`kubectl cs`:
+
+```
+- USE_run=yes
+- RUN_COMMANDS="alias kc='kubectl cs'"
+```
+
+See [https://github.com/dodevops/kc](the kc website) for details.
 * 🟦 krew
 * 🐚 Kubectlnodeshell
 * 🐳 Kubernetes
@@ -467,7 +483,23 @@ Installs [k9s](https://k9scli.io/)
 * K9S_VERSION (required): Version to install (or use the FEATURES variable instead)
 * DEBUG_k9s: Debug this feature
 
-### <a id="kc"></a> kc Quick Kubernetes Context switch
+### <a id="kc"></a> kc Quick Kubernetes Context switch ⚠️ Deprecated: The `kc` feature will be deprecated in one of the next major CloudControl versions. As an alternative, configure
+the `krew` feature and use the cs plugin:
+```
+- USE_krew=yes
+- KREW_VERSION=<current version of krew>
+- KREW_PLUGINS=cs
+```
+
+To make the transition as easy as possible, you can also configure the `run` feature and set an alias to 
+`kubectl cs`:
+
+```
+- USE_run=yes
+- RUN_COMMANDS="alias kc='kubectl cs'"
+```
+
+See [https://github.com/dodevops/kc](the kc website) for details.
 
 Installs [kc](https://github.com/dodevops/cloudcontrol/blob/master/feature/kc/kc.sh), a quick context switcher for kubernetes.
 
@@ -865,10 +897,4 @@ flowchart TD
     click E "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/check_commits.yml" "Check workflow"
     click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
     click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
-```mermaid
-com/dodevops/cloudcontrol/blob/develop/.github/workflows/check_commits.yml" "Check workflow"
-    click F "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/test.yml" "Test workflow"
-    click H "https://github.com/dodevops/cloudcontrol/blob/develop/.github/workflows/release.yml" "Release workflow"
-```mermaid
-ase workflow"
 ```mermaid
