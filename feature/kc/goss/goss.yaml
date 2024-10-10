@@ -9,3 +9,7 @@ file:
         exists: true
         contains:
             - KC Quick kubernetes context switch
+    /home/cloudcontrol/.deprecation:
+        exists: true
+        contains:
+            - The `kc` feature will be deprecated in one of the next major CloudControl versions.
