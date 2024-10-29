@@ -1,23 +1,27 @@
 . /feature-installer-utils.sh
 
-FLAVOUR="X$(cat /home/cloudcontrol/flavour)X"
-if [[ "X${FLAVOUR}X" =~ X(azure|simple|tanzu|gcloud)X ]]
+if [[ "${FLAVOUR}" =~ (simple|tanzu|gcloud) ]]
 then
-  echo "Installing packages"
   execHandle 'Installing fish' sudo apk add fish perl fzf git
-elif [ "${FLAVOUR}" == "XawsX" ]
+elif [[ "${FLAVOUR}" == "azure" ]]
 then
-  execHandle 'Downloading fish repo' sudo curl -f -s -L https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_7/shells:fish:release:3.repo -o /etc/yum.repos.d/shells:fish:release:3.repo
-  execHandle 'Installing fish' sudo yum install -y fish git
-
-  TEMPDIR=$(mktemp -d)
-  cd "${TEMPDIR}" || exit
+  prepare
+  execHandle 'Installing fish' sudo yum install -y fish perl git
   execHandle 'Downloading fzf' curl -f -s -L https://github.com/junegunn/fzf/archive/master.zip -o master.zip
   execHandle 'Unzipping fzf' unzip master.zip
   execHandle 'Moving fzf' mv fzf-master ~/bin
   execHandle 'Installing fzf' ~/bin/fzf-master/install --all
-  cd - &>/dev/null || exit
-  rm -rf "${TEMPDIR}"
+  cleanup
+elif [[ "${FLAVOUR}" == "aws" ]]
+then
+  prepare
+  execHandle 'Downloading fish repo' sudo curl -f -s -L https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_7/shells:fish:release:3.repo -o /etc/yum.repos.d/shells:fish:release:3.repo
+  execHandle 'Installing fish' sudo yum install -y fish git
+  execHandle 'Downloading fzf' curl -f -s -L https://github.com/junegunn/fzf/archive/master.zip -o master.zip
+  execHandle 'Unzipping fzf' unzip master.zip
+  execHandle 'Moving fzf' mv fzf-master ~/bin
+  execHandle 'Installing fzf' ~/bin/fzf-master/install --all
+  cleanup
 fi
 
 execHandle 'Installing fisher' fish -c 'curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher'

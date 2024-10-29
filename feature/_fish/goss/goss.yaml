@@ -5,7 +5,7 @@ command:
         stdout:
             - fish, version
     fzf:
-        {{ if eq .Env.FLAVOUR "aws" -}}
+        {{ if or (eq .Env.FLAVOUR "aws") (eq .Env.FLAVOUR "azure") -}}
         exec: "/home/cloudcontrol/bin/fzf-master/bin/fzf --version"
         {{ else -}}
         exec: "/usr/bin/fzf --version"

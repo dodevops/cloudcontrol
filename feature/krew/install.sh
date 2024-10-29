@@ -8,10 +8,10 @@ else
 fi
 
 FLAVOUR="X$(cat /home/cloudcontrol/flavour)X"
-if [[ "X${FLAVOUR}X" =~ X(azure|simple|tanzu|gcloud)X ]]
+if [[ "${FLAVOUR}" =~ (simple|tanzu|gcloud) ]]
 then
   execHandle 'Installing git' sudo apk add git
-elif [ "${FLAVOUR}" == "XawsX" ]
+elif [[ "${FLAVOUR}" =~ (aws|azure) ]]
 then
   execHandle 'Installing git' sudo yum install -y git
 fi

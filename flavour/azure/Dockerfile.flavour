@@ -1,12 +1,12 @@
-FROM mcr.microsoft.com/azure-cli:2.63.0
+FROM mcr.microsoft.com/azure-cli:cbl-mariner2.0
 
-RUN apk add sudo bash curl && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/sbin/apk *" > /etc/sudoers.d/cloudcontrol && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/local/bin/az *" >> /etc/sudoers.d/cloudcontrol && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/bin/chmod *" >> /etc/sudoers.d/cloudcontrol && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/bin/cp *" >> /etc/sudoers.d/cloudcontrol && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/bin/su - -c cat /usr/local/share/ca-certificates/*.pem >> /etc/ssl/certs/ca-certificates.crt" >> /etc/sudoers.d/cloudcontrol && \
-    adduser -D cloudcontrol && \
+RUN yum install -y sudo curl tar unzip && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/yum *" > /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/az *" >> /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/chmod *" >> /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/cp *" >> /etc/sudoers.d/cloudcontrol && \
+    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/update-ca-trust" >> /etc/sudoers.d/cloudcontrol && \
+    adduser -mr cloudcontrol && \
     mkdir /home/cloudcontrol/bin && \
     chown cloudcontrol /home/cloudcontrol/bin
 
