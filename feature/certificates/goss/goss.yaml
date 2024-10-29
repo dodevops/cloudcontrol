@@ -1,16 +1,16 @@
 file:
-    {{if eq .Env.FLAVOUR "aws" }}
+    {{if or (eq .Env.FLAVOUR "aws") (eq .Env.FLAVOUR "azure") }}
     /etc/pki/ca-trust/source/anchors/testcert.pem:
-    {{else if ne .Env.FLAVOUR "aws" }}
+    {{else}}
     /usr/local/share/ca-certificates/testcert.pem:
     {{end}}
         exists: true
-    {{if eq .Env.FLAVOUR "aws" }}
+    {{if or (eq .Env.FLAVOUR "aws") (eq .Env.FLAVOUR "azure") }}
     /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt:
         exists: true
         contains:
             - Bogus Broccoli X2
-    {{else if ne .Env.FLAVOUR "aws" }}
+    {{else}}
     /etc/ssl/certs/ca-certificates.crt:
         exists: true
         contains:

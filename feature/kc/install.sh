@@ -1,10 +1,10 @@
 . /feature-installer-utils.sh
 
 FLAVOUR="X$(cat /home/cloudcontrol/flavour)X"
-if [[ "X${FLAVOUR}X" =~ X(azure|simple|tanzu|gcloud)X ]]
+if [[ "${FLAVOUR}" =~ (simple|tanzu|gcloud) ]]
 then
   execHandle "Installing dialog package" sudo apk add dialog
-elif [ "${FLAVOUR}" == "XawsX" ]
+elif [[ "${FLAVOUR}" =~ (aws|azure) ]]
 then
   execHandle "Installing dialog package" sudo yum install -y dialog
 fi

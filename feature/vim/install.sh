@@ -1,10 +1,9 @@
 . /feature-installer-utils.sh
 
-FLAVOUR="X$(cat /home/cloudcontrol/flavour)X"
-if [[ "X${FLAVOUR}X" =~ X(azure|simple|tanzu|gcloud)X ]]
+if [[ "${FLAVOUR}" =~ (simple|tanzu|gcloud) ]]
 then
   execHandle "Installing vim" sudo apk add vim
-elif [ "${FLAVOUR}" == "XawsX" ]
+elif [[ "${FLAVOUR}" =~ (aws|azure) ]]
 then
   execHandle "Installing vim" sudo yum install -y vim
 fi
