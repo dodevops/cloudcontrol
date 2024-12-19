@@ -23,6 +23,8 @@ then
     MOTD_DISPLAY_DEFAULT=yes
   fi
 
+  export PATH=$PATH:/home/cloudcontrol/bin
+
   if [ "X${MOTD_DISPLAY_DEFAULT}X" == "XyesX" ]
   then
     echo
@@ -41,8 +43,6 @@ then
     echo "---" | markdown
     markdown < /home/cloudcontrol/.deprecation
   fi
-
-  export PATH=$PATH:/home/cloudcontrol/bin
 
   if [ -n "${WORKDIR}" ]
   then
