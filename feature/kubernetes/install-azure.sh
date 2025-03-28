@@ -49,22 +49,15 @@ EOF
 
     execHandle "Fetching k8s credentials for ${CLUSTER}" az aks get-credentials --resource-group "${K8S_RESOURCEGROUP}" --name "${K8S_CLUSTER}" ${ADMIN_PARAMETER} "${K8S_SUBSCRIPTION[@]}"
 
-    # az aks get-credentials since kubernetes version 1.24 puts directly the kubelogin-way into kube config, hence the check here:
-    if [ "$(az aks show -n "${K8S_CLUSTER}" -g "${K8S_RESOURCEGROUP}" "${K8S_SUBSCRIPTION[@]}" | jq -r .currentKubernetesVersion | cut -d"." -f2)" -le 23 ]; then
-      AZ_DO_KUBELOGIN_CONVERT=true
-    fi
-
   done
   chmod +x ~/bin/k8s-relogin
 
-  if ${AZ_DO_KUBELOGIN_CONVERT}; then
-    args=()
-    if ${AZ_USE_ARM_SPI:-false};
-    then
-      args+=("-l" "spn")
-    fi
-
-    execHandle "Converting credentials to kubelogin" kubelogin convert-kubeconfig "${args[@]}"
-    echo kubelogin convert-kubeconfig "${args[@]}" >> ~/bin/k8s-relogin
+  args=()
+  if ${AZ_USE_ARM_SPI:-false};
+  then
+    args+=("-l" "spn")
   fi
+
+  execHandle "Converting credentials to kubelogin" kubelogin convert-kubeconfig "${args[@]}"
+  echo kubelogin convert-kubeconfig "${args[@]}" >> ~/bin/k8s-relogin
 }
