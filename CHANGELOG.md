@@ -1,3 +1,87 @@
+## [7.1.0](https://github.com/dodevops/cloudcontrol/compare/v7.0.0...v7.1.0) (2024-09-09)
+
+
+### Features
+
+* Added CA-Certificates ([ed6f173](https://github.com/dodevops/cloudcontrol/commit/ed6f1733077c71bbbd577678675579c17863879a)), closes [#133](https://github.com/dodevops/cloudcontrol/issues/133)
+* Optimizes feature version configuration ([399b4af](https://github.com/dodevops/cloudcontrol/commit/399b4affbec0ae15d66697c2e94e19841a731ed0))
+* Support for Tanzucli ([f7dd396](https://github.com/dodevops/cloudcontrol/commit/f7dd396b8d695b7d5d83da7dd1a91f186d78d4cc))
+* Support multiple project gks ([703d04f](https://github.com/dodevops/cloudcontrol/commit/703d04f920dd064c0c93819c2e958ef345661ed4))
+* Timeline items now use the feature title instead of the key ([67f81e2](https://github.com/dodevops/cloudcontrol/commit/67f81e2104e8c2f28065b09ee4ff190352b0cb5e)), closes [#135](https://github.com/dodevops/cloudcontrol/issues/135)
+
+
+### Bug Fixes
+
+* Doc change from review ([9e46cca](https://github.com/dodevops/cloudcontrol/commit/9e46cca4996cb30ef87aa635de74670f13453c50))
+* Fixes gcloud interactive login ([5f0a1e7](https://github.com/dodevops/cloudcontrol/commit/5f0a1e7aa620e0e01f1452fdd7c080495edf06cb))
+* Fixes k9s ([0d04e0f](https://github.com/dodevops/cloudcontrol/commit/0d04e0fff54f3220ff851e52a2590330fe08f711))
+* Set the Azure image version tag ([892037e](https://github.com/dodevops/cloudcontrol/commit/892037eeffbc5eb10a5bfe547c928095752764b1))
+
+
+### Documentation
+
+* Automatic docs update ([b063dd6](https://github.com/dodevops/cloudcontrol/commit/b063dd6fa01beba9c01cf8aca688150874948512))
+* Automatic docs update ([35288b2](https://github.com/dodevops/cloudcontrol/commit/35288b245ecfe61316ea17aa862d658cc748a746))
+* Automatic docs update ([59d3b62](https://github.com/dodevops/cloudcontrol/commit/59d3b62e6b0c528ed2d1e5f5be96bde8ecba698c))
+* Automatic docs update ([e4e0444](https://github.com/dodevops/cloudcontrol/commit/e4e0444ef9e5e0b79b48a01645fcfadcc0a11c8d))
+* Automatic docs update ([a742f79](https://github.com/dodevops/cloudcontrol/commit/a742f79d230d8fae1407c4be66865132bbcfa989))
+
+
+
+## [7.0.0](https://github.com/dodevops/cloudcontrol/compare/v6.0.0...v7.0.0) (2024-06-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* Removed bitwarden feature
+* Bitwarden feature not available anymore
+
+### Features
+
+* Add missing annotations to multi arch images ([cbabee6](https://github.com/dodevops/cloudcontrol/commit/cbabee65a1bf947a228073132d23105c6302377d))
+* Adding azure relogin feature ([90f5cf0](https://github.com/dodevops/cloudcontrol/commit/90f5cf0f208b73c4868bdefcffa3d8d7206cf8f4))
+* Adding sops feature ([251dad5](https://github.com/dodevops/cloudcontrol/commit/251dad5a487fa5a2882fe1cbf43e087099b2e5d7))
+* Include cmctl ([c4aba15](https://github.com/dodevops/cloudcontrol/commit/c4aba15a45168af7afe6e5893d24dbf5fac94d8a)), closes [#140](https://github.com/dodevops/cloudcontrol/issues/140)
+* Optimized documentation and feature utils ([9c84998](https://github.com/dodevops/cloudcontrol/commit/9c849988efb2701588fdf403da6f8cac8f98f95b))
+* Optimized test runner to work more smoothly ([271e8d3](https://github.com/dodevops/cloudcontrol/commit/271e8d31b9d5c75ba07d3b064678a887bbb990d7))
+* Support ARM environment variable instead of special AZ variables ([e69fa5f](https://github.com/dodevops/cloudcontrol/commit/e69fa5f006ad10da014c5b8a47e3c77cab8ed45c))
+* Support for k9s ([1b70bfa](https://github.com/dodevops/cloudcontrol/commit/1b70bfa98a86ded461bb88f6d30cc6b740af3467)), closes [#96](https://github.com/dodevops/cloudcontrol/issues/96)
+* Support krew ([12f9af0](https://github.com/dodevops/cloudcontrol/commit/12f9af0fddcc4361432cf74fde4bee2bfdbc07c8)), closes [#95](https://github.com/dodevops/cloudcontrol/issues/95)
+* Supports azure arm64 image ([dbbfa9b](https://github.com/dodevops/cloudcontrol/commit/dbbfa9be5ffc148fbeb065994ce497cbd09fd798))
+
+
+### Bug Fixes
+
+* Correct TENANTID variable after deprecation ([1b8ec9d](https://github.com/dodevops/cloudcontrol/commit/1b8ec9dfb61cce73bc9a260a9a1967e04ffd062d))
+* Fixed azure flavourinit ([8a7dc42](https://github.com/dodevops/cloudcontrol/commit/8a7dc42941138d6678b88e9b4bf75811cf659a79))
+* Fixed azure relogin script escaping ([8bf0200](https://github.com/dodevops/cloudcontrol/commit/8bf02005b89bdde0f595595f2c2c2fa7e46813db))
+* Fixed krew installation messing up the path variable ([fa30818](https://github.com/dodevops/cloudcontrol/commit/fa3081817646ddee4383064c02a34a6a3a63b9ad))
+* Fixed test runner not ignoring .-directories ([6423833](https://github.com/dodevops/cloudcontrol/commit/64238336ec51b994acd1201b7f98194711b7dac4))
+* Fixed test runner not ignoring .-directories ([2ea77f6](https://github.com/dodevops/cloudcontrol/commit/2ea77f6ac6236f82eee428758830273653c53b93))
+* Fixing README template section about building README.md ([5af3b64](https://github.com/dodevops/cloudcontrol/commit/5af3b64a526532ddc6d21583374c09a78cbf5a0f))
+* Moved integration skip to the bash version of the feature test ([4686af2](https://github.com/dodevops/cloudcontrol/commit/4686af24fe5df3c7f2c04b6c18ea88a7a0285af7))
+* Put a sleep in the RunCommand implementation ([49df0b9](https://github.com/dodevops/cloudcontrol/commit/49df0b9e6aabae6bc72ced54c1002f532a47fc24))
+* Remove template from doc generation ([ac7b3e4](https://github.com/dodevops/cloudcontrol/commit/ac7b3e4189fd8bb229ed4d2c0fe9e37c9a9b205f))
+* Removed bitwarden because of very unstable implementation ([876a83c](https://github.com/dodevops/cloudcontrol/commit/876a83c617534755a79aaca7b7425a4e52cfd080))
+* Some PR fixes ([224fadb](https://github.com/dodevops/cloudcontrol/commit/224fadbab221b69418f8548bdae7dc0d8a048e7c))
+* Some PR fixes ([e573a1d](https://github.com/dodevops/cloudcontrol/commit/e573a1dc33bb437f0f176761232e5c15183d5f67))
+* Updated goss to work with optimized testrunner ([979dcdf](https://github.com/dodevops/cloudcontrol/commit/979dcdfbdffcf8aed0f7b1ed9b50c466437e543d))
+
+
+### Documentation
+
+* added note about timeframe for deprecation ([fef840a](https://github.com/dodevops/cloudcontrol/commit/fef840ab958e8d925816f83e5969f21ce95f56be))
+* Automatic docs update ([6d090e9](https://github.com/dodevops/cloudcontrol/commit/6d090e992a466594311a2abb92846185459e2196))
+* Automatic docs update ([72662a1](https://github.com/dodevops/cloudcontrol/commit/72662a135a018705976f66db178522dcd12e6f22))
+* Automatic docs update ([d314dce](https://github.com/dodevops/cloudcontrol/commit/d314dce6e4f84eb66f2fbc60b467401ee8c29741))
+* Automatic docs update ([380fb7c](https://github.com/dodevops/cloudcontrol/commit/380fb7cb4488fae13c5575cd53ee4d1836466d21))
+* Automatic docs update ([782c4fa](https://github.com/dodevops/cloudcontrol/commit/782c4fa50b2c970dc18e2ec50e99e9ac4d879328))
+* Automatic docs update ([4fb0418](https://github.com/dodevops/cloudcontrol/commit/4fb0418a1561ac7f4a582c98d7e8f4436d2c9f95))
+* Automatic docs update ([bc91cd5](https://github.com/dodevops/cloudcontrol/commit/bc91cd5e635fac43c8a862f7afd8e69c91145085))
+* Fixed generated readme ([25c0841](https://github.com/dodevops/cloudcontrol/commit/25c08410b643c5d1e1bb678c5d3a07b002517738))
+
+
+
 ## [6.0.0](https://github.com/dodevops/cloudcontrol/compare/v5.1.0...v6.0.0) (2024-06-11)
 
 
