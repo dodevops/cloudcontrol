@@ -1,3 +1,42 @@
+## [7.2.0](https://github.com/dodevops/cloudcontrol/compare/v7.1.0...v7.2.0) (2025-04-04)
+
+
+### Features
+
+* Added CA-Certificates ([d356e3b](https://github.com/dodevops/cloudcontrol/commit/d356e3b532abafd6f153f06c44e92fcba41bcc9a)), closes [#133](https://github.com/dodevops/cloudcontrol/issues/133)
+* Apparently, Microsoft now wants us to use convert-kubeconfig every time ([7356e0f](https://github.com/dodevops/cloudcontrol/commit/7356e0f3f49d2253ad1f9b188c716d8215d162cd)), closes [#169](https://github.com/dodevops/cloudcontrol/issues/169)
+* Deprecates kc in favour of new kubectl plugin cs ([cfb9bf1](https://github.com/dodevops/cloudcontrol/commit/cfb9bf13dce2cee14aab73d09c0e9d2f78a34ceb))
+* Optimized CCC a lot ([c08f4cb](https://github.com/dodevops/cloudcontrol/commit/c08f4cbd1939a7f041c63d25d951b22378920ff0))
+* Optimizes feature version configuration ([b0b2a02](https://github.com/dodevops/cloudcontrol/commit/b0b2a0280c6f4ad6e2a1afb88e0aebdef8056054))
+* Support for Tanzucli ([b88f572](https://github.com/dodevops/cloudcontrol/commit/b88f572b64c561d40289725ccc0f3ae56362599d))
+* Support multiple project gks ([28f73e9](https://github.com/dodevops/cloudcontrol/commit/28f73e97f9e98caa5101221544d857c903087d12))
+* Switches to new Azure image ([f4f72f7](https://github.com/dodevops/cloudcontrol/commit/f4f72f7a83b146ed9e623dcb775a55307c6bc105)), closes [#161](https://github.com/dodevops/cloudcontrol/issues/161)
+* Timeline items now use the feature title instead of the key ([be2b4f6](https://github.com/dodevops/cloudcontrol/commit/be2b4f689fcb139c5b191faa26829d7ceff7d0b3)), closes [#135](https://github.com/dodevops/cloudcontrol/issues/135)
+
+
+### Bug Fixes
+
+* Doc change from review ([4b21cac](https://github.com/dodevops/cloudcontrol/commit/4b21cacfc3623ecd25f61699aed7fb0e6b69b3eb))
+* Fixed PATH definition so cloudcontrol.sh finds markdown ([1799897](https://github.com/dodevops/cloudcontrol/commit/17998971d429394e1ff4eeae58dfd602549cf138))
+* Fixes gcloud interactive login ([12601e4](https://github.com/dodevops/cloudcontrol/commit/12601e414cb7bc463ed366529a5d68377dfbca49))
+* Fixes k9s ([fd288ca](https://github.com/dodevops/cloudcontrol/commit/fd288cad02874eeee1ce2c6cc207b13ac8e321ee))
+* Integration ca-certificates in Simple image because of failing certificates test ([ef132b6](https://github.com/dodevops/cloudcontrol/commit/ef132b6e1835ab3ee3353110e2784eb22e2c4857))
+* Integration ca-certificates in Tanzu image because of failing certificates test ([40fa859](https://github.com/dodevops/cloudcontrol/commit/40fa859862777334aa28afde1d2293c39dd68ecf))
+* Set the Azure image version tag ([30348e9](https://github.com/dodevops/cloudcontrol/commit/30348e9013316a2da2462631f85f3033c887013e))
+
+
+### Documentation
+
+* Automatic docs update ([7f7374a](https://github.com/dodevops/cloudcontrol/commit/7f7374a67be910cce8340d4c2d01aa6b1ef4ff3b))
+* Automatic docs update ([ab8ab5f](https://github.com/dodevops/cloudcontrol/commit/ab8ab5f31d01d405a6b9ab5b7881412a5333c4bd))
+* Automatic docs update ([5778709](https://github.com/dodevops/cloudcontrol/commit/57787092ece502c7940a820586fb9b9d50f7985b))
+* Automatic docs update ([7c582a1](https://github.com/dodevops/cloudcontrol/commit/7c582a1342220df164a434543c581470b6a0a08a))
+* Automatic docs update ([013a0fc](https://github.com/dodevops/cloudcontrol/commit/013a0fccbc3f16a3c37752a60424b1148cc05e18))
+* Automatic docs update ([ccf89c0](https://github.com/dodevops/cloudcontrol/commit/ccf89c0eac7f36f240467303436ed18ae4541bd1))
+* Fixed readme ([54ff7ef](https://github.com/dodevops/cloudcontrol/commit/54ff7efe5685b9c97159ac631f5340b819e870af))
+
+
+
 ## [7.1.0](https://github.com/dodevops/cloudcontrol/compare/v7.0.0...v7.1.0) (2024-09-09)
 
 
