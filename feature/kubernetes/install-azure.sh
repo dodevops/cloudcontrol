@@ -56,6 +56,8 @@ EOF
   if ${AZ_USE_ARM_SPI:-false};
   then
     args+=("-l" "spn")
+  else
+    args+=("-l" "azurecli")
   fi
 
   execHandle "Converting credentials to kubelogin" kubelogin convert-kubeconfig "${args[@]}"
