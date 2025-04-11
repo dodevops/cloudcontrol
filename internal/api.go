@@ -58,7 +58,7 @@ func (a APIRouter) GetFeatures(context *gin.Context) {
 	case "text/plain":
 		output := ""
 		for feature, featureInfo := range a.backend.Features {
-			output += fmt.Sprintf("# %-4s%s\n%s\n\n\n", featureInfo.descriptor.Icon, featureInfo.descriptor.Title, featureInfo.descriptor.Description)
+			output += fmt.Sprintf("# %-4s%s\n%s\n\n\n", featureInfo.Descriptor.Icon, featureInfo.Descriptor.Title, featureInfo.Descriptor.Description)
 			motdFile := fmt.Sprintf("/home/cloudcontrol/feature-installers/%s/motd.sh", feature)
 			if _, err := os.Stat(motdFile); err == nil {
 				if motdFileContent, err := exec.Command("bash", motdFile).Output(); err == nil {
@@ -68,7 +68,11 @@ func (a APIRouter) GetFeatures(context *gin.Context) {
 		}
 		context.String(http.StatusOK, output)
 	default:
-		context.JSON(http.StatusOK, a.backend.Features)
+		features := make(map[string]YamlDescriptor)
+		for featureName, feature := range a.backend.Features {
+			features[featureName] = feature.Descriptor
+		}
+		context.JSON(http.StatusOK, features)
 	}
 }
 

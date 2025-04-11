@@ -14,8 +14,8 @@ import (
 
 // Feature describes a feature in the filesystem
 type Feature struct {
-	descriptor YamlDescriptor
-	path       string
+	Descriptor YamlDescriptor `json:"descriptor"`
+	Path       string         `json:"path"`
 }
 
 // The Backend handles the feature installation and monitoring
@@ -108,10 +108,10 @@ func (backend *Backend) initialization() func() {
 		for _, step := range backend.Steps[1:] {
 			backend.CurrentStep++
 
-			backend.StepTitle = backend.Features[step].descriptor.Title
+			backend.StepTitle = backend.Features[step].Descriptor.Title
 			logrus.Infof("Installing feature %s", backend.StepTitle)
 
-			backend.StepDescription = backend.Features[step].descriptor.Description
+			backend.StepDescription = backend.Features[step].Descriptor.Description
 
 			var args []string
 
@@ -120,10 +120,11 @@ func (backend *Backend) initialization() func() {
 				args = append(args, "-x")
 			}
 
-			installationFile := fmt.Sprintf("%s/install.sh", backend.Features[step].path)
+			installationFile := fmt.Sprintf("%s/install.sh", backend.Features[step].Path)
 			logrus.Debugf("Running %s", installationFile)
 			args = append(args, installationFile)
 
+			backend.StepOutput = ""
 			cmd := exec.Command("bash", args...)
 			cmd.Stderr = consoleWriter
 			cmd.Stdout = consoleWriter
@@ -135,12 +136,12 @@ func (backend *Backend) initialization() func() {
 				backend.fatal(err)
 			}
 
-			if backend.Features[step].descriptor.Deprecation != "" {
+			if backend.Features[step].Descriptor.Deprecation != "" {
 				logrus.Warnf("Feature %s is deprecated. Storing deprecation notice.", step)
 				if f, err := os.OpenFile("/home/cloudcontrol/.deprecation", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644); err != nil {
 					backend.fatal(err)
 				} else {
-					if _, err := f.WriteString(fmt.Sprintf("%s\n\n%s\n\n---", step, backend.Features[step].descriptor.Deprecation)); err != nil {
+					if _, err := f.WriteString(fmt.Sprintf("%s\n\n%s\n\n---", step, backend.Features[step].Descriptor.Deprecation)); err != nil {
 						backend.fatal(err)
 					}
 					if err := f.Close(); err != nil {
@@ -252,8 +253,8 @@ func (backend *Backend) readConfiguration() {
 							backend.fatal(err)
 						}
 						backend.Features[featureDir] = Feature{
-							descriptor: featureYaml,
-							path:       filepath.Dir(feature),
+							Descriptor: featureYaml,
+							Path:       filepath.Dir(feature),
 						}
 						logrus.Debugf("Adding feature %s: %v", featureDir, backend.Features[featureDir])
 						backend.Steps = append(backend.Steps, featureDir)
