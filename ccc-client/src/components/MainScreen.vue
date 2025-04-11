@@ -45,11 +45,11 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { onMounted, Ref, ref } from 'vue';
 import * as axios from 'axios';
 import VueMarkdown from 'vue-markdown-render';
-import logoUrl from '../assets/logo.svg?url';
+import logoUrlImport from '../assets/logo.svg?url';
 
 interface Feature {
   Icon: string;
@@ -57,33 +57,17 @@ interface Feature {
   Description: string;
 }
 
-export default defineComponent({
-  components: {
-    VueMarkdown,
-  },
-  data() {
-    const features: Feature[] = [];
+const features: Ref<Feature[]> = ref([])
+const logoUrl = ref(logoUrlImport)
 
-    return {
-      features,
-      logoUrl,
-    };
-  },
-  mounted() {
-    axios.default.get('/api/features')
-        .then(
-            (backendFeatures) => {
-              this.features = backendFeatures.data;
-            },
-        );
-  },
-  methods: {
-    async copyCommand(command: string) {
-      await navigator.clipboard.writeText(command);
-    },
-  },
-});
+async function copyCommand(command: string) {
+  await navigator.clipboard.writeText(command)
+}
 
+onMounted(async () => {
+  const backendFeatures = await axios.default.get('/api/features')
+  features.value = backendFeatures.data
+})
 </script>
 
 <style scoped>

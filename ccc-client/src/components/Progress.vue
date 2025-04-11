@@ -62,176 +62,169 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import { defineComponent, Ref } from 'vue';
+<script setup lang="ts">
+import { onBeforeUnmount, onMounted, Ref, ref, toRaw } from 'vue';
 import * as axios from 'axios';
-import VueMarkdown from 'vue-markdown-render';
-import logoUrl from '../assets/logo.svg?url';
+import logoUrlImport from '../assets/logo.svg?url';
 
-let completedAuth: boolean = false;
-let mfaCode: string = '';
-let googleAuthCode: string = '';
-let googleAuth: boolean = false;
-let requiresMFA: boolean = false;
-let currentError: string = '';
-let stepDescription: string = 'Installing and configuring flavour';
-let stepTitle: string = 'Flavour';
-let oAuthUrl: string = '';
-let oAuthCode: string = '';
-let getStepInterval: NodeJS.Timer | null = null;
-let consoleOutput: string = '';
-let currentStep: number = 1;
-let steps: string[] = [];
-let features: any = [];
+interface Feature {
+  Title: string
+}
 
-export default defineComponent({
-  components: {
-    VueMarkdown,
-  },
-  data() {
-    return {
-      steps,
-      features,
-      currentStep,
-      consoleOutput,
-      getStepInterval,
-      oAuthCode,
-      oAuthUrl,
-      stepTitle,
-      stepDescription,
-      currentError,
-      requiresMFA,
-      googleAuth,
-      googleAuthCode,
-      mfaCode,
-      completedAuth,
-      logoUrl,
-    };
-  },
-  async mounted() {
-    this.steps = (await axios.default.get('/api/steps')).data.steps
-    this.features = (await axios.default.get('/api/features')).data
+const steps: Ref<string[]> = ref([])
+const features: Ref<{[key: string]: Feature}> = ref({})
+const getStepInterval: Ref<NodeJS.Timer | null> = ref(null)
+const stepTitle = ref('')
+const stepDescription = ref('')
+const currentStep = ref(1)
+const consoleOutput = ref('')
+const currentError = ref('')
 
-    this.getStepInterval = setInterval(this.getCurrentStep.bind(this), 3000) as NodeJS.Timer;
-  },
-  methods: {
-    getStepTitle(stepName: string) {
-      if (stepName == 'flavour') {
-        return 'Flavour'
-      }
-      return this.features[stepName].Title
-    },
-    async doOAuth() {
-      if (this.oAuthCode !== '') {
-        await navigator.clipboard.writeText(this.oAuthCode);
-      }
-      window.open(this.oAuthUrl);
-    },
-    getCurrentStep() {
-      axios.default.get('/api/steps/current')
-          .then(
-              (backendStep) => {
-                this.stepTitle = backendStep.data.title;
-                this.stepDescription = backendStep.data.description;
-                this.currentStep = backendStep.data.currentStep;
-                this.consoleOutput = this.reformatOutput(backendStep.data.output);
-                const consoleCard = document.getElementById('console');
-                if (consoleCard) {
-                  consoleCard.scrollTop = consoleCard.scrollHeight;
-                }
-              },
-          )
-          .catch((error) => {
-            this.currentError = `Could not reach the ccc backend or the backend has reached an error state. Please
+const oAuthCode = ref('')
+const oAuthUrl = ref('')
+const googleAuth = ref(false)
+const requiresMFA = ref(false)
+const mfaCode = ref('')
+const googleAuthCode = ref('')
+const completedAuth = ref(false)
+
+const logoUrl = ref(logoUrlImport)
+
+function reformatOutput(output: string) {
+  // Replace newlines with br
+  output = output.replaceAll('\n', '<br/>');
+
+  oAuthCode.value = '';
+  oAuthUrl.value = '';
+
+  // Oauth feature
+  const azureOauthRegexp = new RegExp(
+    'https://microsoft.com/devicelogin and enter the code ([^ ]+) to authenticate.',
+  );
+  if (azureOauthRegexp.test(output)) {
+    const matches = azureOauthRegexp.exec(output);
+    if (matches) {
+      oAuthUrl.value = 'https://microsoft.com/devicelogin';
+      oAuthCode.value = matches[ 1 ];
+    }
+  }
+
+  const googleOauthRegexp = new RegExp('Go to the following link in your browser, and complete the sign-in prompts:\r<br/>\r<br/> +(.+)');
+  if (googleOauthRegexp.test(output)) {
+    const matches = googleOauthRegexp.exec(output);
+    if (matches) {
+      oAuthUrl.value = matches[ 1 ];
+      googleAuth.value = true;
+    }
+  }
+  // MFA feature. Check for a regexp request, but also check if the MFA was already entered.
+  const mfaRegexp = new RegExp('/tmp/mfa');
+  const mfaDoneRegExp = new RegExp('\\[VALID_CODE]');
+
+  requiresMFA.value = mfaRegexp.test(output) && !mfaDoneRegExp.test(output);
+
+  return output;
+}
+
+async function getCurrentStep() {
+  try {
+    const backendStep = await axios.default.get('/api/steps/current')
+    stepTitle.value = backendStep.data.title;
+    stepDescription.value = backendStep.data.description;
+    currentStep.value = backendStep.data.currentStep;
+    consoleOutput.value = reformatOutput(backendStep.data.output);
+    const consoleCard = document.getElementById('console');
+    if (consoleCard) {
+      consoleCard.scrollTop = consoleCard.scrollHeight;
+    }
+  } catch (error: any) {
+    currentError.value = `Could not reach the ccc backend or the backend has reached an error state. Please
         use docker logs to show the log messages from the CloudControl container for details. The container might
         already been stopped, so you should use docker ps -a to look for it. `;
-            if (error.response) {
-              this.currentError = this.currentError + `([${error.response.status}] ${error.response.data})`;
-            } else if (error.message) {
-              this.currentError = this.currentError + `(${error.message})`;
-            }
-          });
-    },
-    reformatOutput(output: string) {
-      // Replace newlines with br
-      output = output.replaceAll('\n', '<br/>');
+    if (error.response) {
+      currentError.value += `([${error.response.status}] ${error.response.data})`;
+    } else if (error.message) {
+      currentError.value += `(${error.message})`;
+    }
+  }
+}
 
-      this.oAuthCode = '';
-      this.oAuthUrl = '';
+function getStepTitle(stepName: string) {
+  if (stepName == 'flavour') {
+    return 'Flavour'
+  }
+  if (stepName in features.value) {
+    return features.value[stepName].Title
+  }
+  return ''
+}
 
-      // Oauth feature
-      const azureOauthRegexp = new RegExp(
-          'https://microsoft.com/devicelogin and enter the code ([^ ]+) to authenticate.',
-      );
-      if (azureOauthRegexp.test(output)) {
-        const matches = azureOauthRegexp.exec(output);
-        if (matches) {
-          this.oAuthUrl = 'https://microsoft.com/devicelogin';
-          this.oAuthCode = matches[ 1 ];
-        }
-      }
+async function doOAuth() {
+  if (oAuthCode.value !== '') {
+    await navigator.clipboard.writeText(oAuthCode.value);
+  }
+  window.open(oAuthUrl.value);
+}
 
-      const googleOauthRegexp = new RegExp('Go to the following link in your browser, and complete the sign-in prompts:\r<br/>\r<br/> +(.+)');
-      if (googleOauthRegexp.test(output)) {
-        const matches = googleOauthRegexp.exec(output);
-        if (matches) {
-          this.oAuthUrl = matches[ 1 ];
-          this.googleAuth = true;
-        }
-      }
-      // MFA feature. Check for a regexp request, but also check if the MFA was already entered.
-      const mfaRegexp = new RegExp('/tmp/mfa');
-      const mfaDoneRegExp = new RegExp('\\[VALID_CODE]');
+async function sendMfa(event: Event) {
+  event.preventDefault();
+  try {
+    await axios.default.post('/api/mfa', {
+      code: mfaCode.value,
+    })
+    requiresMFA.value = false
+    currentError.value = ''
+  } catch (error: any) {
+    currentError.value = 'Can not set MFA code:';
+    if (error.response) {
+      currentError.value = `${currentError.value} ([${error.response.status}] ${error.response.data})`;
+    } else if (error.message) {
+      currentError.value = `${currentError.value} (${error.message})`;
+    }
+  }
+}
 
-      this.requiresMFA = mfaRegexp.test(output) && !mfaDoneRegExp.test(output);
+async function sendGoogleAuth(event: Event) {
+  event.preventDefault();
+  try {
+    await axios.default.post('/api/googleAuth', {
+      code: googleAuthCode.value,
+    })
+    googleAuth.value = false
+    googleAuthCode.value = ''
+    currentError.value = ''
+    completedAuth.value = true
+  } catch (error: any) {
+    currentError.value = 'Can not set Google Auth code:';
+    if (error.response) {
+      currentError.value = `${currentError.value} ([${error.response.status}] ${error.response.data})`;
+    } else if (error.message) {
+      currentError.value = `${currentError.value} (${error.message})`;
+    }
+  }
+}
 
-      return output;
-    },
-    beforeDestroy() {
-      clearInterval(this.getStepInterval as NodeJS.Timer);
-      this.getStepInterval = null;
-    },
-    sendMfa(event: Event) {
-      event.preventDefault();
-      axios.default.post('/api/mfa', {
-        code: this.mfaCode,
-      })
-          .then(() => {
-            this.requiresMFA = false;
-            this.currentError = '';
-          })
-          .catch((error) => {
-            this.currentError = 'Can not set MFA code:';
-            if (error.response) {
-              this.currentError = `${this.currentError} ([${error.response.status}] ${error.response.data})`;
-            } else if (error.message) {
-              this.currentError = `${this.currentError} (${error.message})`;
-            }
-          });
-    },
-    sendGoogleAuth(event: Event) {
-      event.preventDefault();
-      axios.default.post('/api/googleAuth', {
-        code: this.googleAuthCode,
-      })
-          .then(() => {
-            this.googleAuth = false;
-            this.googleAuthCode = '';
-            this.currentError = '';
-            this.completedAuth = true;
-          })
-          .catch((error) => {
-            this.currentError = 'Can not set Google Auth code:';
-            if (error.response) {
-              this.currentError = `${this.currentError} ([${error.response.status}] ${error.response.data})`;
-            } else if (error.message) {
-              this.currentError = `${this.currentError} (${error.message})`;
-            }
-          });
-    },
-  },
-});
+onMounted(async () => {
+  try {
+    const stepsRequest = await axios.default.get('/api/steps')
+    steps.value = stepsRequest.data.steps
+    const featuresRequest = await axios.default.get('/api/features')
+    features.value = featuresRequest.data
+    getStepInterval.value = setInterval(getCurrentStep.bind(this), 3000) as NodeJS.Timer;
+  } catch (error: any) {
+    currentError.value = 'Can not communicate with backend:';
+    if (error.response) {
+      currentError.value = `${currentError.value} ([${error.response.status}] ${error.response.data})`;
+    } else if (error.message) {
+      currentError.value = `${currentError.value} (${error.message})`;
+    }
+  }
+})
 
+onBeforeUnmount(() => {
+  clearInterval(getStepInterval.value as NodeJS.Timer);
+  getStepInterval.value = null;
+})
 </script>
 
 <style>
