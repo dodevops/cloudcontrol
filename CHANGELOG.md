@@ -1,3 +1,17 @@
+## [7.3.0](https://github.com/dodevops/cloudcontrol/compare/v7.2.0...v7.3.0) (2025-04-22)
+
+
+### Features
+
+* Fixed a lot of regressions ([b99682f](https://github.com/dodevops/cloudcontrol/commit/b99682f190a681c5288600a79c1f9dbea2e9f471))
+
+
+### Bug Fixes
+
+* Fixed azurecli convert-kubeconfig ([a8cb01f](https://github.com/dodevops/cloudcontrol/commit/a8cb01fb8489b3935c71bb273eb0df042707e453))
+
+
+
 ## [7.2.0](https://github.com/dodevops/cloudcontrol/compare/v7.1.0...v7.2.0) (2025-04-04)
 
 
