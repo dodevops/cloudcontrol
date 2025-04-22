@@ -27,7 +27,7 @@ jobs:
                     pattern: '^(Merge pull request #[0-9]+)|(Merge branch ''main'' into develop)|(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([\w\-\.]+\))?(!)?: ([\w ])+([\s\S]*)'
                     error: 'Commit messages do not follow https://www.conventionalcommits.org/en/v1.0.0/'
             -   name: Get Changed Files
-                uses: tj-actions/changed-files@v41.0.0
+                uses: tj-actions/changed-files@v45.0.8
             -   name: Check if CHANGELOG wasn't included
                 run: |
                     if echo ${{ steps.changed-files.outputs.all_changed_files }} | grep CHANGELOG.md; then
