@@ -1,0 +1,32 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Tests",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "cwd": "/Users/dennisploger/Documents/code/dodevops/cloudcontrol",
+            "program": "cmd/tests/test-features.go",
+            "args": [
+                "-f",
+                "simple",
+                "-i",
+                "ghcr.io/dodevops/cloudcontrol-simple:local",
+                "-t",
+                "/Users/dennisploger/work/testbed",
+                "-p",
+                "linux/arm64",
+                "-l",
+                "debug",
+                "-g",
+                "/Users/dennisploger/Downloads/goss-linux-arm64",
+                "-n",
+                "opentofu"
+            ]
+        }
+    ]
+}

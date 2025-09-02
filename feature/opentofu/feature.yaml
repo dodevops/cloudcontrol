@@ -1,0 +1,15 @@
+icon: "📦"
+title: "Opentofu"
+description: "Installs and configures [Opentofu](https://opentofu.org/)"
+configuration:
+    - |
+        Add a volume mount to the `volumes:` section of docker compose like this:
+             (...)
+             volumes:
+                 - "<path-to-opentofu>:/opentofu"
+    - |
+        If you used the browser based login in gcloud, you'll probably need to authenticate using the application-default
+        login using the gcloud cli by running
+        
+            gcloud auth application-default login
+requiresVersion: true
