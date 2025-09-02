@@ -1,0 +1,6 @@
+command:
+    terraform:
+        exec: "/home/cloudcontrol/bin/tofu --version"
+        exit-status: 0
+        stdout:
+            - "OpenTofu v1.10.5"
