@@ -1,6 +1,6 @@
 FROM amazon/aws-cli:latest
 
-RUN yum install -y sudo shadow-utils unzip tar net-tools curl && \
+RUN yum install -y sudo shadow-utils unzip tar net-tools && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/yum *" > /etc/sudoers.d/cloudcontrol && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/curl *" >> /etc/sudoers.d/cloudcontrol && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/mv *" >> /etc/sudoers.d/cloudcontrol && \
