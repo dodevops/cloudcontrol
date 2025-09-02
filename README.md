@@ -45,6 +45,7 @@ See [https://github.com/dodevops/kc](the kc website) for details.
 * 🟦 krew
 * 🐚 Kubectlnodeshell
 * 🐳 Kubernetes
+* 📦 Opentofu
 * 📦 Packages
 * 📦 Packer
 * 👟 Run
@@ -83,6 +84,7 @@ See [https://github.com/dodevops/kc](the kc website) for details.
     * [krew](#krew)
     * [Kubectlnodeshell](#kubectlnodeshell)
     * [Kubernetes](#kubernetes)
+    * [Opentofu](#opentofu)
     * [Packages](#packages)
     * [Packer](#packer)
     * [Run](#run)
@@ -577,6 +579,24 @@ Installs and configures [kubernetes](https://kubernetes.io/docs/reference/kubect
 * (gcloud flavor)
   * Environment GCLOUD_K8S_CLUSTERS: A comma separated list of zone[@project]:cluster-name
   * Environment K8S_USE_GCLOUD_AUTH: Whether to use the new GKE_GCLOUD_AUTH plugin [true]
+
+### <a id="opentofu"></a> Opentofu
+
+Installs and configures [Opentofu](https://opentofu.org/)
+
+#### Configuration
+
+* USE_opentofu: Enable this feature (or use the FEATURES variable instead)
+* OPENTOFU_VERSION (required): Version to install (or use the FEATURES variable instead)
+* DEBUG_opentofu: Debug this feature
+* Add a volume mount to the `volumes:` section of docker compose like this:
+       (...)
+       volumes:
+           - "<path-to-opentofu>:/opentofu"
+* If you used the browser based login in gcloud, you'll probably need to authenticate using the application-default
+  login using the gcloud cli by running
+  
+      gcloud auth application-default login
 
 ### <a id="packages"></a> Packages
 
