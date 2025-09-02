@@ -9,7 +9,7 @@ set -euo pipefail
 #
 # If no flavour is specified, all flavours will be built
 
-mv Dockerfile Dockerfile.sav
+mv Dockerfile Dockerfile.sav  &>/dev/null || true
 
 TAG=latest
 if [ -n "$1" ]
