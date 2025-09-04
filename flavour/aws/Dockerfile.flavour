@@ -1,4 +1,4 @@
-FROM amazon/aws-cli:latest
+FROM amazon/aws-cli:2.28.23
 
 RUN yum install -y sudo shadow-utils unzip tar net-tools curl && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/yum *" > /etc/sudoers.d/cloudcontrol && \
@@ -28,4 +28,3 @@ COPY flavour/aws/createSession.bash /home/cloudcontrol/bin/createSession.bash
 COPY flavour/aws/createSession.fish /home/cloudcontrol/bin/createSession.fish
 
 RUN chmod +x /home/cloudcontrol/bin/createSession.*
-

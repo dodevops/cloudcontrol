@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.22.1
 
 RUN apk add sudo bash curl libc6-compat ca-certificates && \
     echo "cloudcontrol ALL=(root)NOPASSWD:/sbin/apk *" > /etc/sudoers.d/cloudcontrol && \
