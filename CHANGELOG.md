@@ -1,3 +1,23 @@
+## [7.4.0](https://github.com/dodevops/cloudcontrol/compare/v7.3.0...v7.4.0) (2025-09-10)
+
+
+### Features
+
+* New feature: OpenTofu ([3ee2db3](https://github.com/dodevops/cloudcontrol/commit/3ee2db3eb290f41ed2cbeda2efde699c8c72309a))
+
+
+### Bug Fixes
+
+* Ignore missing Dockerfile ([8dd85de](https://github.com/dodevops/cloudcontrol/commit/8dd85deb063fac4ba5e0b915cd4d87a5c401a2bd))
+* **unrelated:** Fixed AWS already including curl in the latest version ([40db29b](https://github.com/dodevops/cloudcontrol/commit/40db29b65a1de2ee339efee3024f5c79b296db2e))
+
+
+### Documentation
+
+* Automatic docs update ([c34b2c6](https://github.com/dodevops/cloudcontrol/commit/c34b2c63ef724d8e1a5af1f78c179dd6fa290456))
+
+
+
 ## [7.3.0](https://github.com/dodevops/cloudcontrol/compare/v7.2.0...v7.3.0) (2025-04-22)
 
 
