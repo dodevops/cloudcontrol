@@ -31,25 +31,25 @@ then
         then
             echo "Reinitializing ${CONTEXT} CLOUDCONTROL"
             echo "Please use Ctrl-C after the initialization has finished and then rerun cc"
-            docker-compose down
+            docker compose down
             bash init.sh
         elif [ "${SELECTEDMENU}" == "ccc" ]
         then
-            CCC_PORT=$(docker-compose port cli 8080 | cut -d ":" -f 2)
+            CCC_PORT=$(docker compose port cli 8080 | cut -d ":" -f 2)
             echo "Starting CloudControlCenter on port ${CCC_PORT} for ${CONTEXT}"
             open "http://localhost:${CCC_PORT}"
         elif [ "${SELECTEDMENU}" == "stop" ]
         then
-            docker-compose stop
+            docker compose stop
         elif [ "${SELECTEDMENU}" == "down" ]
         then
-            docker-compose down
+            docker compose down
         fi
     else
         # Enter CloudControl context
         echo "Entering ${CONTEXT} CLOUDCONTROL"
-        docker-compose up -d
-        docker-compose exec cli /usr/local/bin/cloudcontrol run
+        docker compose up -d
+        docker compose exec cli /usr/local/bin/cloudcontrol run
     fi
 fi
 

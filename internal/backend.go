@@ -2,14 +2,15 @@ package internal
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v3"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
 	"strings"
+
+	"github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v3"
 )
 
 // Feature describes a feature in the filesystem
@@ -161,7 +162,7 @@ func (backend *Backend) initialization() func() {
 
 		logrus.Info("Finished initialization")
 		logrus.Info("Please run the following to enter CloudControl")
-		logrus.Info("docker-compose exec cli /usr/local/bin/cloudcontrol run")
+		logrus.Info("docker compose exec cli /usr/local/bin/cloudcontrol run")
 
 		backend.Status = "INITIALIZED"
 	}
