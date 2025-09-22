@@ -1,17 +1,19 @@
-FROM mcr.microsoft.com/azure-cli:cbl-mariner2.0
+FROM mcr.microsoft.com/azure-cli:azurelinux3.0
 
-RUN yum install -y sudo curl tar unzip && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/yum *" > /etc/sudoers.d/cloudcontrol && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/az *" >> /etc/sudoers.d/cloudcontrol && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/chmod *" >> /etc/sudoers.d/cloudcontrol && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/cp *" >> /etc/sudoers.d/cloudcontrol && \
-    echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/update-ca-trust" >> /etc/sudoers.d/cloudcontrol && \
-    adduser -mr cloudcontrol && \
-    mkdir /home/cloudcontrol/bin && \
+
+RUN <<RUN_SCRIPT
+    ln -s /usr/bin/tdnf /usr/bin/yum
+    tdnf install --assumeyes sudo curl tar unzip
+    for TOOL in 'yum *' 'tdnf *' 'az *' 'chmod *' 'cp *' 'update-ca-trust' 'curl *'
+    do
+      echo "cloudcontrol ALL=(root)NOPASSWD:/usr/bin/${TOOL}" >> /etc/sudoers.d/cloudcontrol
+    done
+    adduser -mr cloudcontrol
+    mkdir /home/cloudcontrol/bin
     chown cloudcontrol /home/cloudcontrol/bin
+RUN_SCRIPT
 
 # Flavour
-
 COPY flavour/azure/flavour /home/cloudcontrol/flavour
 COPY flavour/azure/flavourinit.sh /home/cloudcontrol/bin/flavourinit.sh
 RUN chmod +x /home/cloudcontrol/bin/flavourinit.sh

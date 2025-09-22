@@ -342,10 +342,10 @@ initialization process does.
 
 #### Configuration
 
-* Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container (deprecated)
 * Environment ARM_SUBSCRIPTION_ID: The Azure subscription to use in this container
-* Environment AZ_TENANTID: The Azure tenant id to log into (optional, deprecated)
 * Environment ARM_TENANT_ID: The Azure tenant id to log into (optional)
+* Environment AZ_SUBSCRIPTION: The Azure subscription to use in this container (deprecated)
+* Environment AZ_TENANTID: The Azure tenant id to log into (optional, deprecated)
 * Environment AZ_USE_ARM_SPI: Uses the environment variables ARM_CLIENT_ID and ARM_CLIENT_SECRET for service principal auth [false]
 
 ### <a id="gcloud"></a> gcloud
