@@ -218,7 +218,7 @@ kubectl port-forward --address 172.21.0.2 svc/my-service 8081:8080
 * Check out, which host port docker bound to the private port you set up (e.g. 8081)
 
 ```
-dockercompose port cli 8081
+docker compose port cli 8081
 ```
 
 * Connect to localhost:[host port] on your host
