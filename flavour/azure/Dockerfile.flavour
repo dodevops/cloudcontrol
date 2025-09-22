@@ -2,7 +2,6 @@ FROM mcr.microsoft.com/azure-cli:azurelinux3.0
 
 
 RUN <<RUN_SCRIPT
-    ln -s /usr/bin/tdnf yum
     ln -s /usr/bin/tdnf /usr/bin/yum
     tdnf install --assumeyes sudo curl tar unzip
     for TOOL in 'yum *' 'tdnf *' 'az *' 'chmod *' 'cp *' 'update-ca-trust' 'curl *'
