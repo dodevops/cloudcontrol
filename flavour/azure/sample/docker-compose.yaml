@@ -1,4 +1,3 @@
-version: "3"
 services:
     cli:
         image: "ghcr.io/dodevops/cloudcontrol-azure:latest"

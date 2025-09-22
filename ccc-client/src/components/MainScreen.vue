@@ -11,11 +11,11 @@
           <p>CloudControl has been initialized. Run the following to enter the container:</p>
           <v-banner theme="dark" lines="one" class="my-4">
             <v-banner-text>
-              docker-compose exec cli /usr/local/bin/cloudcontrol run
+              docker compose exec cli /usr/local/bin/cloudcontrol run
             </v-banner-text>
             <template v-slot:actions>
               <v-btn icon="mdi-content-copy"
-                     v-on:click="copyCommand('docker-compose exec cli /usr/local/bin/cloudcontrol run')">
+                     v-on:click="copyCommand('docker compose exec cli /usr/local/bin/cloudcontrol run')">
               </v-btn>
             </template>
           </v-banner>
