@@ -2,10 +2,14 @@
 
 if [[ "${FLAVOUR}" =~ (simple|tanzu|gcloud) ]]
 then
-  execHandle 'Installing fish' sudo apk add fish perl fzf git
+  execHandle 'Installing fish' sudo apk add fish fzf git perl
 elif [[ "${FLAVOUR}" =~ (aws|azure) ]]
 then
   prepare
+  if [[ "${FLAVOUR}" == 'azure' ]]
+  then
+    execHandle 'Installing awk' sudo tdnf install -y gawk
+  fi
   execHandle 'Downloading fish repo' sudo curl -f -s -L https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_7/shells:fish:release:3.repo -o /etc/yum.repos.d/shells:fish:release:3.repo
   execHandle 'Installing fish' sudo yum install -y fish git
   execHandle 'Downloading fzf' curl -f -s -L https://github.com/junegunn/fzf/archive/master.zip -o master.zip
