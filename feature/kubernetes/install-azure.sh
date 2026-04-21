@@ -21,7 +21,6 @@ EOF
   # shellcheck disable=SC2088
   echo "~/bin/azure-relogin" >> ~/bin/k8s-relogin
 
-  AZ_DO_KUBELOGIN_CONVERT="${AZ_USE_ARM_SPI:-false}"
   for CLUSTER in $(echo "${AZ_K8S_CLUSTERS}" | tr "," "\n"); do
     K8S_RESOURCEGROUP=$(echo "$CLUSTER" | cut -d ":" -f 1)
     K8S_CLUSTER=$(echo "$CLUSTER" | cut -d ":" -f 2)
@@ -60,6 +59,5 @@ EOF
     args+=("-l" "azurecli")
   fi
 
-  execHandle "Converting credentials to kubelogin" kubelogin convert-kubeconfig "${args[@]}"
   echo kubelogin convert-kubeconfig "${args[@]}" >> ~/bin/k8s-relogin
 }
